@@ -1,0 +1,9 @@
+[project]
+name = "sujaldev-site-builder"
+version = "0.1.0"
+description = "Static site generator for sujal.dev"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "jinja2>=3.1.6",
+]
