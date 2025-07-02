@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}{% block title_suffix %}| {{ site.fqdn }}{% endblock %}</title>
+</head>
+<body>
+<a href="#content">Skip to main content</a>
+<header>
+    <a href="https://{{ site.fqdn }}/"><b>{{ site.fqdn }}</b></a>
+    <p>{{ site.tagline }}</p>
+    <div>
+        <a href="mailto:{{ author.mail }}">{{ include_raw("mail.svg") }}</a>
+        <a href="https://github.com/{{ author.github }}">{{ include_raw("github.svg") }} </a>
+        <a href="https://linkedin.com/in/{{ author.linkedin }}">{{ include_raw("linkedin.svg") }}</a>
+        <a href="https://sujal.dev/rss.xml">{{ include_raw("rss.svg") }}</a>
+    </div>
+    <nav>
+        <span>
+            <a href="/">Home</a>
+            <a href="/blog">Blog</a>
+            <a href="/projects">Projects</a>
+            <a href="/more">More</a>
+        </span>
+    </nav>
+</header>
+{% block content %}
+{% endblock %}
+<footer>
+    <p>
+        © {{ license.start }}. This work is licensed under
+        <a href="{{ license.url }}" target="_blank" rel="license noopener noreferrer">{{ license.name }}</a>.
+    </p>
+</footer>
+</body>
+</html>

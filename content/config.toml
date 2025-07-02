@@ -1,0 +1,14 @@
+[site]
+fqdn = "sujal.dev"
+tagline = "Work in progress."
+
+[author]
+name = "Sujal Singh"
+mail = "contact@sujal.dev"
+github = "sujaldev"
+linkedin = "sujal-singh"
+
+[license]
+start = "2025"
+name = "CC BY-SA 4.0"
+url = "https://creativecommons.org/licenses/by-sa/4.0/"
