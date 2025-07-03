@@ -1,7 +1,10 @@
 {% extends "base.jinja" %}
 {% block title %}{{ author.name }}{% endblock %}
 {% block title_suffix %}{% endblock %}
+{% set selected_tab = "home" %}
 {% block content %}
-    <main id="content"></main>
-    <aside></aside>
+    <main>
+        <article id="content"></article>
+        <aside></aside>
+    </main>
 {% endblock %}
