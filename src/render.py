@@ -12,11 +12,12 @@ SRC_DIR = PROJECT_ROOT / "src"
 
 def include_raw(file_path: str) -> Markup:
     """
-    Replacement for {% include "file" %} tag, without processing "file" as a template.
+    Returns the contents of the given file as-is without processing it as a jinja template. This is meant to replace the
+    built-in {% include "file" %} statement in jinja which looks for files in the templates directory.
 
-    :param file_path: path of the file relative to the `/src/include` directory. The file being included must reside
+    :param file_path: Path of the file relative to the `/src/include` directory. The file being included MUST reside
     inside the include directory.
-    :return: Escaped contents of the file.
+    :return: Contents of the input file.
     """
     include_path = SRC_DIR / "include"
     file_path = include_path / file_path
@@ -28,10 +29,10 @@ def include_raw(file_path: str) -> Markup:
         return Markup(file.read())
 
 
-def main():
+def make_env():
     env = Environment(
-        loader=FileSystemLoader(PROJECT_ROOT / "src/templates"),
-        autoescape=select_autoescape(["jinja2"]),
+        loader=FileSystemLoader(SRC_DIR / "templates"),
+        autoescape=select_autoescape(["jinja"]),
         trim_blocks=True,
     )
 
@@ -45,6 +46,8 @@ def main():
     env.globals.update(cfg)
     env.globals["include_raw"] = include_raw
 
+    return env
+
 
 if __name__ == "__main__":
-    main()
+    print(make_env().get_template("index.jinja").render())
