@@ -125,15 +125,14 @@ nav > span {
     transform-origin: bottom;
 }
 
-/* TODO: Configure better values here. */
 #selected-tab::after {
     content: '';
     position: absolute;
-    top: 95%;
+    top: 90%;
     right: 0;
-    bottom: -4px;
+    bottom: -15%;
     left: 0;
-    transform: perspective(5px) rotateX(1.4deg);
+    transform: perspective(5px) rotateX(1deg);
     transform-origin: bottom;
     background: white;
 }
