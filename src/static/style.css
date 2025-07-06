@@ -49,6 +49,8 @@ a:visited {
 }
 
 header {
+    position: relative; /* this is required for the stick man figure positioning */
+
     border-bottom: 1px solid black;
     background-size: 100% 100%, 27px 100%, 100% 27px;
     background-image: linear-gradient(to top, white 15%, transparent 60%),
@@ -59,6 +61,18 @@ header {
     flex-direction: column;
 
     line-height: 1.6;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    right: 25px;
+    bottom: 45px;
+    width: 75px;
+    height: 125px;
+    background-image: url("./stickman.svg");
+    background-size: cover;
+    opacity: 0.7;
 }
 
 header a, header a:visited {
