@@ -143,10 +143,27 @@ nav > span {
 
 main {
     flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+main > * {
+    padding: 20px 20px 0;
+}
+
+main > article {
+    width: 850px;
 }
 
 footer {
     border-top: 1px solid black;
     padding: 10px;
     text-align: center;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+.placeholder-text {
+    color: gray;
+    font-style: italic;
 }

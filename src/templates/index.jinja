@@ -4,7 +4,20 @@
 {% set selected_tab = "home" %}
 {% block content %}
     <main>
-        <article id="content"></article>
-        <aside></aside>
+        <article id="content">
+            {{ content | safe }}
+        </article>
+        <aside>
+            <h2>Recent Posts</h2>
+            {% if recent_posts %}
+                <ul>
+                    {% for post in recent_posts %}
+                        <li><a href="{{ post[0] }}">{{ post[1] }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="placeholder-text">There are no posts yet.</p>
+            {% endif %}
+        </aside>
     </main>
 {% endblock %}

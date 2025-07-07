@@ -1,13 +1,16 @@
+import shutil
 import tomllib
 from datetime import date
 from pathlib import Path
 
+import mistletoe
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 CONTENT_DIR = PROJECT_ROOT / "content"
 SRC_DIR = PROJECT_ROOT / "src"
+BUILD_DIR = PROJECT_ROOT / "build"
 
 
 def include_raw(file_path: str) -> Markup:
@@ -29,7 +32,7 @@ def include_raw(file_path: str) -> Markup:
         return Markup(file.read())
 
 
-def make_env():
+def make_jinja_env():
     env = Environment(
         loader=FileSystemLoader(SRC_DIR / "templates"),
         autoescape=select_autoescape(["jinja"]),
@@ -49,5 +52,27 @@ def make_env():
     return env
 
 
+def render_markdown(file_path: str | Path) -> str:
+    with open(file_path) as file:
+        return mistletoe.markdown(file)
+
+
+def build_static(minify=True):
+    shutil.copytree(SRC_DIR / "static", BUILD_DIR / "static", dirs_exist_ok=True)
+
+
+def build_home(jinja_env: Environment, recent_posts=None, minify=True):
+    content = render_markdown(CONTENT_DIR / "home.md")
+    html = jinja_env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
+    with open(BUILD_DIR / "index.html", "w") as file:
+        file.write(html)
+
+
+def build(minify=True):
+    env = make_jinja_env()
+    build_static(minify)
+    build_home(env, minify=minify)
+
+
 if __name__ == "__main__":
-    print(make_env().get_template("index.jinja").render())
+    build()
