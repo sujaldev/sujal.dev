@@ -3,6 +3,7 @@ import tomllib
 from datetime import date
 from pathlib import Path
 
+import minify_html
 import mistletoe
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
@@ -57,21 +58,29 @@ def render_markdown(file_path: str | Path) -> str:
         return mistletoe.markdown(file)
 
 
-def build_static(minify=True):
+def minify(code):
+    return minify_html.minify(code, minify_js=True, minify_css=True)
+
+
+def build_static(minified=True):
     shutil.copytree(SRC_DIR / "static", BUILD_DIR / "static", dirs_exist_ok=True)
 
 
-def build_home(jinja_env: Environment, recent_posts=None, minify=True):
+def build_home(jinja_env: Environment, recent_posts=None, minified=True):
     content = render_markdown(CONTENT_DIR / "home.md")
     html = jinja_env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
+
+    if minified:
+        html = minify(html)
+
     with open(BUILD_DIR / "index.html", "w") as file:
         file.write(html)
 
 
-def build(minify=True):
+def build(minified=True):
     env = make_jinja_env()
-    build_static(minify)
-    build_home(env, minify=minify)
+    build_static(minified)
+    build_home(env, minified=minified)
 
 
 if __name__ == "__main__":
