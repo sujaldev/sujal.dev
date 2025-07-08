@@ -1,3 +1,39 @@
+@font-face {
+    font-family: "Libertinus Sans";
+    /*noinspection CssUnknownTarget*/
+    src: url("/static/fonts/WOFF2/LibertinusSans-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Libertinus Sans";
+    /*noinspection CssUnknownTarget*/
+    src: url("/static/fonts/WOFF2/LibertinusSans-Italic.woff2") format("woff2");
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Libertinus Sans";
+    /*noinspection CssUnknownTarget*/
+    src: url("/static/fonts/WOFF2/LibertinusSans-Bold.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Libertinus Mono";
+    /*noinspection CssUnknownTarget*/
+    src: url("/static/fonts/WOFF2/LibertinusMono-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -21,6 +57,10 @@ a {
 
 a:visited {
     color: #1481b8;
+}
+
+code, pre, tt, kbd, samp {
+    font-family: "Liberation Mono", monospace;
 }
 
 #skip {

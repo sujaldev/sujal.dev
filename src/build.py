@@ -92,6 +92,11 @@ def build_static(minified=True):
             continue
 
         filetype = file.suffix.lstrip(".")
+
+        if filetype == "woff2":
+            # TODO: Implement font subsetting.
+            pass
+
         if filetype not in ("html", "css", "js", "svg"):
             continue
 
