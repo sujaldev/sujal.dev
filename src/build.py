@@ -126,4 +126,4 @@ def build(minified=True):
 
 
 if __name__ == "__main__":
-    build()
+    build(minified=False)
