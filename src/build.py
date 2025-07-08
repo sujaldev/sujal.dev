@@ -1,9 +1,10 @@
 import shutil
 import tomllib
 from datetime import date
+from mimetypes import types_map as mimetype_map
 from pathlib import Path
 
-import minify_html
+import minify
 import mistletoe
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
@@ -58,20 +59,6 @@ def render_markdown(file_path: str | Path) -> str:
         return mistletoe.markdown(file)
 
 
-def minify(code, lang="html"):
-    if lang == "css":
-        code = f"<style>\n{code}\n</style>"
-        return minify_html.minify(code, minify_css=True).lstrip("<style>").rstrip("</style>")
-    elif lang == "js":
-        code = f"<script>\n{code}\n</script>"
-        return minify_html.minify(code, minify_js=True).lstrip("<script>").rstrip("</script>")
-    elif lang == "svg":
-        # TODO: Implement svg minification.
-        return code
-    else:
-        return minify_html.minify(code, minify_js=True, minify_css=True)
-
-
 def build_static(minified=True):
     static_dir = SRC_DIR / "static"
     build_dir = BUILD_DIR / "static"
@@ -103,7 +90,7 @@ def build_static(minified=True):
             code = src_file.read()
 
         with open(dst_path, "w") as dst_file:
-            dst_file.write(minify(code, lang=filetype))
+            dst_file.write(minify.string(mimetype_map[file.suffix], code))
 
 
 def build_home(jinja_env: Environment, recent_posts=None, minified=True):
@@ -115,7 +102,7 @@ def build_home(jinja_env: Environment, recent_posts=None, minified=True):
     html = jinja_env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
 
     if minified:
-        html = minify(html)
+        html = minify.string(mimetype_map[".html"], html)
 
     with open(BUILD_DIR / "index.html", "w") as file:
         file.write(html)
@@ -142,4 +129,4 @@ def build(minified=True):
 
 
 if __name__ == "__main__":
-    build(minified=False)
+    build()
