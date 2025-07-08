@@ -213,6 +213,13 @@ footer {
     margin-bottom: 1em;
 }
 
+#content code {
+    background: lightgray;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 0.85em;
+}
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 .placeholder-text {
