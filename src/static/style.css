@@ -71,6 +71,8 @@ code, pre, tt, kbd, samp {
     padding: 8px;
     border: 1px solid black;
     outline: none;
+    background: white;
+    z-index: 10;
 }
 
 #skip:focus {
