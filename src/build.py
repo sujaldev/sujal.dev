@@ -79,9 +79,6 @@ def build_static(minified=True):
     # Copy everything as it is first, then if minification is enabled do a second pass for html, css, js and svg files.
     # The benefit of this approach is that the correct directory structure will be created beforehand in the build
     # directory.
-    if build_dir.exists():
-        # This is necessary as deleted files will be preserved from previous builds otherwise.
-        shutil.rmtree(build_dir)
     shutil.copytree(static_dir, build_dir)
 
     if not minified:
@@ -126,6 +123,9 @@ def build_home(jinja_env: Environment, recent_posts=None, minified=True):
 
 def build(minified=True):
     env = make_jinja_env()
+    if BUILD_DIR.exists():
+        # This is necessary as deleted files will be preserved from previous builds otherwise.
+        shutil.rmtree(BUILD_DIR)
     build_static(minified)
     build_home(env, minified=minified)
 
