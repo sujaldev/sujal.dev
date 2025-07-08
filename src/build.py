@@ -58,12 +58,50 @@ def render_markdown(file_path: str | Path) -> str:
         return mistletoe.markdown(file)
 
 
-def minify(code):
-    return minify_html.minify(code, minify_js=True, minify_css=True)
+def minify(code, lang="html"):
+    if lang == "css":
+        code = f"<style>\n{code}\n</style>"
+        return minify_html.minify(code, minify_css=True).lstrip("<style>").rstrip("</style>")
+    elif lang == "js":
+        code = f"<script>\n{code}\n</script>"
+        return minify_html.minify(code, minify_js=True).lstrip("<script>").rstrip("</script>")
+    elif lang == "svg":
+        # TODO: Implement svg minification.
+        return code
+    else:
+        return minify_html.minify(code, minify_js=True, minify_css=True)
 
 
 def build_static(minified=True):
-    shutil.copytree(SRC_DIR / "static", BUILD_DIR / "static", dirs_exist_ok=True)
+    static_dir = SRC_DIR / "static"
+    build_dir = BUILD_DIR / "static"
+
+    # Copy everything as it is first, then if minification is enabled do a second pass for html, css, js and svg files.
+    # The benefit of this approach is that the correct directory structure will be created beforehand in the build
+    # directory.
+    if build_dir.exists():
+        # This is necessary as deleted files will be preserved from previous builds otherwise.
+        shutil.rmtree(build_dir)
+    shutil.copytree(static_dir, build_dir)
+
+    if not minified:
+        return
+
+    for file in static_dir.rglob("*"):
+        if file.is_dir():
+            continue
+
+        filetype = file.suffix.lstrip(".")
+        if filetype not in ("html", "css", "js", "svg"):
+            continue
+
+        dst_path = build_dir / file.relative_to(static_dir)
+
+        with open(file) as src_file:
+            code = src_file.read()
+
+        with open(dst_path, "w") as dst_file:
+            dst_file.write(minify(code, lang=filetype))
 
 
 def build_home(jinja_env: Environment, recent_posts=None, minified=True):
