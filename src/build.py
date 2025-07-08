@@ -105,7 +105,11 @@ def build_static(minified=True):
 
 
 def build_home(jinja_env: Environment, recent_posts=None, minified=True):
-    content = render_markdown(CONTENT_DIR / "home.md")
+    content = None
+    content_filepath = CONTENT_DIR / "home.md"
+    if content_filepath.exists():
+        content = render_markdown(content_filepath)
+
     html = jinja_env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
 
     if minified:
