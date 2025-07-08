@@ -34,6 +34,16 @@ def include_raw(file_path: str) -> Markup:
         return Markup(file.read())
 
 
+def load_config():
+    with open(CONTENT_DIR / "config.toml", "rb") as file:
+        cfg = tomllib.load(file)
+
+    if cfg["license"]["start"] != str(current_year := date.today().year):
+        cfg["license"]["start"] += f"-{current_year}"
+
+    return cfg
+
+
 def make_jinja_env():
     env = Environment(
         loader=FileSystemLoader(SRC_DIR / "templates"),
@@ -41,14 +51,7 @@ def make_jinja_env():
         trim_blocks=True,
     )
 
-    # Load config
-    with open(CONTENT_DIR / "config.toml", "rb") as file:
-        cfg = tomllib.load(file)
-
-    if cfg["license"]["start"] != str(current_year := date.today().year):
-        cfg["license"]["start"] += f"-{current_year}"
-
-    env.globals.update(cfg)
+    env.globals.update(load_config())
     env.globals["include_raw"] = include_raw
 
     return env
@@ -93,7 +96,7 @@ def build_static(minified=True):
             dst_file.write(minify.string(mimetype_map[file.suffix], code))
 
 
-def build_home(jinja_env: Environment, recent_posts=None, minified=True):
+def build_home(jinja_env: Environment, recent_posts=None, minified=True, live=False):
     content = None
     content_filepath = CONTENT_DIR / "home.md"
     if content_filepath.exists():
@@ -104,8 +107,12 @@ def build_home(jinja_env: Environment, recent_posts=None, minified=True):
     if minified:
         html = minify.string(mimetype_map[".html"], html)
 
+    if live:
+        return html
+
     with open(BUILD_DIR / "index.html", "w") as file:
         file.write(html)
+    return None
 
 
 def build(minified=True):
