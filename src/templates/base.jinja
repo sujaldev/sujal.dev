@@ -28,6 +28,7 @@
         </nav>
     </header>
     {% block content %}
+        {{ content | safe }}
     {% endblock %}
     <footer>
         <p>

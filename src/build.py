@@ -129,6 +129,17 @@ def build(minified=True):
     build_static(minified)
     build_home(env, minified=minified)
 
+    # TODO: Implement blog, projects and more pages.
+    for page_name in ("blog", "projects", "more"):
+        build_path = BUILD_DIR / f"{page_name}/index.html"
+        build_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(build_path, "w") as file:
+            file.write(env.get_template("base.jinja").render(
+                selected_tab=page_name,
+                content='<main><article><p class="placeholder-text">As I said, this is still a work in '
+                        'progress.</p></article><aside></aside></main>'
+            ))
+
 
 if __name__ == "__main__":
     build(minified=False)
