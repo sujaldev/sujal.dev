@@ -30,10 +30,18 @@
             </div>
         </div>
         <nav>
-            <span {%- if selected_tab == "home" %} id="selected-tab"{% endif %}><a href="/">Home</a></span>
-            <span {%- if selected_tab == "blog" %} id="selected-tab"{% endif %}><a href="/blog">Blog</a></span>
-            <span {%- if selected_tab == "projects" %} id="selected-tab"{% endif %}><a href="/projects">Projects</a></span>
-            <span {%- if selected_tab == "more" %} id="selected-tab"{% endif %}><a href="/more">More</a></span>
+            <span {%- if selected_tab == "home" %} id="selected-tab"{% endif %}>
+                <a href="/">Home</a>
+            </span>
+            <span {%- if selected_tab == "blog" %} id="selected-tab"{% endif %}>
+                <a href="/blog">Blog</a>
+            </span>
+            <span {%- if selected_tab == "projects" %} id="selected-tab"{% endif %}>
+                <a href="/projects">Projects</a>
+            </span>
+            <span {%- if selected_tab == "more" %} id="selected-tab"{% endif %}>
+                <a href="/more">More</a>
+            </span>
         </nav>
     </header>
     {% block content %}
