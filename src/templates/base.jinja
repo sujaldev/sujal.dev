@@ -14,10 +14,19 @@
             <a href="https://{{ site.fqdn }}/"><b>{{ site.fqdn }}</b></a>
             <p>{{ site.tagline }}</p>
             <div id="links-container">
-                <a href="mailto:{{ author.mail }}">{{ include_raw("mail.svg") }}</a>
-                <a href="https://github.com/{{ author.github }}">{{ include_raw("github.svg") }} </a>
-                <a href="https://linkedin.com/in/{{ author.linkedin }}">{{ include_raw("linkedin.svg") }}</a>
-                <a href="https://{{ site.fqdn }}/rss.xml">{{ include_raw("rss.svg") }}</a>
+                <a href="mailto:{{ author.mail }}" aria-label="Email Address" title="Email Address">
+                    {{ include_raw("mail.svg") }}
+                </a>
+                <a href="https://github.com/{{ author.github }}" aria-label="GitHub Profile" title="Github Profile">
+                    {{ include_raw("github.svg") }}
+                </a>
+                <a href="https://linkedin.com/in/{{ author.linkedin }}" aria-label="LinkedIn Profile"
+                   title="LinkedIn Profile">
+                    {{ include_raw("linkedin.svg") }}
+                </a>
+                <a href="https://{{ site.fqdn }}/rss.xml" aria-label="RSS Feed" title="RSS Feed">
+                    {{ include_raw("rss.svg") }}
+                </a>
             </div>
         </div>
         <nav>
