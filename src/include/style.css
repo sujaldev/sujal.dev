@@ -113,7 +113,7 @@ header::after {
     bottom: 45px;
     width: 75px;
     height: 125px;
-    background-image: url("./stickman.svg");
+    background-image: url("../static/stickman.svg");
     background-size: cover;
     opacity: 0.7;
 }
