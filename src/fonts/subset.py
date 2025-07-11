@@ -67,7 +67,7 @@ def build_libertinus(input_font_dir: Path, output_font_dir: Path):
                 "--output-file=" + str(output_font_dir / f"{font}-{block_name}.woff2"),
                 f"--unicodes={unicode_range}",
                 "--flavor=woff2",
-                "--layout-features='*'",
+                "--layout-features=*",
             ])
 
             print(f"Libertinus{font}-{block_name}.woff2 generated.")
