@@ -6,5 +6,5 @@ more, please check out my [resume](https://resume.sujal.dev/).
 
 ## Contact
 
-You can reach me at [contact@sujal.dev](mailto:contact@sujal.dev). I'm also on IRC as `sdev` on
+You can reach me at [contact@sujal.dev](mailto:contact@sujal.dev). I'm also on IRC as *sdev* on
 [libera.chat](https://libera.chat).
