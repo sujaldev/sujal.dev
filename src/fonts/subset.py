@@ -8,9 +8,14 @@ SRC_DIR = Path(__file__).parent.parent.resolve()
 
 
 def remaining_blocks(input_font: Path) -> str:
-    # Calculates the Unicode ranges left after removing basic-latin and latin-supplement from a font.
-    # The reason to not use the much simpler 0x100-0x10FFFF range instead is that the output from this function can be
-    # passed to the stylesheet as a more accurate value for the unicode-ranges property.
+    """
+    Calculates the Unicode ranges left after removing Basic Latin and Latin Supplement blocks from a font.
+
+    The reason to not use the much simpler U+100-10FFFF range instead is that the output from this function can be
+    passed to the stylesheet as a more accurate value for the unicode-range property. A precise value is beneficial as
+    it will prevent unnecessary downloads due to glyphs that aren't defined in the font but are still covered by the
+    broad U+100-10FFFF range.
+    """
 
     font = TTFont(input_font)
     all_unicodes = sorted(set([
@@ -36,6 +41,8 @@ def remaining_blocks(input_font: Path) -> str:
 
         start = None
         i += 1
+
+    print("U+" + ",U+".join(ranges))
 
     return ",".join(ranges)
 
