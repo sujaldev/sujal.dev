@@ -47,9 +47,8 @@ def remaining_blocks(input_font: Path) -> str:
     return ",".join(ranges)
 
 
-unicode_blocks = {
-    "basic-latin": (0x0, 0x7F),
-    "latin-supplement": (0x80, 0xFF),
+subsets = {
+    "basic": (0x0, 0xFF),
     "extras": remaining_blocks
 }
 
@@ -63,7 +62,7 @@ def build_libertinus(input_font_dir: Path, output_font_dir: Path):
     for font in ("Sans-Regular", "Sans-Italic", "Sans-Bold", "Mono-Regular"):
         input_font = input_font_dir / f"Libertinus{font}.woff2"
 
-        for block_name, unicode_range in unicode_blocks.items():
+        for block_name, unicode_range in subsets.items():
             if callable(unicode_range):
                 unicode_range = unicode_range(input_font)
             else:
