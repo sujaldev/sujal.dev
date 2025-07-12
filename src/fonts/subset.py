@@ -51,30 +51,32 @@ def remaining_blocks(input_font: Path) -> str:
     return ",".join(ranges)
 
 
+def subset_to_woff_and_woff2(input_font: Path, output_font_name: str, unicode_range: str):
+    subset(args=[
+        str(input_font),
+        "--output-file=" + str(WOFF2_DIR / f"{output_font_name}.woff2"),
+        f"--unicodes={unicode_range}",
+        "--flavor=woff2",
+        "--layout-features=*",
+    ])
+
+    subset(args=[
+        str(input_font),
+        "--output-file=" + str(WOFF_DIR / f"{output_font_name}.woff"),
+        f"--unicodes={unicode_range}",
+        "--flavor=woff",
+        "--layout-features=*",
+    ])
+
+
 def build_libertinus(input_font_dir: Path, subsets: dict):
     for font in input_font_dir.rglob("*.woff2"):
         print(f"Subsetting {font.name}: ", end="")
 
         # TODO: Not sure if I should subset the math font, so it remains a special case for now.
         if "math" in font.name.lower():
-            subset(args=[
-                str(font),
-                "--output-file=" + str(WOFF2_DIR / font.name),
-                f"--unicodes=0000-10FFFF",
-                "--flavor=woff2",
-                "--layout-features=*",
-            ])
-
-            subset(args=[
-                str(font),
-                "--output-file=" + str(WOFF_DIR / font.with_suffix(".woff").name),
-                f"--unicodes=0000-10FFFF",
-                "--flavor=woff",
-                "--layout-features=*",
-            ])
-
+            subset_to_woff_and_woff2(font, font.stem, "0000-10FFFF")
             print()
-
             continue
 
         for block_name, unicode_range in subsets.items():
@@ -85,21 +87,7 @@ def build_libertinus(input_font_dir: Path, subsets: dict):
             else:
                 unicode_range = f"{unicode_range[0]:0>4X}-{unicode_range[1]:0>4X}"
 
-            subset(args=[
-                str(font),
-                "--output-file=" + str(WOFF2_DIR / f"{font.stem}-{block_name}.woff2"),
-                f"--unicodes={unicode_range}",
-                "--flavor=woff2",
-                "--layout-features=*",
-            ])
-
-            subset(args=[
-                str(font),
-                "--output-file=" + str(WOFF_DIR / f"{font.stem}-{block_name}.woff"),
-                f"--unicodes={unicode_range}",
-                "--flavor=woff",
-                "--layout-features=*",
-            ])
+            subset_to_woff_and_woff2(font, f"{font.stem}-{block_name}", unicode_range)
 
         print()
 
