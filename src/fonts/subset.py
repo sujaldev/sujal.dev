@@ -5,6 +5,11 @@ from fontTools.subset import main as subset
 from fontTools.ttLib import TTFont
 
 SRC_DIR = Path(__file__).parent.parent.resolve()
+INPUT_FONT_DIR = SRC_DIR / "fonts/"
+OUTPUT_FONT_DIR = SRC_DIR / "static/fonts/"
+
+WOFF_DIR = OUTPUT_FONT_DIR / "WOFF"
+WOFF2_DIR = OUTPUT_FONT_DIR / "WOFF2"
 
 
 def remaining_blocks(input_font: Path) -> str:
@@ -42,45 +47,75 @@ def remaining_blocks(input_font: Path) -> str:
         start = None
         i += 1
 
-    print("U+" + ",U+".join(ranges))
-
+    # print("U+" + ",U+".join(ranges))
     return ",".join(ranges)
 
 
-subsets = {
-    "basic": (0x0, 0xFF),
-    "extras": remaining_blocks
-}
+def build_libertinus(input_font_dir: Path, subsets: dict):
+    for font in input_font_dir.rglob("*.woff2"):
+        print(f"Subsetting {font.name}: ", end="")
 
+        # TODO: Not sure if I should subset the math font, so it remains a special case for now.
+        if "math" in font.name.lower():
+            subset(args=[
+                str(font),
+                "--output-file=" + str(WOFF2_DIR / font.name),
+                f"--unicodes=0000-10FFFF",
+                "--flavor=woff2",
+                "--layout-features=*",
+            ])
 
-def build_libertinus(input_font_dir: Path, output_font_dir: Path):
-    # Clean output directory
-    if output_font_dir.exists():
-        shutil.rmtree(output_font_dir)
-    output_font_dir.mkdir(parents=True, exist_ok=True)
+            subset(args=[
+                str(font),
+                "--output-file=" + str(WOFF_DIR / font.with_suffix(".woff").name),
+                f"--unicodes=0000-10FFFF",
+                "--flavor=woff",
+                "--layout-features=*",
+            ])
 
-    for font in ("Sans-Regular", "Sans-Italic", "Sans-Bold", "Mono-Regular"):
-        input_font = input_font_dir / f"Libertinus{font}.woff2"
+            print()
+
+            continue
 
         for block_name, unicode_range in subsets.items():
+            print(block_name, end=" ")
+
             if callable(unicode_range):
-                unicode_range = unicode_range(input_font)
+                unicode_range = unicode_range(font)
             else:
                 unicode_range = f"{unicode_range[0]:0>4X}-{unicode_range[1]:0>4X}"
 
             subset(args=[
-                str(input_font),
-                "--output-file=" + str(output_font_dir / f"{font}-{block_name}.woff2"),
+                str(font),
+                "--output-file=" + str(WOFF2_DIR / f"{font.stem}-{block_name}.woff2"),
                 f"--unicodes={unicode_range}",
                 "--flavor=woff2",
                 "--layout-features=*",
             ])
 
-            print(f"Libertinus{font}-{block_name}.woff2 generated.")
+            subset(args=[
+                str(font),
+                "--output-file=" + str(WOFF_DIR / f"{font.stem}-{block_name}.woff"),
+                f"--unicodes={unicode_range}",
+                "--flavor=woff",
+                "--layout-features=*",
+            ])
 
-    # TODO: Figure out what to do regarding the math font.
-    shutil.copyfile(input_font_dir / "LibertinusMath-Regular.woff2", output_font_dir / "Math-Regular.woff2")
+        print()
+
+
+def build():
+    # Clean output directory
+    if OUTPUT_FONT_DIR.exists():
+        shutil.rmtree(OUTPUT_FONT_DIR)
+    WOFF_DIR.mkdir(parents=True)
+    WOFF2_DIR.mkdir()
+
+    build_libertinus(INPUT_FONT_DIR / "Libertinus", {
+        "basic": (0x0, 0xFF),
+        "extras": remaining_blocks
+    })
 
 
 if __name__ == "__main__":
-    build_libertinus(SRC_DIR / "fonts/Libertinus", SRC_DIR / "static/fonts/Libertinus")
+    build()
