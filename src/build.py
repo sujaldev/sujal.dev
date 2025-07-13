@@ -1,3 +1,5 @@
+import csv
+import hashlib
 import shutil
 import tomllib
 from datetime import date
@@ -32,6 +34,27 @@ def include_raw(file_path: str) -> Markup:
 
     with open(file_path) as file:
         return Markup(file.read())
+
+
+def static_url(file_path: str) -> str:
+    """
+    Implements cache busting for static assets by appending the first 8 characters of the SHA1 hash of a file to its
+    name. It also maintains a CSV file containing:
+        name of a file, last modification time of a file, the last SHA1 hash calculated for that file
+    which serves as a cache, as recalculating the hash each build is wasteful.
+
+    This is intended to be used both inside Jinja templates and inside `build_static()`.
+
+    :param file_path: Path of the file relative to `/src/static`. File MUST reside inside the static directory.
+    :return: Path of the generated static asset relative to the build directory with the first 8 characters of the
+    SHA1 hash of that file appended to the file name. Example: "/static/foo-SHA1HASH.bar"bar.
+    """
+
+    static_path = SRC_DIR / "static"
+    file_path = static_path / file_path
+
+    if not file_path.is_relative_to(static_path):
+        raise Exception("static_url must be called only for files inside the static directory.")
 
 
 def load_config():
