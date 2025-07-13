@@ -15,6 +15,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 CONTENT_DIR = PROJECT_ROOT / "content"
 SRC_DIR = PROJECT_ROOT / "src"
 BUILD_DIR = PROJECT_ROOT / "build"
+HASH_CACHE_FILE = PROJECT_ROOT / ".cache/hashes.csv"
 
 
 def include_raw(file_path: str) -> Markup:
@@ -36,6 +37,31 @@ def include_raw(file_path: str) -> Markup:
         return Markup(file.read())
 
 
+def load_hash_cache() -> dict:
+    if not HASH_CACHE_FILE.exists():
+        return dict()
+
+    with open(HASH_CACHE_FILE) as file:
+        return {
+            row[0]: {
+                "last_mtime": row[1],
+                "last_hash": row[2]
+            } for row in csv.reader(file)
+        }
+
+
+def dump_hash_cache(cache: dict) -> None:
+    if not HASH_CACHE_FILE.parent.exists():
+        HASH_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(HASH_CACHE_FILE, "w") as file:
+        writer = csv.writer(file)
+        writer.writerows([
+            (path, data["last_mtime"], data["last_hash"])
+            for path, data in cache.items()
+        ])
+
+
 def static_url(file_path: str) -> str:
     """
     Implements cache busting for static assets by appending the first 8 characters of the SHA1 hash of a file to its
@@ -55,6 +81,22 @@ def static_url(file_path: str) -> str:
 
     if not file_path.is_relative_to(static_path):
         raise Exception("static_url must be called only for files inside the static directory.")
+
+    cached_hashes = load_hash_cache()
+
+    file_path_str = str(file_path)
+    cache_hit = (file_path_str in cached_hashes and
+                 str(file_path.stat().st_mtime) == cached_hashes[file_path_str]["last_mtime"])
+    if not cache_hit:
+        with open(file_path, "rb") as file:
+            sha1hash = hashlib.sha1(file.read(), usedforsecurity=False).hexdigest()[:8]
+
+        cached_hashes[file_path_str] = {"last_mtime": str(file_path.stat().st_mtime), "last_hash": sha1hash}
+        dump_hash_cache(cached_hashes)
+
+    sha1hash = cached_hashes[str(file_path)]["last_hash"]
+
+    return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.stem}-{sha1hash}{file_path.suffix}"
 
 
 def load_config():
