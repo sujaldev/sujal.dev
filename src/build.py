@@ -27,7 +27,7 @@ def include_raw(file_path: str) -> Markup:
     :return: Contents of the input file.
     """
     include_path = SRC_DIR / "include"
-    file_path = include_path / file_path
+    file_path = (include_path / file_path).resolve()
 
     if not file_path.is_relative_to(include_path):
         raise Exception("Reading files outside of the include directory is not allowed.")
@@ -51,7 +51,7 @@ def static_url(file_path: str) -> str:
     """
 
     static_path = SRC_DIR / "static"
-    file_path = static_path / file_path
+    file_path = (static_path / file_path).resolve()
 
     if not file_path.is_relative_to(static_path):
         raise Exception("static_url must be called only for files inside the static directory.")
