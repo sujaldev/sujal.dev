@@ -3,7 +3,7 @@
 {% for font in fonts %}
 @font-face {
     font-family: "{{ font.family }}";
-    src: {% for path, format in font.sources %}url("{{ "{{ static_url('" }}{{ path }}{{ "') }}" }}") format("{{ format }}") {% endfor %};
+    src: {% for path, format in font.sources %}{% if loop.index > 1 %}, {% endif -%} url("{{ "{{ static_url('" }}{{ path }}{{ "') }}" }}") format("{{ format }}"){% endfor %};
 {% if font.style is defined %}
     font-style: {{ font.style }};
 {% endif %}
