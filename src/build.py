@@ -16,6 +16,7 @@ CONTENT_DIR = PROJECT_ROOT / "content"
 SRC_DIR = PROJECT_ROOT / "src"
 BUILD_DIR = PROJECT_ROOT / "build"
 HASH_CACHE_FILE = PROJECT_ROOT / ".cache/hashes.csv"
+HASH_CACHE = dict()
 
 
 def include_raw(file_path: str) -> Markup:
@@ -37,12 +38,14 @@ def include_raw(file_path: str) -> Markup:
         return Markup(file.read())
 
 
-def load_hash_cache() -> dict:
+def load_hash_cache():
+    global HASH_CACHE
+
     if not HASH_CACHE_FILE.exists():
         return dict()
 
     with open(HASH_CACHE_FILE) as file:
-        return {
+        HASH_CACHE = {
             row[0]: {
                 "last_mtime": row[1],
                 "last_hash": row[2]
@@ -50,7 +53,7 @@ def load_hash_cache() -> dict:
         }
 
 
-def dump_hash_cache(cache: dict) -> None:
+def dump_hash_cache() -> None:
     if not HASH_CACHE_FILE.parent.exists():
         HASH_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -58,7 +61,7 @@ def dump_hash_cache(cache: dict) -> None:
         writer = csv.writer(file)
         writer.writerows([
             (path, data["last_mtime"], data["last_hash"])
-            for path, data in cache.items()
+            for path, data in HASH_CACHE.items()
         ])
 
 
@@ -82,19 +85,16 @@ def static_url(file_path: str) -> str:
     if not file_path.is_relative_to(static_path):
         raise Exception("static_url must be called only for files inside the static directory.")
 
-    cached_hashes = load_hash_cache()
-
     file_path_str = str(file_path)
-    cache_hit = (file_path_str in cached_hashes and
-                 str(file_path.stat().st_mtime) == cached_hashes[file_path_str]["last_mtime"])
+    cache_hit = (file_path_str in HASH_CACHE and
+                 str(file_path.stat().st_mtime) == HASH_CACHE[file_path_str]["last_mtime"])
     if not cache_hit:
         with open(file_path, "rb") as file:
             sha1hash = hashlib.sha1(file.read(), usedforsecurity=False).hexdigest()[:8]
 
-        cached_hashes[file_path_str] = {"last_mtime": str(file_path.stat().st_mtime), "last_hash": sha1hash}
-        dump_hash_cache(cached_hashes)
+        HASH_CACHE[file_path_str] = {"last_mtime": str(file_path.stat().st_mtime), "last_hash": sha1hash}
 
-    sha1hash = cached_hashes[str(file_path)]["last_hash"]
+    sha1hash = HASH_CACHE[str(file_path)]["last_hash"]
 
     return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.stem}-{sha1hash}{file_path.suffix}"
 
@@ -118,6 +118,9 @@ def make_jinja_env():
 
     env.globals.update(load_config())
     env.globals["include_raw"] = include_raw
+    load_hash_cache()
+    env.globals["HASH_CACHE"] = HASH_CACHE
+    env.globals["static_url"] = static_url
 
     return env
 
@@ -144,10 +147,6 @@ def build_static(minified=True):
             continue
 
         filetype = file.suffix.lstrip(".")
-
-        if filetype == "woff2":
-            # TODO: Implement font subsetting.
-            pass
 
         if filetype not in ("html", "css", "js", "svg"):
             continue
@@ -185,7 +184,10 @@ def build(minified=True):
     if BUILD_DIR.exists():
         # This is necessary as deleted files will be preserved from previous builds otherwise.
         shutil.rmtree(BUILD_DIR)
+
     build_static(minified)
+    dump_hash_cache()
+
     build_home(env, minified=minified)
 
     # TODO: Implement blog, projects and more pages.
