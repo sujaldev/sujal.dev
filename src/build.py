@@ -146,7 +146,7 @@ def build_static(minified=True):
 
         filetype = file.suffix.lstrip(".")
 
-        dst_path = build_dir / static_url(file.relative_to(static_dir)).removeprefix("/static/")
+        dst_path = build_dir / static_url(str(file.relative_to(static_dir))).removeprefix("/static/")
 
         if not dst_path.parent.exists():
             dst_path.parent.mkdir(parents=True, exist_ok=True)
