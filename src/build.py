@@ -66,7 +66,7 @@ def static_url(file_path: str) -> str:
     """
     Implements cache busting for static assets by appending the first 8 characters of the SHA1 hash of a file to its
     name. It also maintains a CSV file containing:
-        name of a file, last modification time of a file, the last SHA1 hash calculated for that file
+        name of the file, last modification time of that file, the last SHA1 hash calculated for that file
     which serves as a cache, as recalculating the hash each build is wasteful.
 
     This is intended to be used both inside Jinja templates and inside `build_static()`.
