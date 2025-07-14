@@ -134,30 +134,25 @@ def build_static(minified=True):
     static_dir = SRC_DIR / "static"
     build_dir = BUILD_DIR / "static"
 
-    # Copy everything as it is first, then if minification is enabled do a second pass for html, css, js and svg files.
-    # The benefit of this approach is that the correct directory structure will be created beforehand in the build
-    # directory.
-    shutil.copytree(static_dir, build_dir)
-
-    if not minified:
-        return
-
     for file in static_dir.rglob("*"):
         if file.is_dir():
             continue
 
         filetype = file.suffix.lstrip(".")
 
-        if filetype not in ("html", "css", "js", "svg"):
-            continue
+        dst_path = build_dir / static_url(file.relative_to(static_dir)).removeprefix("/static/")
 
-        dst_path = build_dir / file.relative_to(static_dir)
+        if not dst_path.parent.exists():
+            dst_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(file) as src_file:
-            code = src_file.read()
+        if filetype in ("html", "css", "js", "svg"):
+            with open(file) as src_file:
+                code = src_file.read()
 
-        with open(dst_path, "w") as dst_file:
-            dst_file.write(minify.string(mimetype_map[file.suffix], code))
+            with open(dst_path, "w") as dst_file:
+                dst_file.write(minify.string(mimetype_map[file.suffix], code))
+        else:
+            shutil.copyfile(file, dst_path)
 
 
 def build_home(jinja_env: Environment, recent_posts=None, minified=True, live=False):

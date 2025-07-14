@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}{% block title_suffix %}| {{ site.fqdn }}{% endblock %}</title>
-    <link rel="preload" href="/static/stickman.svg" as="image" type="image/svg+xml" crossorigin>
-    <link rel="preload" href="/static/fonts/Libertinus/Sans-Regular-basic-latin.woff2" as="font" type="font/woff2"
-          crossorigin>
-    <link rel="preload" href="/static/fonts/Libertinus/Sans-Italic-basic-latin.woff2" as="font" type="font/woff2"
-          crossorigin>
-    <link rel="preload" href="/static/fonts/Libertinus/Sans-Bold-basic-latin.woff2" as="font" type="font/woff2"
-          crossorigin>
+
+    <!-- Preload -->
+    <link rel="preload" href="{{ static_url("stickman.svg") }}" as="image" type="image/svg+xml" crossorigin>
+    <link rel="preload" href="{{ static_url("fonts/WOFF2/LibertinusSans-Regular-basic.woff2") }}" as="font"
+          type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ static_url("fonts/WOFF2/LibertinusSans-Bold-basic.woff2") }}" as="font"
+          type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ static_url("fonts/WOFF2/LibertinusSans-Italic-basic.woff2") }}" as="font"
+          type="font/woff2" crossorigin>
+
     <style>{% include "style.css.jinja" %}</style>
 </head>
 <body>
