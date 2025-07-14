@@ -3,7 +3,7 @@ from src.build import load_config, make_jinja_env, build_home
 from flask import Flask
 
 app = Flask(__name__)
-env = make_jinja_env()
+env = make_jinja_env(live=True)
 
 
 @app.route("/")

@@ -65,7 +65,7 @@ def dump_hash_cache() -> None:
         ])
 
 
-def static_url(file_path: str) -> str:
+def static_url(file_path: str, live=False) -> str:
     """
     Implements cache busting for static assets by appending the first 8 characters of the SHA1 hash of a file to its
     name. It also maintains a CSV file containing:
@@ -75,6 +75,7 @@ def static_url(file_path: str) -> str:
     This is intended to be used both inside Jinja templates and inside `build_static()`.
 
     :param file_path: Path of the file relative to `/src/static`. File MUST reside inside the static directory.
+    :param live: When live is True, files are being served live from the server script.
     :return: Path of the generated static asset relative to the build directory with the first 8 characters of the
     SHA1 hash of that file appended to the file name. Example: "/static/foo-SHA1HASH.bar"bar.
     """
@@ -84,6 +85,9 @@ def static_url(file_path: str) -> str:
 
     if not file_path.is_relative_to(static_path):
         raise Exception("static_url must be called only for files inside the static directory.")
+
+    if live:
+        return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.name}"
 
     file_path_str = str(file_path)
     cache_hit = (file_path_str in HASH_CACHE and
@@ -109,7 +113,7 @@ def load_config():
     return cfg
 
 
-def make_jinja_env():
+def make_jinja_env(live=False) -> Environment:
     env = Environment(
         loader=FileSystemLoader(SRC_DIR / "templates"),
         autoescape=select_autoescape(["jinja"]),
@@ -118,9 +122,11 @@ def make_jinja_env():
 
     env.globals.update(load_config())
     env.globals["include_raw"] = include_raw
-    load_hash_cache()
-    env.globals["HASH_CACHE"] = HASH_CACHE
-    env.globals["static_url"] = static_url
+
+    if not live:
+        load_hash_cache()
+        env.globals["HASH_CACHE"] = HASH_CACHE
+    env.globals["static_url"] = lambda file_path: static_url(file_path, live=live)
 
     return env
 
