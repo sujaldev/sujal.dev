@@ -144,14 +144,13 @@ def build_static(minified=True):
         if file.is_dir():
             continue
 
-        filetype = file.suffix.lstrip(".")
-
         dst_path = build_dir / static_url(str(file.relative_to(static_dir))).removeprefix("/static/")
 
         if not dst_path.parent.exists():
             dst_path.parent.mkdir(parents=True, exist_ok=True)
 
-        if filetype in ("html", "css", "js", "svg"):
+        filetype = file.suffix.lstrip(".")
+        if minified and filetype in ("html", "css", "js", "svg"):
             with open(file) as src_file:
                 code = src_file.read()
 
