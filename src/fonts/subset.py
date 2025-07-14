@@ -1,5 +1,6 @@
 import shutil
 from pathlib import Path
+from typing import List
 
 from fontTools.subset import main as subset
 from fontTools.ttLib import TTFont
@@ -12,6 +13,43 @@ WOFF_DIR = OUTPUT_FONT_DIR / "WOFF"
 WOFF2_DIR = OUTPUT_FONT_DIR / "WOFF2"
 
 
+def all_chars(input_font: Path) -> set:
+    # Returns all characters defined in a font.
+    return set(TTFont(input_font).getBestCmap())
+
+
+def group_nums(nums: List[int]) -> List[str]:
+    """
+    Groups consecutive numbers in a sorted list of integers.
+    Example: [1, 2, 3, 5, 7, 8, 9] -> ["0001-0003", "0005", "0007-0009"]
+    """
+
+    length = len(nums)
+    groups = []
+    start = None
+    i = 0
+
+    while i < length:
+        if start is None:
+            start = nums[i]
+
+        while (i + 1) < length and nums[i] + 1 == nums[i + 1]:
+            i += 1
+
+        end = nums[i]
+
+        groups.append(
+            f"{start:0>4X}"
+            if start == end else
+            f"{start:0>4X}-{end:0>4X}"
+        )
+
+        start = None
+        i += 1
+
+    return groups
+
+
 def remaining_blocks(input_font: Path) -> str:
     """
     Calculates the Unicode ranges left after removing Basic Latin and Latin Supplement blocks from a font.
@@ -21,34 +59,9 @@ def remaining_blocks(input_font: Path) -> str:
     it will prevent unnecessary downloads due to glyphs that aren't defined in the font but are still covered by the
     broad U+100-10FFFF range.
     """
-
-    font = TTFont(input_font)
-    all_unicodes = sorted(set([
-        char for char in font.getBestCmap()
-        if char not in range(0x0, 0xFF + 0x1)
-    ]))
-
-    # Group chars into ranges.
-    char_count = len(all_unicodes)
-    ranges = []
-    start = None
-    i = 0
-    while i < char_count:
-        if start is None:
-            start = all_unicodes[i]
-
-        while (i + 1) < char_count and all_unicodes[i] + 1 == all_unicodes[i + 1]:
-            i += 1
-
-        end = all_unicodes[i]
-
-        ranges.append(f"{start:0>4X}" if start == end else f"{start:0>4X}-{end:0>4X}")
-
-        start = None
-        i += 1
-
-    # print("U+" + ",U+".join(ranges))
-    return ",".join(ranges)
+    blacklist = range(0x0, 0xFF + 0x1)
+    remaining_chars = [char for char in all_chars(input_font) if char not in blacklist]
+    return ",".join(group_nums(remaining_chars))
 
 
 def subset_to_woff_and_woff2(input_font: Path, output_font_name: str, unicode_range: str):
