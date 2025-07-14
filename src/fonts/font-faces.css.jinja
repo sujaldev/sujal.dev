@@ -1,0 +1,18 @@
+{{ "{# This template is auto-generated via the `/src/fonts/subset.py` script. #}" }}
+
+{% for font in fonts %}
+@font-face {
+    font-family: "{{ font.family }}";
+    src: {% for path, format in font.sources %}url("{{ "{{ static_url('" }}{{ path }}{{ "') }}" }}") format("{{ format }}") {% endfor %};
+{% if font.style is defined %}
+    font-style: {{ font.style }};
+{% endif %}
+{% if font.weight is defined%}
+    font-weight: {{ font.weight }};
+{% endif %}
+{% if font.unicode_range is defined%}
+    unicode-range: {{ font.unicode_range }};
+{% endif %}
+}
+
+{% endfor %}
