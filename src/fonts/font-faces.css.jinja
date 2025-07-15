@@ -4,6 +4,7 @@
 @font-face {
     font-family: "{{ font.family }}";
     src: {% for path, format in font.sources %}{% if loop.index > 1 %}, {% endif -%} url("{{ "{{ static_url('" }}{{ path }}{{ "') }}" }}") format("{{ format }}"){% endfor %};
+    font-display: swap;
 {% if font.style is defined %}
     font-style: {{ font.style }};
 {% endif %}
