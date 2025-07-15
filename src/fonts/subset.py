@@ -164,17 +164,17 @@ def build_libertinus(input_font_dir: Path, subsets: dict, css_only=False):
         file.write(env.get_template("font-faces").render())
 
 
-def build():
+def build(css_only=False):
     # Clean output directory
-    if OUTPUT_FONT_DIR.exists():
+    if not css_only and OUTPUT_FONT_DIR.exists():
         shutil.rmtree(OUTPUT_FONT_DIR)
-    WOFF_DIR.mkdir(parents=True)
-    WOFF2_DIR.mkdir()
+    WOFF_DIR.mkdir(parents=True, exist_ok=True)
+    WOFF2_DIR.mkdir(exist_ok=True)
 
     build_libertinus(INPUT_FONT_DIR / "Libertinus", {
         "basic": (0x0, 0xFF),
         "extras": remaining_blocks
-    })
+    }, css_only)
 
 
 if __name__ == "__main__":
