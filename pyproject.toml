@@ -1,5 +1,5 @@
 [project]
-name = "sujaldev-site-builder"
+name = "ssg"
 version = "0.1.0"
 description = "Static site generator for sujal.dev"
 readme = "README.md"
@@ -11,3 +11,13 @@ dependencies = [
     "mistletoe>=1.4.0",
     "tdewolff-minify>=2.20.37",
 ]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+ssg = "src.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["src"]
