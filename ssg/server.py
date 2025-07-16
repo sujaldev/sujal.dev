@@ -1,4 +1,4 @@
-from src.build import load_config, make_jinja_env, build_home
+from ssg.build import load_config, make_jinja_env, build_home
 
 from flask import Flask
 

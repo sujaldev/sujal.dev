@@ -47,13 +47,13 @@ def main(argv=None):
 
     match args.command:
         case "build":
-            from src.build import build
+            from ssg.build import build
             build(args.minify)
         case "live":
-            from src.server import run as live
+            from ssg.server import run as live
             live(args.address, args.port, args.minify)
         case "subset-fonts":
-            from src.fonts.subset import build as subset_fonts
+            from ssg.fonts.subset import build as subset_fonts
             subset_fonts(args.css_only)
 
 

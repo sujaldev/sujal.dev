@@ -13,7 +13,7 @@ from markupsafe import Markup
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 CONTENT_DIR = PROJECT_ROOT / "content"
-SRC_DIR = PROJECT_ROOT / "src"
+SRC_DIR = PROJECT_ROOT / "ssg"
 BUILD_DIR = PROJECT_ROOT / "build"
 HASH_CACHE_FILE = PROJECT_ROOT / ".cache/hashes.csv"
 HASH_CACHE = dict()
