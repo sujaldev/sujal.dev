@@ -2,6 +2,16 @@
 
 This repository contains the source code for [sujal.dev](https://sujal.dev) and the content published there.
 
+## Usage
+
+See `ssg --help` for full help, here are some common examples:
+
+```bash
+ssg build -m      # Full build with minification enabled.
+ssg live          # Start a live server, build files on request.
+ssg subset-fonts  # Generate font subsets and associated stylesheets.
+```
+
 ## License
 
 Unless explicitly stated otherwise, all files under the `/content` directory are licensed under the
