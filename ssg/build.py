@@ -179,6 +179,10 @@ def build_home(jinja_env: Environment, recent_posts=None, minified=True, live=Fa
     return None
 
 
+def build_blog(jinja_env: Environment, minified=True, live=False):
+    pass
+
+
 def build(minified=True):
     env = make_jinja_env()
     if BUILD_DIR.exists():
