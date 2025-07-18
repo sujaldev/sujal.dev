@@ -217,17 +217,25 @@ requires-dist = [
     { name = "fonttools", extras = ["woff"], specifier = ">=4.58.5" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "mistletoe", specifier = ">=1.4.0" },
-    { name = "tdewolff-minify", specifier = ">=2.20.37" },
+    { name = "tdewolff-minify", specifier = ">=2.23.9" },
 ]
 
 [[package]]
 name = "tdewolff-minify"
-version = "2.20.37"
+version = "2.23.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cffi" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/49/71/dbcad54e4136d01b1ad9366adafcd7b7efcad915590d751ff742ec2da780/tdewolff_minify-2.20.37.tar.gz", hash = "sha256:1a67a30e0f8bd65b537eb36c41820c5c0335f9825f7a4505c2b2666a85edd93e", size = 3121645, upload-time = "2024-07-10T11:11:47.761Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/ad/4c9c6570a297152734a508bcd4d1f1159e6e72ed0b6e1180c68a910277c6/tdewolff_minify-2.23.9.tar.gz", hash = "sha256:08df07f09e6801fc1b0135a72e419184f4e08e9f2e1f7ca2f97a2e0a1e7045e9", size = 3708117, upload-time = "2025-07-18T09:37:50.732Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/de/f2/a810835ba1201a498d2233b79b27b46b71a1c4dd99d0674c4b9a733896d8/tdewolff_minify-2.23.9-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:67024418aa8b9dc85373bd9c90f6e20020dfe3a3294d7e8418ea0c0a586a8498", size = 2055462, upload-time = "2025-07-18T09:37:26.776Z" },
+    { url = "https://files.pythonhosted.org/packages/df/5f/9f6dd6140e5e692f166450864ce18a79cc7a4fa2cd6bf3a4f5f8d3218987/tdewolff_minify-2.23.9-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:51535ce8b6004f4b67085e642635d62689f110445fc0f8c6e79f3b74e7397aad", size = 3897115, upload-time = "2025-07-18T09:37:27.894Z" },
+    { url = "https://files.pythonhosted.org/packages/b7/f1/f643e40675ece7ba449de7f5cdfe2d03333b7732f104d2d122e10ad34af6/tdewolff_minify-2.23.9-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:260a704d0ffd330435335fdb8430dc331b1f47071051c5a146d0c4206cf392ed", size = 3616115, upload-time = "2025-07-18T09:37:29.061Z" },
+    { url = "https://files.pythonhosted.org/packages/0d/9e/97e10514edf69639c1bc10e9fbdd6c5769feb1680ef5ef46f5632e101864/tdewolff_minify-2.23.9-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:60c261e47e171e3269a8a649f0e60b9584b039c26da29b7a5359a8b4e199b445", size = 3432806, upload-time = "2025-07-18T09:37:30.289Z" },
+    { url = "https://files.pythonhosted.org/packages/0b/b5/473abfb5f6cde72afccf65a292a86e5e9f67cef6452092d3d9233ed38fb2/tdewolff_minify-2.23.9-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:1fd76e537ca32fa4558dc1c0996b39b574519e3d12b142975f3b5df5b93f1006", size = 3708343, upload-time = "2025-07-18T09:37:31.988Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/9b/33efba2ee2bcdefdcef2f8f7884755c6f80dbd6b29ea8bed226fffa5f0e0/tdewolff_minify-2.23.9-cp313-cp313-win_amd64.whl", hash = "sha256:95037e26dee7f41d2382414ae46413eb934d0f258b72fb6c0138228e4b22781b", size = 3683661, upload-time = "2025-07-18T09:37:33.769Z" },
+]
 
 [[package]]
 name = "werkzeug"
