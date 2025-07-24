@@ -1,3 +1,5 @@
+import functools
+
 from ssg.build import *
 
 from flask import Flask
@@ -8,13 +10,23 @@ app = Flask(__name__)
 env = make_jinja_env(live=True)
 
 
+def live_config(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        env.globals.update(load_config())
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 @app.route("/")
+@live_config
 def home():
-    env.globals.update(load_config())
     return build_home(env, minified=MINIFIED, live=True)
 
 
 @app.route("/blog")
+@live_config
 def blog():
     return build_blog(env, minified=MINIFIED, live=True)
 
