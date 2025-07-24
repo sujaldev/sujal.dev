@@ -6,6 +6,8 @@ from datetime import date
 from mimetypes import types_map as mimetype_map
 from pathlib import Path
 
+from ssg.constants import *
+
 import minify
 import mistletoe
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -15,11 +17,6 @@ __all__ = [
     "load_config", "make_jinja_env", "build_home", "build_blog",
 ]
 
-PROJECT_ROOT = Path(__file__).parent.parent.resolve()
-CONTENT_DIR = PROJECT_ROOT / "content"
-SRC_DIR = PROJECT_ROOT / "ssg"
-BUILD_DIR = PROJECT_ROOT / "build"
-HASH_CACHE_FILE = PROJECT_ROOT / ".cache/hashes.csv"
 HASH_CACHE = dict()
 
 

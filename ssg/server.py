@@ -1,6 +1,7 @@
 import functools
 
 from ssg.build import *
+from ssg.constants import *
 
 from flask import Flask
 

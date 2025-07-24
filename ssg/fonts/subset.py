@@ -3,11 +3,12 @@ from copy import deepcopy
 from pathlib import Path
 from typing import List
 
+from ssg.constants import *
+
 from fontTools.subset import main as subset
 from fontTools.ttLib import TTFont
 from jinja2 import Environment, DictLoader
 
-SRC_DIR = Path(__file__).parent.parent.resolve()
 INPUT_FONT_DIR = SRC_DIR / "fonts/"
 OUTPUT_FONT_DIR = SRC_DIR / "static/fonts/"
 
