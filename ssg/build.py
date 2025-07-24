@@ -11,6 +11,10 @@ import mistletoe
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
+__all__ = [
+    "load_config", "make_jinja_env", "build_home", "build_blog",
+]
+
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 CONTENT_DIR = PROJECT_ROOT / "content"
 SRC_DIR = PROJECT_ROOT / "ssg"
@@ -179,27 +183,39 @@ def build_home(jinja_env: Environment, recent_posts=None, minified=True, live=Fa
     return None
 
 
+def build_blog(jinja_env: Environment, minified=True, live=False):
+    html = jinja_env.get_template("blog.jinja").render()
+
+    if minified:
+        html = minify.string(mimetype_map[".html"], html)
+
+    if live:
+        return html
+
+    filepath = BUILD_DIR / "blog/index.html"
+    filepath.parent.mkdir(parents=True)
+
+    with open(filepath, "w") as file:
+        file.write(html)
+
+
 def build(minified=True):
     env = make_jinja_env()
     if BUILD_DIR.exists():
         # This is necessary as deleted files will be preserved from previous builds otherwise.
         shutil.rmtree(BUILD_DIR)
 
+    kwargs = {
+        "jinja_env": env,
+        "minified": minified,
+    }
+
     build_static(minified)
     dump_hash_cache()
 
-    build_home(env, minified=minified)
+    build_blog(**kwargs)
 
-    # TODO: Implement blog, projects and more pages.
-    for page_name in ("blog", "projects", "more"):
-        build_path = BUILD_DIR / f"{page_name}/index.html"
-        build_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(build_path, "w") as file:
-            file.write(env.get_template("base.jinja").render(
-                selected_tab=page_name,
-                content='<main><article><p class="placeholder-text">As I said, this is still a work in '
-                        'progress.</p></article><aside></aside></main>'
-            ))
+    build_home(**kwargs)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-from ssg.build import load_config, make_jinja_env, build_home
+from ssg.build import *
 
 from flask import Flask
 
@@ -12,6 +12,11 @@ env = make_jinja_env(live=True)
 def home():
     env.globals.update(load_config())
     return build_home(env, minified=MINIFIED, live=True)
+
+
+@app.route("/blog")
+def blog():
+    return build_blog(env, minified=MINIFIED, live=True)
 
 
 def run(host="0.0.0.0", port=5000, minify=False):
