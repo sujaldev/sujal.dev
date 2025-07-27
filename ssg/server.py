@@ -1,11 +1,12 @@
 import asyncio
 import functools
-import textwrap
+from mimetypes import types_map as mimetype_map
 
 import ssg.build as build
 import ssg.constants as consts
 
-from quart import Quart, websocket
+import minify
+from quart import Quart, Response, websocket
 from watchfiles import awatch
 
 MINIFIED = False
@@ -26,12 +27,10 @@ async def reload_on_changes():
 def inject_js_reloader(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
-        script = textwrap.dedent("""
-        <script>
-        let ws = new WebSocket("/ws");
-        ws.onmessage = () => {window.location.reload()};
-        </script>
-        """).replace("\n", "")
+        with (open(consts.SRC_DIR / "reload.js") as reload_script):
+            script = "<script>" + \
+                     minify.string(mimetype_map['.js'], reload_script.read()) + \
+                     "</script>"
 
         html: str = await func(*args, **kwargs)
 
@@ -57,6 +56,11 @@ async def home():
 @inject_js_reloader
 async def blog():
     return build.build_blog(env, minified=MINIFIED, live=True)
+
+
+@app.route("/ws")
+async def ws_healthcheck():
+    return Response(status=200)
 
 
 @app.websocket("/ws")
