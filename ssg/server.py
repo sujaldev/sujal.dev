@@ -1,4 +1,3 @@
-import asyncio
 import functools
 from mimetypes import types_map as mimetype_map
 
@@ -11,6 +10,11 @@ from watchfiles import awatch
 
 app = Quart(__name__)
 builder = build.Builder(live=True)
+
+with open(consts.SRC_DIR / "reload.js") as file:
+    RELOAD_SCRIPT = "<script>" + \
+                    minify.string(mimetype_map['.js'], file.read()) + \
+                    "</script>"
 
 
 async def reload_on_changes():
@@ -25,20 +29,8 @@ async def reload_on_changes():
 def inject_js_reloader(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
-        with (open(consts.SRC_DIR / "reload.js") as reload_script):
-            script = "<script>" + \
-                     minify.string(mimetype_map['.js'], reload_script.read()) + \
-                     "</script>"
-
         html: str = await func(*args, **kwargs)
-
-        if "</body>" in html:
-            html = html.replace("</body>", script + "</body>")
-        elif "</html>" in html:
-            html = html.replace("</html>", script + "</html>")
-        else:
-            html = html + script
-
+        html += RELOAD_SCRIPT
         return html
 
     return wrapper
@@ -64,7 +56,7 @@ async def ws_healthcheck():
 @app.websocket("/ws")
 async def ws():
     await websocket.accept()
-    await asyncio.create_task(reload_on_changes())
+    await reload_on_changes()
 
 
 def run(host="0.0.0.0", port=5000, minified=False):

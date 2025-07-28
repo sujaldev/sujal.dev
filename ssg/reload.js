@@ -5,8 +5,8 @@ ws.onmessage = () => {
 };
 
 ws.onclose = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
     while (true) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
         try {
             const res = await fetch("/ws");
             if (res.ok) break;

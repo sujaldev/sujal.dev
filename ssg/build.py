@@ -46,6 +46,7 @@ class Builder:
     def load_hash_cache(self):
         if not HASH_CACHE_FILE.exists():
             self.hash_cache = {}
+            return
 
         with open(HASH_CACHE_FILE) as file:
             self.hash_cache = {
@@ -77,7 +78,7 @@ class Builder:
 
         :param file_path: Path of the file relative to `/src/static`. File MUST reside inside the static directory.
         :return: Path of the generated static asset relative to the build directory with the first 8 characters of the
-        SHA1 hash of that file appended to the file name. Example: "/static/foo-SHA1HASH.bar"bar.
+        SHA1 hash of that file appended to the file name. Example: "/static/foo-SHA1HASH.bar".
         """
 
         static_path = SRC_DIR / "static"
@@ -145,8 +146,7 @@ class Builder:
 
             dst_path = build_dir / self.static_url(str(file.relative_to(static_dir))).removeprefix("/static/")
 
-            if not dst_path.parent.exists():
-                dst_path.parent.mkdir(parents=True, exist_ok=True)
+            dst_path.parent.mkdir(parents=True, exist_ok=True)
 
             filetype = file.suffix.lstrip(".")
             if self.minified and filetype in ("html", "css", "js", "svg"):
