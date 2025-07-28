@@ -47,8 +47,8 @@ def main(argv=None):
 
     match args.command:
         case "build":
-            from ssg.build import build
-            build(args.minify)
+            from ssg.build import Builder
+            Builder(args.minify).build()
         case "live":
             from ssg.server import run as live
             live(args.address, args.port, args.minify)

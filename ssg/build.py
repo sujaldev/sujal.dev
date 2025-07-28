@@ -13,12 +13,6 @@ import mistletoe
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
-__all__ = [
-    "load_config", "make_jinja_env", "build_home", "build_blog",
-]
-
-HASH_CACHE = dict()
-
 
 def include_raw(file_path: str) -> Markup:
     """
@@ -39,181 +33,173 @@ def include_raw(file_path: str) -> Markup:
         return Markup(file.read())
 
 
-def load_hash_cache():
-    global HASH_CACHE
+class Builder:
+    def __init__(self, minified=True, live=False):
+        self.minified = minified
+        self.live = live
 
-    if not HASH_CACHE_FILE.exists():
-        return dict()
+        self.env = self.make_jinja_env()
 
-    with open(HASH_CACHE_FILE) as file:
-        HASH_CACHE = {
-            row[0]: {
-                "last_mtime": row[1],
-                "last_hash": row[2]
-            } for row in csv.reader(file)
-        }
+        self.hash_cache: dict = {}
+        self.load_hash_cache()
 
+    def load_hash_cache(self):
+        if not HASH_CACHE_FILE.exists():
+            self.hash_cache = {}
 
-def dump_hash_cache() -> None:
-    if not HASH_CACHE_FILE.parent.exists():
-        HASH_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(HASH_CACHE_FILE) as file:
+            self.hash_cache = {
+                row[0]: {
+                    "last_mtime": row[1],
+                    "last_hash": row[2]
+                } for row in csv.reader(file)
+            }
 
-    with open(HASH_CACHE_FILE, "w") as file:
-        writer = csv.writer(file)
-        writer.writerows([
-            (path, data["last_mtime"], data["last_hash"])
-            for path, data in HASH_CACHE.items()
-        ])
+    def dump_hash_cache(self) -> None:
+        if not HASH_CACHE_FILE.parent.exists():
+            HASH_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
 
+        with open(HASH_CACHE_FILE, "w") as file:
+            writer = csv.writer(file)
+            writer.writerows([
+                (path, data["last_mtime"], data["last_hash"])
+                for path, data in self.hash_cache.items()
+            ])
 
-def static_url(file_path: str, live=False) -> str:
-    """
-    Implements cache busting for static assets by appending the first 8 characters of the SHA1 hash of a file to its
-    name. It also maintains a CSV file containing:
-        name of the file, last modification time of that file, the last SHA1 hash calculated for that file
-    which serves as a cache, as recalculating the hash each build is wasteful.
+    def static_url(self, file_path: str) -> str:
+        """
+        Implements cache busting for static assets by appending the first 8 characters of the SHA1 hash of a file to its
+        name. It also maintains a CSV file containing:
+            name of the file, last modification time of that file, the last SHA1 hash calculated for that file
+        which serves as a cache, as recalculating the hash each build is wasteful.
 
-    This is intended to be used both inside Jinja templates and inside `build_static()`.
+        This is intended to be used both inside Jinja templates and inside `build_static()`.
 
-    :param file_path: Path of the file relative to `/src/static`. File MUST reside inside the static directory.
-    :param live: When live is True, files are being served live from the server script.
-    :return: Path of the generated static asset relative to the build directory with the first 8 characters of the
-    SHA1 hash of that file appended to the file name. Example: "/static/foo-SHA1HASH.bar"bar.
-    """
+        :param file_path: Path of the file relative to `/src/static`. File MUST reside inside the static directory.
+        :return: Path of the generated static asset relative to the build directory with the first 8 characters of the
+        SHA1 hash of that file appended to the file name. Example: "/static/foo-SHA1HASH.bar"bar.
+        """
 
-    static_path = SRC_DIR / "static"
-    file_path = (static_path / file_path).resolve()
+        static_path = SRC_DIR / "static"
+        file_path = (static_path / file_path).resolve()
 
-    if not file_path.is_relative_to(static_path):
-        raise Exception("static_url must be called only for files inside the static directory.")
+        if not file_path.is_relative_to(static_path):
+            raise Exception("static_url must be called only for files inside the static directory.")
 
-    if live:
-        return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.name}"
+        if self.live:
+            return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.name}"
 
-    file_path_str = str(file_path)
-    cache_hit = (file_path_str in HASH_CACHE and
-                 str(file_path.stat().st_mtime) == HASH_CACHE[file_path_str]["last_mtime"])
-    if not cache_hit:
-        with open(file_path, "rb") as file:
-            sha1hash = hashlib.sha1(file.read(), usedforsecurity=False).hexdigest()[:8]
+        file_path_str = str(file_path)
+        cache_hit = (file_path_str in self.hash_cache and
+                     str(file_path.stat().st_mtime) == self.hash_cache[file_path_str]["last_mtime"])
+        if not cache_hit:
+            with open(file_path, "rb") as file:
+                sha1hash = hashlib.sha1(file.read(), usedforsecurity=False).hexdigest()[:8]
 
-        HASH_CACHE[file_path_str] = {"last_mtime": str(file_path.stat().st_mtime), "last_hash": sha1hash}
+            self.hash_cache[file_path_str] = {"last_mtime": str(file_path.stat().st_mtime), "last_hash": sha1hash}
 
-    sha1hash = HASH_CACHE[str(file_path)]["last_hash"]
+        sha1hash = self.hash_cache[str(file_path)]["last_hash"]
 
-    return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.stem}-{sha1hash}{file_path.suffix}"
+        return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.stem}-{sha1hash}{file_path.suffix}"
 
+    @staticmethod
+    def read_config() -> dict:
+        with open(CONTENT_DIR / "config.toml", "rb") as file:
+            cfg = tomllib.load(file)
 
-def load_config():
-    with open(CONTENT_DIR / "config.toml", "rb") as file:
-        cfg = tomllib.load(file)
+        if cfg["license"]["start"] != str(current_year := date.today().year):
+            cfg["license"]["start"] += f"-{current_year}"
 
-    if cfg["license"]["start"] != str(current_year := date.today().year):
-        cfg["license"]["start"] += f"-{current_year}"
+        return cfg
 
-    return cfg
+    def load_config(self):
+        # This is meant to be called by the live server on changes to config.toml
+        self.env.globals.update(self.read_config())
 
+    def make_jinja_env(self) -> Environment:
+        env = Environment(
+            loader=FileSystemLoader(SRC_DIR / "templates"),
+            autoescape=select_autoescape(["jinja"]),
+            trim_blocks=True,
+        )
 
-def make_jinja_env(live=False) -> Environment:
-    env = Environment(
-        loader=FileSystemLoader(SRC_DIR / "templates"),
-        autoescape=select_autoescape(["jinja"]),
-        trim_blocks=True,
-    )
+        env.globals.update(self.read_config())
 
-    env.globals.update(load_config())
-    env.globals["include_raw"] = include_raw
+        env.globals["include_raw"] = include_raw
+        env.globals["static_url"] = self.static_url
 
-    if not live:
-        load_hash_cache()
-        env.globals["HASH_CACHE"] = HASH_CACHE
-    env.globals["static_url"] = lambda file_path: static_url(file_path, live=live)
+        return env
 
-    return env
+    @staticmethod
+    def render_markdown(file_path: str | Path) -> str:
+        with open(file_path) as file:
+            return mistletoe.markdown(file)
 
+    def build_static(self):
+        static_dir = SRC_DIR / "static"
+        build_dir = BUILD_DIR / "static"
 
-def render_markdown(file_path: str | Path) -> str:
-    with open(file_path) as file:
-        return mistletoe.markdown(file)
+        for file in static_dir.rglob("*"):
+            if file.is_dir():
+                continue
 
+            dst_path = build_dir / self.static_url(str(file.relative_to(static_dir))).removeprefix("/static/")
 
-def build_static(minified=True):
-    static_dir = SRC_DIR / "static"
-    build_dir = BUILD_DIR / "static"
+            if not dst_path.parent.exists():
+                dst_path.parent.mkdir(parents=True, exist_ok=True)
 
-    for file in static_dir.rglob("*"):
-        if file.is_dir():
-            continue
+            filetype = file.suffix.lstrip(".")
+            if self.minified and filetype in ("html", "css", "js", "svg"):
+                with open(file) as src_file:
+                    code = src_file.read()
 
-        dst_path = build_dir / static_url(str(file.relative_to(static_dir))).removeprefix("/static/")
+                with open(dst_path, "w") as dst_file:
+                    dst_file.write(minify.string(mimetype_map[file.suffix], code))
+            else:
+                shutil.copyfile(file, dst_path)
 
-        if not dst_path.parent.exists():
-            dst_path.parent.mkdir(parents=True, exist_ok=True)
+    def build_home(self, recent_posts=None):
+        content = None
+        content_filepath = CONTENT_DIR / "home.md"
+        if content_filepath.exists():
+            content = self.render_markdown(content_filepath)
 
-        filetype = file.suffix.lstrip(".")
-        if minified and filetype in ("html", "css", "js", "svg"):
-            with open(file) as src_file:
-                code = src_file.read()
+        html = self.env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
 
-            with open(dst_path, "w") as dst_file:
-                dst_file.write(minify.string(mimetype_map[file.suffix], code))
-        else:
-            shutil.copyfile(file, dst_path)
+        if self.minified:
+            html = minify.string(mimetype_map[".html"], html)
 
+        if self.live:
+            return html
 
-def build_home(jinja_env: Environment, recent_posts=None, minified=True, live=False):
-    content = None
-    content_filepath = CONTENT_DIR / "home.md"
-    if content_filepath.exists():
-        content = render_markdown(content_filepath)
+        with open(BUILD_DIR / "index.html", "w") as file:
+            file.write(html)
 
-    html = jinja_env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
+    def build_blog(self):
+        html = self.env.get_template("blog.jinja").render()
 
-    if minified:
-        html = minify.string(mimetype_map[".html"], html)
+        if self.minified:
+            html = minify.string(mimetype_map[".html"], html)
 
-    if live:
-        return html
+        if self.live:
+            return html
 
-    with open(BUILD_DIR / "index.html", "w") as file:
-        file.write(html)
-    return None
+        filepath = BUILD_DIR / "blog/index.html"
+        filepath.parent.mkdir(parents=True)
 
+        with open(filepath, "w") as file:
+            file.write(html)
 
-def build_blog(jinja_env: Environment, minified=True, live=False):
-    html = jinja_env.get_template("blog.jinja").render()
+    def build(self):
+        if BUILD_DIR.exists():
+            # This is necessary as deleted files will be preserved from previous builds otherwise.
+            shutil.rmtree(BUILD_DIR)
 
-    if minified:
-        html = minify.string(mimetype_map[".html"], html)
-
-    if live:
-        return html
-
-    filepath = BUILD_DIR / "blog/index.html"
-    filepath.parent.mkdir(parents=True)
-
-    with open(filepath, "w") as file:
-        file.write(html)
-
-
-def build(minified=True):
-    env = make_jinja_env()
-    if BUILD_DIR.exists():
-        # This is necessary as deleted files will be preserved from previous builds otherwise.
-        shutil.rmtree(BUILD_DIR)
-
-    kwargs = {
-        "jinja_env": env,
-        "minified": minified,
-    }
-
-    build_static(minified)
-    dump_hash_cache()
-
-    build_blog(**kwargs)
-
-    build_home(**kwargs)
+        self.build_static()
+        self.dump_hash_cache()
+        self.build_blog()
+        self.build_home()
 
 
 if __name__ == "__main__":
-    build()
+    Builder().build()
