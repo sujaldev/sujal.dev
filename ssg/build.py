@@ -1,10 +1,12 @@
 import csv
+import functools
 import hashlib
 import shutil
 import tomllib
 from datetime import date
 from mimetypes import types_map as mimetype_map
 from pathlib import Path
+from typing import Tuple
 
 from ssg.constants import *
 
@@ -158,37 +160,42 @@ class Builder:
             else:
                 shutil.copyfile(file, dst_path)
 
-    def build_home(self, recent_posts=None):
+    @staticmethod
+    def handle_html_output(func):
+        @functools.wraps(func)
+        def wrapper(self, *args, **kwargs):
+            file_path, html = func(self, *args, **kwargs)
+
+            if self.minified:
+                html = minify.string(mimetype_map[".html"], html)
+
+            if not self.live:
+                file_path.parent.mkdir(parents=True, exist_ok=True)
+                with open(file_path, "w") as file:
+                    file.write(html)
+
+            return html
+
+        return wrapper
+
+    @handle_html_output
+    def build_home(self, recent_posts=None) -> Tuple[str | Path, str]:
         content = None
         content_filepath = CONTENT_DIR / "home.md"
         if content_filepath.exists():
             content = self.render_markdown(content_filepath)
 
-        html = self.env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
+        return (
+            BUILD_DIR / "index.html",
+            self.env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
+        )
 
-        if self.minified:
-            html = minify.string(mimetype_map[".html"], html)
-
-        if self.live:
-            return html
-
-        with open(BUILD_DIR / "index.html", "w") as file:
-            file.write(html)
-
-    def build_blog(self):
-        html = self.env.get_template("blog.jinja").render()
-
-        if self.minified:
-            html = minify.string(mimetype_map[".html"], html)
-
-        if self.live:
-            return html
-
-        filepath = BUILD_DIR / "blog/index.html"
-        filepath.parent.mkdir(parents=True)
-
-        with open(filepath, "w") as file:
-            file.write(html)
+    @handle_html_output
+    def build_blog(self) -> Tuple[str | Path, str]:
+        return (
+            BUILD_DIR / "blog/index.html",
+            self.env.get_template("blog.jinja").render()
+        )
 
     def build(self):
         if BUILD_DIR.exists():
