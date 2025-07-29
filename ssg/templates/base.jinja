@@ -48,9 +48,11 @@
             </span>
         </nav>
     </header>
-    {% block content %}
-        {{ content | safe }}
-    {% endblock %}
+    <main>
+        {% block content %}
+            {{ content | safe }}
+        {% endblock %}
+    </main>
     <footer>
         <p>
             © {{ license.start }} {{ author.name }}. This work is licensed under
