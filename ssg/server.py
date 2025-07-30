@@ -39,13 +39,13 @@ def inject_js_reloader(func):
 @app.route("/")
 @inject_js_reloader
 async def home():
-    return builder.build_home()
+    return builder.build_home(builder.load_posts(5))
 
 
 @app.route("/blog")
 @inject_js_reloader
 async def blog():
-    return builder.build_blog()
+    return builder.build_blog_index(builder.load_posts())
 
 
 @app.route("/ws")

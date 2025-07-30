@@ -6,10 +6,11 @@ import tomllib
 from datetime import date
 from mimetypes import types_map as mimetype_map
 from pathlib import Path
-from typing import Tuple
+from typing import Dict, Iterable, List, Tuple
 
 from ssg.constants import *
 
+import frontmatter
 import minify
 import mistletoe
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -134,9 +135,50 @@ class Builder:
         return env
 
     @staticmethod
-    def render_markdown(file_path: str | Path) -> str:
-        with open(file_path) as file:
-            return mistletoe.markdown(file)
+    def render_markdown(content: str) -> str:
+        return mistletoe.markdown(content)
+
+    @staticmethod
+    def handle_html_output(func):
+        @functools.wraps(func)
+        def wrapper(self, *args, **kwargs):
+            file_path, html = func(self, *args, **kwargs)
+
+            if self.minified:
+                html = minify.string(mimetype_map[".html"], html)
+
+            if not self.live:
+                file_path.parent.mkdir(parents=True, exist_ok=True)
+                with open(file_path, "w") as file:
+                    file.write(html)
+
+            return html
+
+        return wrapper
+
+    @staticmethod
+    def load_posts(stop: int = None) -> List[Dict]:
+        files = sorted((CONTENT_DIR / "posts").rglob("*.md"), reverse=True)[:stop]
+        posts = []
+
+        for file_path in files:
+            with open(file_path) as file:
+                post = frontmatter.load(file)
+
+            if "slug" not in post:
+                post["slug"] = "-".join(file_path.stem.split("-")[1:])
+
+            posts.append({
+                "url": f"/post/{post['slug']}",
+                "text": post["title"],
+                "obj": post,
+            })
+
+        return posts
+
+    # **************************************************************************************************************** #
+    #                                                   Build Steps                                                    #
+    # **************************************************************************************************************** #
 
     def build_static(self):
         static_dir = SRC_DIR / "static"
@@ -160,30 +202,13 @@ class Builder:
             else:
                 shutil.copyfile(file, dst_path)
 
-    @staticmethod
-    def handle_html_output(func):
-        @functools.wraps(func)
-        def wrapper(self, *args, **kwargs):
-            file_path, html = func(self, *args, **kwargs)
-
-            if self.minified:
-                html = minify.string(mimetype_map[".html"], html)
-
-            if not self.live:
-                file_path.parent.mkdir(parents=True, exist_ok=True)
-                with open(file_path, "w") as file:
-                    file.write(html)
-
-            return html
-
-        return wrapper
-
     @handle_html_output
-    def build_home(self, recent_posts=None) -> Tuple[str | Path, str]:
+    def build_home(self, recent_posts: Iterable[Dict] = None) -> Tuple[str | Path, str]:
         content = None
         content_filepath = CONTENT_DIR / "home.md"
         if content_filepath.exists():
-            content = self.render_markdown(content_filepath)
+            with open(content_filepath) as file:
+                content = self.render_markdown(file.read())
 
         return (
             BUILD_DIR / "index.html",
@@ -191,10 +216,32 @@ class Builder:
         )
 
     @handle_html_output
-    def build_blog(self) -> Tuple[str | Path, str]:
+    def build_blog_index(self, posts: Iterable[Dict]) -> Tuple[str | Path, str]:
         return (
             BUILD_DIR / "blog/index.html",
-            self.env.get_template("blog.jinja").render()
+            self.env.get_template("blog.jinja").render(posts=posts)
+        )
+
+    @handle_html_output
+    def build_blog_post(self, post) -> Tuple[str | Path, str]:
+        required_keys = ("title", "timestamp")
+        for key in required_keys:
+            if key == "timestamp" and post.get("draft", False):
+                continue
+
+            if key not in post:
+                raise Exception(f"Missing '{key}' key: {post['slug']}")
+
+        post["author"] = post.get("author", self.env.globals["author"]["name"])
+
+        html = self.env.get_template("post.jinja").render(
+            post=post,
+            content=self.render_markdown(post.content)
+        )
+
+        return (
+            BUILD_DIR / f"post/{post['slug']}/index.html",
+            html
         )
 
     def build(self):
@@ -204,8 +251,13 @@ class Builder:
 
         self.build_static()
         self.dump_hash_cache()
-        self.build_blog()
-        self.build_home()
+
+        posts = self.load_posts()
+        self.build_home(posts[:5])
+        self.build_blog_index(posts)
+
+        for post in posts:
+            self.build_blog_post(post["obj"])
 
 
 if __name__ == "__main__":
