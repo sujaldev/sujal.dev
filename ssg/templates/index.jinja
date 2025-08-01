@@ -12,11 +12,12 @@
 {% block right %}
     <h2>Recent Posts</h2>
     {% if recent_posts %}
-        <ul>
-            {% for post in recent_posts %}
-                <li><a href="{{ post.url }}">{{ post.text }}</a></li>
-            {% endfor %}
-        </ul>
+        {% for post in recent_posts %}
+            {% if not loop.first %}
+                <hr style="border: 1px dashed #ccc; margin: 0.5em 0;">
+            {% endif %}
+            <p><a href="{{ post.url }}">{{ post.text }}</a></p>
+        {% endfor %}
     {% else %}
         <p class="placeholder-text">There are no posts yet.</p>
     {% endif %}
