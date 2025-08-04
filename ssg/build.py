@@ -224,9 +224,9 @@ class Builder:
 
     @handle_html_output
     def build_blog_post(self, post) -> Tuple[str | Path, str]:
-        required_keys = ("title", "timestamp")
+        required_keys = ("title", "date")
         for key in required_keys:
-            if key == "timestamp" and post.get("draft", False):
+            if key == "date" and post.get("draft", False):
                 continue
 
             if key not in post:
