@@ -4,6 +4,7 @@ from mimetypes import types_map as mimetype_map
 import ssg.build as build
 import ssg.constants as consts
 
+import frontmatter
 import minify
 from quart import Quart, Response, websocket
 from watchfiles import awatch
@@ -46,6 +47,18 @@ async def home():
 @inject_js_reloader
 async def blog():
     return builder.build_blog_index(builder.load_posts())
+
+
+@app.route("/post/<slug>")
+@inject_js_reloader
+async def blog_post(slug):
+    # This assumes unique slugs but that is not enforced yet, (unlikely) problem for future me.
+    file_path = tuple((consts.CONTENT_DIR / "posts/").rglob(f"*-{slug}.md"))[0]
+    with open(file_path) as post:
+        post = frontmatter.load(post)
+        post["slug"] = post.get("slug", slug)
+
+    return builder.build_blog_post(post)
 
 
 @app.route("/ws")
