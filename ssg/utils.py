@@ -64,6 +64,7 @@ def create_post():
     new_post_number = f"{new_post_number:0>2}"
 
     new_post_path = CONTENT_DIR / f"posts/{new_post_number}-{override_slug or slug}.md"
+    new_post_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(new_post_path, "w") as file:
         file.write(frontmatter)
