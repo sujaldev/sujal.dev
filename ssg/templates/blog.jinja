@@ -2,14 +2,19 @@
 {% block title %}Blog{% endblock %}
 {% set selected_tab = "blog" %}
 {% block left %}
-    <h1>Posts</h1>
-    {% if posts %}
-        <ul>
+    <div id="posts">
+        <h1>Posts</h1>
+        {% if posts %}
             {% for post in posts %}
-                <li><a href="{{ post.url }}">{{ post.text }}</a></li>
+                <div class="post-preview">
+                    <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+                    <p class="post-date">Published on {{ post.date }}</p>
+                    {{ post.preview | safe }}
+                    <a href="{{ post.url }}">[Read More]</a>
+                </div>
             {% endfor %}
-        </ul>
-    {% else %}
-        <p class="placeholder-text">There are no posts yet.</p>
-    {% endif %}
+        {% else %}
+            <p class="placeholder-text">There are no posts yet.</p>
+        {% endif %}
+    </div>
 {% endblock %}

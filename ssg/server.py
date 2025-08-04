@@ -55,7 +55,7 @@ async def blog_post(slug):
     # This assumes unique slugs but that is not enforced yet, (unlikely) problem for future me.
     file_path = tuple((consts.CONTENT_DIR / "posts/").rglob(f"*-{slug}.md"))[0]
     with open(file_path) as post:
-        post = frontmatter.load(post)
+        post = frontmatter.load(post).to_dict()
         post["slug"] = post.get("slug", slug)
 
     return builder.build_blog_post(post)

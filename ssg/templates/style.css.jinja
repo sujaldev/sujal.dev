@@ -230,12 +230,33 @@ footer {
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-#content h1 {
-    font-size: 1.8em;
+#posts > h1 {
+}
+
+.post-preview {
+    padding-bottom: 20px;
+    border-bottom: 2px dashed var(--light-edges);
+}
+
+.post-preview > h3 > a {
+    color: var(--regular-text);
+    text-decoration: none;
+
+}
+
+.post-date {
+    font-style: italic;
+    color: var(--light-text);
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+#content h1, h2, h3, h4, h5, h6 {
+    margin-top: 0.75em;
 }
 
 #content p {
-    margin-bottom: 1em;
+    margin: 0.5em 0;
 }
 
 #content code {

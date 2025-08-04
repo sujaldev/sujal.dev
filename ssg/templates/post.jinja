@@ -1,0 +1,10 @@
+{% extends "two-column.jinja" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% set selected_tab = "blog" %}
+{% block left %}
+    <h1>{{ post.title }}</h1>
+    <p class="post-date">
+        Published on {{ post.date }}{% if post.last_modified %} &centerdot; Updated {{ post.last_modified }}{% endif %}
+    </p>
+    {{ content | safe }}
+{% endblock %}

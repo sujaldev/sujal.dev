@@ -16,7 +16,7 @@
             {% if not loop.first %}
                 <hr style="border: 1px dashed #ccc; margin: 0.5em 0;">
             {% endif %}
-            <p><a href="{{ post.url }}">{{ post.text }}</a></p>
+            <p><a href="{{ post.url }}">{{ post.title }}</a></p>
         {% endfor %}
     {% else %}
         <p class="placeholder-text">There are no posts yet.</p>

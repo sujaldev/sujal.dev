@@ -9,12 +9,14 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 
 from ssg.constants import *
+from ssg.markdown import render_markdown
 
 import frontmatter
 import minify
-import mistletoe
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
+
+type PostList = Iterable[Dict]
 
 
 def include_raw(file_path: str) -> Markup:
@@ -135,10 +137,6 @@ class Builder:
         return env
 
     @staticmethod
-    def render_markdown(content: str) -> str:
-        return mistletoe.markdown(content)
-
-    @staticmethod
     def handle_html_output(func):
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
@@ -157,7 +155,7 @@ class Builder:
         return wrapper
 
     @staticmethod
-    def load_posts(stop: int = None) -> List[Dict]:
+    def load_posts(stop: int = None) -> PostList:
         files = sorted((CONTENT_DIR / "posts").rglob("*.md"), reverse=True)[:stop]
         posts = []
 
@@ -168,11 +166,9 @@ class Builder:
             if "slug" not in post:
                 post["slug"] = "-".join(file_path.stem.split("-")[1:])
 
-            posts.append({
-                "url": f"/post/{post['slug']}",
-                "text": post["title"],
-                "obj": post,
-            })
+            post["url"] = f"/post/{post['slug']}"
+            post.content, post["preview"] = render_markdown(post.content, preview=True)
+            posts.append(post.to_dict())
 
         return posts
 
@@ -203,12 +199,12 @@ class Builder:
                 shutil.copyfile(file, dst_path)
 
     @handle_html_output
-    def build_home(self, recent_posts: Iterable[Dict] = None) -> Tuple[str | Path, str]:
+    def build_home(self, recent_posts: PostList) -> Tuple[str | Path, str]:
         content = None
         content_filepath = CONTENT_DIR / "home.md"
         if content_filepath.exists():
             with open(content_filepath) as file:
-                content = self.render_markdown(file.read())
+                content = render_markdown(file.read())
 
         return (
             BUILD_DIR / "index.html",
@@ -216,14 +212,14 @@ class Builder:
         )
 
     @handle_html_output
-    def build_blog_index(self, posts: Iterable[Dict]) -> Tuple[str | Path, str]:
+    def build_blog_index(self, posts: PostList) -> Tuple[str | Path, str]:
         return (
             BUILD_DIR / "blog/index.html",
             self.env.get_template("blog.jinja").render(posts=posts)
         )
 
     @handle_html_output
-    def build_blog_post(self, post) -> Tuple[str | Path, str]:
+    def build_blog_post(self, post: Dict) -> Tuple[str | Path, str]:
         required_keys = ("title", "date")
         for key in required_keys:
             if key == "date" and post.get("draft", False):
@@ -236,7 +232,7 @@ class Builder:
 
         html = self.env.get_template("post.jinja").render(
             post=post,
-            content=self.render_markdown(post.content)
+            content=render_markdown(post["content"])
         )
 
         return (
@@ -257,7 +253,7 @@ class Builder:
         self.build_blog_index(posts)
 
         for post in posts:
-            self.build_blog_post(post["obj"])
+            self.build_blog_post(post)
 
 
 if __name__ == "__main__":
