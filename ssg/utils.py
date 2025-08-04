@@ -57,9 +57,12 @@ def create_post():
 
     frontmatter = "---\n" + "\n".join([f"{key}: {val}" for key, val in frontmatter.items()]) + "\n---\n"
 
-    last_post = sorted((CONTENT_DIR / "posts").rglob("*.md"))[-1]
-    new_post_number = int(last_post.name.split("-")[0]) + 1
+    last_post = sorted((CONTENT_DIR / "posts").rglob("*.md"))
+    last_post = last_post[-1].name if last_post else "00-"
+
+    new_post_number = int(last_post.split("-")[0]) + 1
     new_post_number = f"{new_post_number:0>2}"
+
     new_post_path = CONTENT_DIR / f"posts/{new_post_number}-{override_slug or slug}.md"
 
     with open(new_post_path, "w") as file:
