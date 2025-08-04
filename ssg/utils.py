@@ -60,7 +60,7 @@ def create_post():
     last_post = sorted((CONTENT_DIR / "posts").rglob("*.md"))[-1]
     new_post_number = int(last_post.name.split("-")[0]) + 1
     new_post_number = f"{new_post_number:0>2}"
-    new_post_path = CONTENT_DIR / f"posts/{new_post_number}-{slug}.md"
+    new_post_path = CONTENT_DIR / f"posts/{new_post_number}-{override_slug or slug}.md"
 
     with open(new_post_path, "w") as file:
         file.write(frontmatter)
