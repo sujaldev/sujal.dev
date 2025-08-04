@@ -35,6 +35,10 @@ def main(argv=None):
         "-m", "--minify", action="store_true", help="Enable minification."
     )
 
+    create_parser = subparser.add_parser(
+        "create", help="Create a new post."
+    )
+
     subset_fonts_parser = subparser.add_parser(
         "subset-fonts", help="Generate font subsets and associated stylesheets."
     )
@@ -55,6 +59,9 @@ def main(argv=None):
         case "subset-fonts":
             from ssg.fonts.subset import build as subset_fonts
             subset_fonts(args.css_only)
+        case "create":
+            from ssg.utils import create_post
+            create_post()
 
 
 if __name__ == "__main__":

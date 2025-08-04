@@ -9,6 +9,7 @@ See `ssg --help` for full help, here are some common examples:
 ```bash
 ssg build -m      # Full build with minification enabled.
 ssg live          # Start a live server, build files on request.
+ssg create        # Create a new post.
 ssg subset-fonts  # Generate font subsets and associated stylesheets.
 ```
 
