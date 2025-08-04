@@ -2,8 +2,10 @@
 
 :root {
     --edges: #ccc;
-    --regular-text: #333;
-    --bold-text: ;
+    --light-edges: #eee;
+    --light-text: #888;
+    --regular-text: #444;
+    --bold-text: #333;
     --anchor: #0468af;
     --anchor-hover: #0585e1;
     --anchor-active: #ca0;
@@ -24,7 +26,8 @@ body {
 }
 
 h1, h2, h3 {
-    line-height: 1.3;
+    line-height: 1.2;
+    color: var(--bold-text);
 }
 
 a, a:visited {
@@ -99,7 +102,11 @@ header::after {
 
 header a, header a:visited {
     text-decoration: none;
-    color: var(--regular-text);
+    color: var(--bold-text);
+}
+
+header a:hover {
+    color: black;
 }
 
 #title {
@@ -187,13 +194,15 @@ nav > span > a {
 
 main {
     display: flex;
+    flex: 1;
 }
 
 main > * {
-    padding: 20px 20px 0;
+    padding: 0 20px 0 20px;
 }
 
 main > article {
+    min-width: 750px;
     max-width: 750px;
 }
 
@@ -203,6 +212,7 @@ main > article {
     }
 
     main > article {
+        min-width: initial;
         max-width: 100%;
     }
 }
