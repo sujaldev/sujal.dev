@@ -23,6 +23,9 @@ def main(argv=None):
     build_parser.add_argument(
         "-m", "--minify", action="store_true", help="Enable minification."
     )
+    build_parser.add_argument(
+        "-d", "--include-drafts", action="store_true", help="Include draft posts."
+    )
 
     live_parser = subparser.add_parser("live", help="Start a live server, only build pages on request.")
     live_parser.add_argument(
@@ -33,6 +36,9 @@ def main(argv=None):
     )
     live_parser.add_argument(
         "-m", "--minify", action="store_true", help="Enable minification."
+    )
+    live_parser.add_argument(
+        "-d", "--include-drafts", action="store_true", help="Include draft posts."
     )
 
     create_parser = subparser.add_parser(
@@ -52,10 +58,10 @@ def main(argv=None):
     match args.command:
         case "build":
             from ssg.build import Builder
-            Builder(args.minify).build()
+            Builder(args.minify, args.include_drafts).build()
         case "live":
             from ssg.server import Server
-            Server(args.address, args.port, args.minify).run()
+            Server(args.address, args.port, args.minify, args.include_drafts).run()
         case "subset-fonts":
             from ssg.fonts.subset import build as subset_fonts
             subset_fonts(args.css_only)
