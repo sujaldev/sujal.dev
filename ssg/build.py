@@ -39,9 +39,10 @@ def include_raw(file_path: str) -> Markup:
 
 
 class Builder:
-    def __init__(self, minified=True, live=False):
+    def __init__(self, minified=True, live=False, include_drafts=False):
         self.minified = minified
         self.live = live
+        self.include_drafts = include_drafts
 
         self.env = self.make_jinja_env()
 
@@ -154,14 +155,16 @@ class Builder:
 
         return wrapper
 
-    @staticmethod
-    def load_posts(stop: int = None) -> PostList:
+    def load_posts(self, stop: int = None) -> PostList:
         files = sorted((CONTENT_DIR / "posts").rglob("*.md"), reverse=True)[:stop]
         posts = []
 
         for file_path in files:
             with open(file_path) as file:
                 post = frontmatter.load(file)
+            
+            if post.get("draft", False) and not self.include_drafts:
+                continue
 
             if "slug" not in post:
                 post["slug"] = "-".join(file_path.stem.split("-")[1:])

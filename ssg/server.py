@@ -20,7 +20,8 @@ def inject_js_reloader(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
         html: str = await func(*args, **kwargs)
-        html += RELOAD_SCRIPT
+        if isinstance(html, str):
+            html += RELOAD_SCRIPT
         return html
 
     return wrapper
@@ -107,7 +108,14 @@ class Server:
         file_path = tuple((consts.CONTENT_DIR / "posts/").rglob(f"*-{slug}.md"))[0]
         with open(file_path) as post:
             post = frontmatter.load(post).to_dict()
-            post["slug"] = post.get("slug", slug)
+
+        if post.get("draft", False) and not self.include_drafts:
+            return Response(
+                "<h1>This post is currently a draft, enable <code>include_drafts</code> to see this post.</h1>",
+                status=404
+            )
+
+        post["slug"] = post.get("slug", slug)
 
         return self.builder.build_blog_post(post)
 
