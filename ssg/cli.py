@@ -54,8 +54,8 @@ def main(argv=None):
             from ssg.build import Builder
             Builder(args.minify).build()
         case "live":
-            from ssg.server import run as live
-            live(args.address, args.port, args.minify)
+            from ssg.server import Server
+            Server(args.address, args.port, args.minify).run()
         case "subset-fonts":
             from ssg.fonts.subset import build as subset_fonts
             subset_fonts(args.css_only)
