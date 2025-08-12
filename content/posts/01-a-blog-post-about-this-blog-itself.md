@@ -1,7 +1,7 @@
 ---
 title: "A blog post about this blog itself."
 date: "5 Aug, 2025"
-draft: true
+last_modified: "12 Aug, 2025"
 ---
 
 ## Coming up with the design
@@ -23,6 +23,9 @@ influential:
 [Satvik Saha](https://sahasatvik.github.io/),
 [Tony Zorman](https://tony-zorman.com/).
 
+Most of the people I've shown my website to so far, besides a few, don't seem to like the design as much as I do. But
+I'm biased. In any case, I like it, so I'm going to keep it as it is for now.
+
 ## Reinventing the static site generator wheel for kicks
 
 Since I was already doing the design from scratch, I figured I might as well do the static site generator from scratch
@@ -31,3 +34,23 @@ hard could a static site generator really be? Yeah, I keep falling for that one.
 
 That said, I'm mostly done with the scripts I'm using to generate this site. It has most run-of-the-mill features you'd
 expect from a static site generator, even some extras like a font subsetting script.
+
+I'm using [Jinja2](https://github.com/pallets/jinja) as the templating engine and
+[Mistletoe](https://github.com/miyuchina/mistletoe) as the Markdown parser combined with
+[python-frontmatter](https://github.com/eyeseast/python-frontmatter) to parse, well, frontmatter. There were faster
+alternatives to Mistletoe, but the article about standards compliance in their documentation won me over.
+
+There's also a live mode where only the requested pages are built on the fly. I started with
+[Flask](https://github.com/pallets/flask) for this but transitioned to [Quart](https://github.com/pallets/quart) later
+for the native websocket support, which is required to auto-reload the page when
+[watchfiles](https://github.com/samuelcolvin/watchfiles) or Quart's built-in reloader detects a change in the source
+files.
+
+If you want more details, you can dig through the [source repository](https://github.com/sujaldev/sujal.dev). I've
+hardcoded some things here and there that I could have generalized but then what would be the point of writing my own
+scripts in the first place.
+
+## Do as I say, not as I do
+
+Should've just used a cookie-cutter template with a prebuilt static site generator. Would've taken a lot less time.
+But I'm proud of this.
