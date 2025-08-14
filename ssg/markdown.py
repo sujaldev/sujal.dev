@@ -1,11 +1,11 @@
 from typing import Tuple
 
 import mistletoe
-from mistletoe.html_renderer import HTMLRenderer
+from mistletoe.html_renderer import HtmlRenderer
 from mistletoe.block_token import Document, Paragraph
 
 
-class SummaryExtractor(HTMLRenderer):
+class SummaryExtractor(HtmlRenderer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.is_first_paragraph = True
