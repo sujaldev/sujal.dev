@@ -1,6 +1,7 @@
 {% include "font-faces.css.jinja" %}
 
 :root {
+    --color-bg: #f7f7f2;
     --edges: #ccc;
     --light-edges: #eee;
     --light-text: #888;
@@ -23,6 +24,7 @@ body {
     font-family: "Libertinus Sans", "Helvetica", sans-serif;
     font-size: 18px;
     line-height: 1.4;
+    background: var(--color-bg);
 }
 
 h1, h2, h3 {
@@ -54,7 +56,7 @@ code, pre, tt, kbd, samp {
     padding: 8px;
     border: 2px solid black;
     outline: none;
-    background: white;
+    background: var(--color-bg);
     z-index: 10;
 }
 
@@ -78,7 +80,7 @@ header {
 
     border-bottom: 1px solid var(--edges);
     background-size: 100% 100%, 27px 100%, 100% 27px;
-    background-image: linear-gradient(to top, white 15%, transparent 60%),
+    background-image: linear-gradient(to top, var(--color-bg) 15%, transparent 60%),
     linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
 
@@ -185,7 +187,7 @@ nav > span > a {
     left: 0;
     transform: perspective(5px) rotateX(1deg);
     transform-origin: bottom;
-    background: white;
+    background: var(--color-bg);
 }
 
 #selected-tab > a {
