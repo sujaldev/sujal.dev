@@ -133,4 +133,4 @@ class Server:
 
 
 if __name__ == "__main__":
-    Server().run()
+    Server(minified=True, include_drafts=True).run()
