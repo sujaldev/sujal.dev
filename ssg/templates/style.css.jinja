@@ -80,10 +80,7 @@ header {
     position: relative; /* this is required for the stick man figure positioning */
 
     border-bottom: 1px solid var(--edges);
-    background-size: 100% 100%, 27px 100%, 100% 27px;
-    background-image: linear-gradient(to top, var(--color-bg) 15%, transparent 60%),
-    linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background: -1px -1px/110% 100% no-repeat url("{{ static_url("grid.svg") }}");
 
     display: flex;
     flex-direction: column;
