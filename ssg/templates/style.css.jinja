@@ -11,6 +11,7 @@
     --anchor: #0468af;
     --anchor-hover: #0585e1;
     --anchor-active: #ca0;
+    --inline-code-bg: lightgray;
 }
 
 * {
@@ -46,7 +47,14 @@ a:active {
 }
 
 code, pre, tt, kbd, samp {
-    font-family: "Libertinus Mono", monospace;
+    font-family: "Source Code Pro", monospace;
+    font-size: 0.8em;
+}
+
+code {
+    background: var(--inline-code-bg);
+    padding: 2px 4px;
+    border-radius: 4px;
 }
 
 #skip {
