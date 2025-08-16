@@ -208,6 +208,7 @@ main {
 
 main > * {
     padding: 0 20px 0 20px;
+    width: 100%;
 }
 
 main > article {
@@ -264,6 +265,21 @@ footer {
 /* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements#specifying_a_uniform_font_size_for_h1 */
 article h1 {
     font-size: 2em;
+}
+
+table {
+    border: 1px solid var(--edges);
+    border-collapse: collapse;
+}
+
+th {
+    font-weight: bold;
+    background: var(--light-edges);
+}
+
+td, th {
+    padding: 8px 10px;
+    border: 1px solid var(--edges);
 }
 
 #content h1, h2, h3, h4, h5, h6 {

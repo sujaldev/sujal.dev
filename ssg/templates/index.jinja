@@ -10,15 +10,21 @@
     {% endif %}
 {% endblock %}
 {% block right %}
-    <h2>Recent Posts</h2>
     {% if recent_posts %}
-        {% for post in recent_posts %}
-            {% if not loop.first %}
-                <hr style="border: 1px dashed #ccc; margin: 0.5em 0;">
-            {% endif %}
-            <p><a href="{{ post.url }}">{{ post.title }}</a></p>
-        {% endfor %}
+        <table width="100%" style="margin-top: 2em">
+            <thead>
+            <tr>
+                <th>Recent Posts</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in recent_posts %}
+                <tr><td><a href="{{ post.url }}">{{ post.title }}</a></td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
     {% else %}
+        <h2>Recent Posts</h2>
         <p class="placeholder-text">There are no posts yet.</p>
     {% endif %}
 {% endblock %}
