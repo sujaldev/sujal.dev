@@ -138,20 +138,21 @@ class Builder:
         return env
 
     @staticmethod
-    def handle_html_output(func):
+    def handle_output(func):
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
-            file_path, html = func(self, *args, **kwargs)
+            file_path, code = func(self, *args, **kwargs)
+            file_path = Path(file_path)
 
             if self.minified:
-                html = minify.string(mimetype_map[".html"], html)
+                code = minify.string(mimetype_map[file_path.suffix], code)
 
             if not self.live:
                 file_path.parent.mkdir(parents=True, exist_ok=True)
                 with open(file_path, "w") as file:
-                    file.write(html)
+                    file.write(code)
 
-            return html
+            return code
 
         return wrapper
 
@@ -179,7 +180,21 @@ class Builder:
     #                                                   Build Steps                                                    #
     # **************************************************************************************************************** #
 
+    @handle_output
+    def build_stylesheet(self, filename):
+        return (
+            BUILD_DIR / f"static/css/{filename}",
+            self.env.get_template(f"css/{filename}.jinja").render()
+        )
+
+    def build_stylesheets(self):
+        css_dir = SRC_DIR / "templates/css"
+        for file in css_dir.rglob("*.css.jinja"):
+            self.build_stylesheet(file.stem)
+
     def build_static(self):
+        self.build_stylesheets()
+
         static_dir = SRC_DIR / "static"
         build_dir = BUILD_DIR / "static"
 
@@ -201,7 +216,7 @@ class Builder:
             else:
                 shutil.copyfile(file, dst_path)
 
-    @handle_html_output
+    @handle_output
     def build_home(self, recent_posts: PostList) -> Tuple[str | Path, str]:
         content = None
         content_filepath = CONTENT_DIR / "home.md"
@@ -214,14 +229,14 @@ class Builder:
             self.env.get_template("index.jinja").render(content=content, recent_posts=recent_posts)
         )
 
-    @handle_html_output
+    @handle_output
     def build_blog_index(self, posts: PostList) -> Tuple[str | Path, str]:
         return (
             BUILD_DIR / "blog/index.html",
             self.env.get_template("blog.jinja").render(posts=posts)
         )
 
-    @handle_html_output
+    @handle_output
     def build_blog_post(self, post: Dict) -> Tuple[str | Path, str]:
         required_keys = ("title", "date")
         for key in required_keys:

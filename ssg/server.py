@@ -119,6 +119,11 @@ class Server:
 
         return self.builder.build_blog_post(post)
 
+    @route("/static/css/<filename>")
+    async def stylesheets(self, filename):
+        return Response(self.builder.build_stylesheet(filename), mimetype="text/css")
+
+
     @route("/ws")
     async def ws_healthcheck(self):
         return Response(status=200)
