@@ -4,7 +4,6 @@
 :root {
     --background: #f4f4f4;
     --edges: #ccc;
-    --light-edges: #eee;
     --light-text: #555;
     --regular-text: #333;
     --bold-text: #111;
@@ -12,6 +11,7 @@
     --anchor-hover: #0585e1;
     --anchor-active: #ca0;
     --inline-code-bg: lightgray;
+    --table-header-bg: #eee;
 }
 
 * {
@@ -240,12 +240,13 @@ footer {
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-#posts > h1 {
+#posts > .post-preview:last-child {
+    border-bottom: none;
 }
 
 .post-preview {
     padding-bottom: 20px;
-    border-bottom: 1px solid var(--light-edges);
+    border-bottom: 1px solid var(--edges);
 }
 
 .post-preview > h3 > a {
@@ -274,7 +275,7 @@ table {
 
 th {
     font-weight: bold;
-    background: var(--light-edges);
+    background: var(--table-header-bg);
 }
 
 td, th {
