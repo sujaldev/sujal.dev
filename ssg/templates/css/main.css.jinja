@@ -2,7 +2,7 @@
 {#{% include "font-faces.css.jinja" %}#}
 
 :root {
-    --color-bg: #f4f4f4;
+    --background: #f4f4f4;
     --edges: #ccc;
     --light-edges: #eee;
     --light-text: #555;
@@ -26,7 +26,7 @@ body {
     font-family: "Libertinus Sans", "Helvetica", sans-serif;
     font-size: 18px;
     line-height: 1.4;
-    background: var(--color-bg);
+    background: var(--background);
 }
 
 h1, h2, h3 {
@@ -65,7 +65,7 @@ code {
     padding: 8px;
     border: 2px solid black;
     outline: none;
-    background: var(--color-bg);
+    background: var(--background);
     z-index: 10;
 }
 
@@ -194,7 +194,7 @@ nav > span > a {
     left: 0;
     transform: perspective(5px) rotateX(1deg);
     transform-origin: bottom;
-    background: var(--color-bg);
+    background: var(--background);
 }
 
 #selected-tab > a {
