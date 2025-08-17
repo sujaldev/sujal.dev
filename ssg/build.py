@@ -162,7 +162,7 @@ class Builder:
         for file_path in files:
             with open(file_path) as file:
                 post = frontmatter.load(file)
-            
+
             if post.get("draft", False) and not self.include_drafts:
                 continue
 
@@ -170,7 +170,7 @@ class Builder:
                 post["slug"] = "-".join(file_path.stem.split("-")[1:])
 
             post["url"] = f"/post/{post['slug']}"
-            post.content, post["preview"] = render_markdown(post.content, preview=True)
+            post["html"], post["preview"] = render_markdown(post.content, preview=True)
             posts.append(post.to_dict())
 
         return posts
@@ -235,7 +235,7 @@ class Builder:
 
         html = self.env.get_template("post.jinja").render(
             post=post,
-            content=render_markdown(post["content"])
+            content=post.get("html", render_markdown(post["content"]))
         )
 
         return (
