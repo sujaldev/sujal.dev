@@ -214,7 +214,7 @@ class Builder:
     def load_posts(self, stop: int = None) -> PostList:
         files = sorted((CONTENT_DIR / "posts").rglob("*.md"), reverse=True)[:stop]
         posts = [self.load_post(file_path) for file_path in files]
-        return posts
+        return [post for post in posts if post is not None]
 
     # **************************************************************************************************************** #
     #                                                   Build Steps                                                    #

@@ -30,7 +30,6 @@ class PygmentsRenderer(BaseRender):
 
         self.formatter = HtmlFormatter()
         self.formatter.style = get_style_by_name(code_style)
-        print(self.formatter.style)
 
         self.is_first_paragraph = True
         self.preview = ""
@@ -98,7 +97,7 @@ class PygmentsRenderer(BaseRender):
         if lexer is None:
             lexer = guess_lexer(code)
 
-        self.additional_stylesheets.append("pygments.css")
+        self.additional_stylesheets.append("pygments.css.jinja")
 
         return highlight(code, lexer, self.formatter)
 
