@@ -1,14 +1,16 @@
 import functools
 import inspect
 from mimetypes import types_map as mimetype_map
+from pathlib import Path
 
 import ssg.build as build
 import ssg.constants as consts
 
 import frontmatter
 import minify
-from quart import Quart, Response, websocket
+from quart import Quart, Response, websocket, send_from_directory
 from watchfiles import awatch
+from werkzeug.exceptions import NotFound
 
 with open(consts.SRC_DIR / "reload.js") as file:
     RELOAD_SCRIPT = "<script>" + \
@@ -52,7 +54,7 @@ class Server:
         self.minified = False
         self.include_drafts = include_drafts
 
-        self.app = Quart(__name__)
+        self.app = Quart(__name__, static_folder=None)
 
         self.builder = build.Builder(
             minified=minified,
@@ -119,10 +121,16 @@ class Server:
 
         return self.builder.build_blog_post(post)
 
-    @route("/static/css/<filename>")
-    async def stylesheets(self, filename):
-        return Response(self.builder.build_stylesheet(filename), mimetype="text/css")
-
+    @route("/static/<path:file_path>")
+    async def static(self, file_path):
+        static_dir = consts.SRC_DIR / "static"
+        try:
+            return await send_from_directory(static_dir, file_path)
+        except NotFound:
+            return Response(
+                self.builder.build_static_template(file_path),
+                mimetype=mimetype_map[Path(file_path).suffix]
+            )
 
     @route("/ws")
     async def ws_healthcheck(self):

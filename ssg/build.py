@@ -13,7 +13,11 @@ from ssg.markdown import render_markdown
 
 import frontmatter
 import minify
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import ChoiceLoader
+from jinja2 import Environment
+from jinja2 import FileSystemLoader
+from jinja2 import PrefixLoader
+from jinja2 import select_autoescape
 from markupsafe import Markup
 
 type PostList = Iterable[Dict]
@@ -94,7 +98,8 @@ class Builder:
             raise Exception(f"static_url called for file '{file_path}' not inside the static directory.")
 
         if self.live:
-            return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.name}"
+            url_without_hash = "/static/" + str(file_path.relative_to(static_path)).removesuffix(".jinja")
+            return url_without_hash
 
         file_path_str = str(file_path)
         cache_hit = (file_path_str in self.hash_cache and
@@ -107,7 +112,12 @@ class Builder:
 
         sha1hash = self.hash_cache[str(file_path)]["last_hash"]
 
-        return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.stem}-{sha1hash}{file_path.suffix}"
+        suffixes = "".join(file_path.suffixes)
+        file_name_with_hash = str(file_path.name).removesuffix(suffixes) + "-" + sha1hash + suffixes
+        url_with_hash = str(file_path.with_name(file_name_with_hash).relative_to(static_path))
+        url_with_hash = "/static/" + url_with_hash.removesuffix(".jinja")
+
+        return url_with_hash
 
     @staticmethod
     def read_config() -> dict:
@@ -125,7 +135,12 @@ class Builder:
 
     def make_jinja_env(self) -> Environment:
         env = Environment(
-            loader=FileSystemLoader(SRC_DIR / "templates"),
+            loader=ChoiceLoader([
+                FileSystemLoader(SRC_DIR / "templates"),
+                PrefixLoader({
+                    "static": FileSystemLoader(SRC_DIR / "static")
+                })
+            ]),
             autoescape=select_autoescape(["jinja"]),
             trim_blocks=True,
         )
@@ -181,20 +196,20 @@ class Builder:
     # **************************************************************************************************************** #
 
     @handle_output
-    def build_stylesheet(self, filename):
+    def build_static_template(self, file_path: str | Path):
+        static_dir = SRC_DIR / "static"
+        file_path = (SRC_DIR / "static") / Path(file_path)
+        file_path.resolve()
+        if not file_path.is_relative_to(static_dir):
+            raise Exception(f"File '{file_path}' does not reside inside the static directory.")
+
+        file_path = file_path.relative_to(static_dir)
         return (
-            BUILD_DIR / f"static/css/{filename}",
-            self.env.get_template(f"css/{filename}.jinja").render()
+            (BUILD_DIR / "static") / file_path,
+            self.env.get_template(f"static/{str(file_path).removesuffix('.jinja')}.jinja").render()
         )
 
-    def build_stylesheets(self):
-        css_dir = SRC_DIR / "templates/css"
-        for file in css_dir.rglob("*.css.jinja"):
-            self.build_stylesheet(file.stem)
-
     def build_static(self):
-        self.build_stylesheets()
-
         static_dir = SRC_DIR / "static"
         build_dir = BUILD_DIR / "static"
 
@@ -207,12 +222,17 @@ class Builder:
             dst_path.parent.mkdir(parents=True, exist_ok=True)
 
             filetype = file.suffix.lstrip(".")
-            if self.minified and filetype in ("html", "css", "js", "svg"):
-                with open(file) as src_file:
-                    code = src_file.read()
+            if self.minified and filetype in ("html", "css", "js", "svg", "jinja"):
+                if filetype == "jinja":
+                    mimetype = mimetype_map[file.suffixes[-2]]
+                    code = self.env.get_template("static/" + str(file.relative_to(static_dir))).render()
+                else:
+                    mimetype = mimetype_map[file.suffix]
+                    with open(file) as src_file:
+                        code = src_file.read()
 
                 with open(dst_path, "w") as dst_file:
-                    dst_file.write(minify.string(mimetype_map[file.suffix], code))
+                    dst_file.write(minify.string(mimetype, code))
             else:
                 shutil.copyfile(file, dst_path)
 
