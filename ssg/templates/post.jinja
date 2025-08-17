@@ -1,5 +1,10 @@
 {% extends "two-column.jinja" %}
 {% block title %}{{ post.title }}{% endblock %}
+{% block additional_stylesheets %}
+    {% for stylesheet in additional_stylesheets %}
+        <link rel="stylesheet" href="{{ static_url("css/" + stylesheet) }}">
+    {% endfor %}
+{% endblock %}
 {% set selected_tab = "blog" %}
 {% block left %}
     <h1>{{ post.title }}</h1>

@@ -6,7 +6,6 @@ from pathlib import Path
 import ssg.build as build
 import ssg.constants as consts
 
-import frontmatter
 import minify
 from quart import Quart, Response, websocket, send_from_directory
 from watchfiles import awatch
@@ -108,16 +107,7 @@ class Server:
     async def blog_post(self, slug):
         # This assumes unique slugs but that is not enforced yet, (unlikely) problem for future me.
         file_path = tuple((consts.CONTENT_DIR / "posts/").rglob(f"*-{slug}.md"))[0]
-        with open(file_path) as post:
-            post = frontmatter.load(post).to_dict()
-
-        if post.get("draft", False) and not self.include_drafts:
-            return Response(
-                "<h1>This post is currently a draft, enable <code>include_drafts</code> to see this post.</h1>",
-                status=404
-            )
-
-        post["slug"] = post.get("slug", slug)
+        post = self.builder.load_post(file_path)
 
         return self.builder.build_blog_post(post)
 

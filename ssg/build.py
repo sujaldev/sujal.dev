@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 
 from ssg.constants import *
-from ssg.markdown import render_markdown
+from ssg.markdown import ExtendedRenderer
 
 import frontmatter
 import minify
@@ -19,6 +19,7 @@ from jinja2 import FileSystemLoader
 from jinja2 import PrefixLoader
 from jinja2 import select_autoescape
 from markupsafe import Markup
+from pygments.formatters.html import HtmlFormatter
 
 type PostList = Iterable[Dict]
 
@@ -149,6 +150,9 @@ class Builder:
 
         env.globals["include_raw"] = include_raw
         env.globals["static_url"] = self.static_url
+        env.globals["get_pygments_stylesheet"] = lambda: HtmlFormatter(
+            style=self.env.globals["pygments"]["style"]
+        ).get_style_defs()
 
         return env
 
@@ -171,24 +175,45 @@ class Builder:
 
         return wrapper
 
-    def load_posts(self, stop: int = None) -> PostList:
-        files = sorted((CONTENT_DIR / "posts").rglob("*.md"), reverse=True)[:stop]
-        posts = []
+    def load_post(self, file_path):
+        with open(file_path) as file:
+            raw = file.read()
+            post = frontmatter.loads(raw)
+            post["frontmatter_lineno_offset"] = raw[:raw.find(post.content)].count("\n")
 
-        for file_path in files:
-            with open(file_path) as file:
-                post = frontmatter.load(file)
-
+        is_actual_blog_post = file_path.is_relative_to(CONTENT_DIR / "posts")
+        if is_actual_blog_post:
             if post.get("draft", False) and not self.include_drafts:
-                continue
+                return
+
+            post["author"] = post.get("author", self.env.globals["author"]["name"])
+
+            required_keys = ("title", "date")
+            for key in required_keys:
+                if key == "date" and post.get("draft", False):
+                    continue
+
+                if key not in post:
+                    raise Exception(f"Missing '{key}' key: {post['slug']}")
 
             if "slug" not in post:
                 post["slug"] = "-".join(file_path.stem.split("-")[1:])
 
             post["url"] = f"/post/{post['slug']}"
-            post["html"], post["preview"] = render_markdown(post.content, preview=True)
-            posts.append(post.to_dict())
 
+        renderer = ExtendedRenderer(
+            frontmatter_linenos_offset=post["frontmatter_lineno_offset"],
+            code_style=self.env.globals["pygments"]["style"]
+        )
+        post["html"] = renderer.render_markdown(post.content)
+        post["preview"] = renderer.preview
+        post["additional_stylesheets"] = renderer.additional_stylesheets
+
+        return post.to_dict()
+
+    def load_posts(self, stop: int = None) -> PostList:
+        files = sorted((CONTENT_DIR / "posts").rglob("*.md"), reverse=True)[:stop]
+        posts = [self.load_post(file_path) for file_path in files]
         return posts
 
     # **************************************************************************************************************** #
@@ -241,8 +266,8 @@ class Builder:
         content = None
         content_filepath = CONTENT_DIR / "home.md"
         if content_filepath.exists():
-            with open(content_filepath) as file:
-                content = render_markdown(file.read())
+            post = self.load_post(content_filepath)
+            content = post["html"]
 
         return (
             BUILD_DIR / "index.html",
@@ -258,19 +283,10 @@ class Builder:
 
     @handle_output
     def build_blog_post(self, post: Dict) -> Tuple[str | Path, str]:
-        required_keys = ("title", "date")
-        for key in required_keys:
-            if key == "date" and post.get("draft", False):
-                continue
-
-            if key not in post:
-                raise Exception(f"Missing '{key}' key: {post['slug']}")
-
-        post["author"] = post.get("author", self.env.globals["author"]["name"])
-
         html = self.env.get_template("post.jinja").render(
             post=post,
-            content=post.get("html", render_markdown(post["content"]))
+            content=post["html"],
+            additional_stylesheets=post["additional_stylesheets"]
         )
 
         return (

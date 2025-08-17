@@ -8,6 +8,8 @@
     <link href="{{ static_url("css/main.css.jinja") }}" rel="stylesheet">
     <link rel="preload" fetchpriority="high" as="image" href="{{ static_url("stickman.svg") }}" type="image/svg+xml">
     <link rel="preload" fetchpriority="high" as="image" href="{{ static_url("grid.svg") }}" type="image/svg+xml">
+    {% block additional_stylesheets %}
+    {% endblock %}
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
