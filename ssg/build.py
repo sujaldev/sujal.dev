@@ -91,7 +91,7 @@ class Builder:
         file_path = (static_path / file_path).resolve()
 
         if not file_path.is_relative_to(static_path):
-            raise Exception("static_url must be called only for files inside the static directory.")
+            raise Exception(f"static_url called for file '{file_path}' not inside the static directory.")
 
         if self.live:
             return f"/{file_path.relative_to(SRC_DIR).parent}/{file_path.name}"
