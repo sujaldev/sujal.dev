@@ -1,7 +1,7 @@
 ---
 title: "A blog post about this blog itself."
 date: "5 Aug, 2025"
-last_modified: "12 Aug, 2025"
+last_modified: "18 Aug, 2025"
 ---
 
 ## Coming up with the design
@@ -11,7 +11,7 @@ make a design from scratch that actually looked good to *me*. The problem is, I 
 thing. Show me a design and I can probably tell you what looks good and what does not (at least in my opinion), but
 making one from scratch is, to say the least, *hard*.
 
-So for the last two years, everytime I came across a website and thought "This looks super nice!", I'd note it down it
+So for the last two years, every time I came across a website and thought "This looks super nice!", I'd note it down it
 in a list. That list has become pretty long at this point, so I'll only mention the ones that I feel were the most
 influential:
 [Adam Blank](https://countablethoughts.com/),
@@ -46,6 +46,78 @@ for the native websocket support, which is required to auto-reload the page when
 [watchfiles](https://github.com/samuelcolvin/watchfiles) or Quart's built-in reloader detects a change in the source
 files.
 
+### Markdown++
+
+I've also added some additional syntax in my markdown posts. The following markdown:
+
+~~~markdown
+```python | linenos
+import foo
+print("bar")
+```
+~~~
+
+will render as:
+
+```python | linenos
+import foo
+
+print("bar")
+```
+
+And you can even highlight some lines with:
+
+~~~markdown
+```python | linenos | highlight=[101, (109, 111)]
+class Vector:
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other: "Vector"):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __sub__(self, other: "Vector"):
+        return Vector(self.x - other.x, self.y - other.y)
+
+    def __mul__(self, scalar: int):
+        return Vector(self.x * scalar, self.y * scalar)
+
+    @property
+    def xy(self):
+        return self.x, self.y
+```
+~~~
+
+Output:
+
+```python | linenos | highlight=[101, (109, 111)]
+class Vector:
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other: "Vector"):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __sub__(self, other: "Vector"):
+        return Vector(self.x - other.x, self.y - other.y)
+
+    def __mul__(self, scalar: int):
+        return Vector(self.x * scalar, self.y * scalar)
+
+    @property
+    def xy(self):
+        return self.x, self.y
+```
+
+Notice something peculiar about the numbers used in the highlight argument? Shouldn't `101` be `7` and the range
+`(109, 111)` be `(15, 17)`? It should, but when you're authoring your post, you probably don't want to count relative to
+where your code fence starts. A much more ergonomic solution is to use the absolute line numbering of your markdown
+file, displayed by whatever editor you're using. And you can also turn this feature off by passing `relative_numbering`.
+
+I intend to work on asciidoc style `` "`smart quotes"` `` next.
+
 If you want more details, you can dig through the [source repository](https://github.com/sujaldev/sujal.dev). I've
 hardcoded some things here and there that I could have generalized but then what would be the point of writing my own
 scripts in the first place.
@@ -53,4 +125,4 @@ scripts in the first place.
 ## Do as I say, not as I do
 
 Should've just used a cookie-cutter template with a prebuilt static site generator. Would've taken a lot less time.
-But I'm proud of this.
+But having put in the work, I'm liking this setup so far.
