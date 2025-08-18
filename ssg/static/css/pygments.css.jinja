@@ -1,1 +1,69 @@
+:root {
+    --code-fence-bg: #fafafa;
+    --line-numbers-color: #808080;
+    --highlighted-line-bg: #dfdfdf;
+    --highlighted-line-border: #ccc;
+}
+
 {{ get_pygments_stylesheet() }}
+
+.highlight {
+    background: var(--code-fence-bg);
+    border: 1px solid var(--edges);
+    border-radius: 3px;
+    overflow-x: scroll;
+}
+
+.highlight .hll {
+    display: block;
+    position: relative;
+    width: 100%;
+    background: var(--highlighted-line-bg);
+}
+
+.highlight .hll::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 100%;
+    left: -10px;
+    background: var(--highlighted-line-bg);
+    border-left: 2px solid var(--highlighted-line-border);
+}
+
+.highlight .hll::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    right: -10px;
+    background: var(--highlighted-line-bg);
+    border-right: 2px solid var(--highlighted-line-border);
+}
+
+.highlight > pre {
+    width: 100%;
+    background: var(--code-fence-bg);
+    padding: 10px;
+}
+
+.highlight > table.highlighttable {
+    border: none;
+    width: 100%;
+}
+
+.highlight > table.highlighttable td {
+    border: none;
+}
+
+.highlight > table.highlighttable td.linenos {
+    border-right: 1px solid var(--edges);
+    text-align: center;
+    padding: 8px 0;
+}
+
+.highlight > table.highlighttable td.linenos .normal {
+    color: var(--line-numbers-color);
+}
