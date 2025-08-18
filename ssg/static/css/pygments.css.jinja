@@ -12,6 +12,7 @@
     border: 1px solid var(--edges);
     border-radius: 3px;
     overflow-x: scroll;
+    margin: 0.5em 0;
 }
 
 .highlight .hll {
@@ -61,9 +62,13 @@
 .highlight > table.highlighttable td.linenos {
     border-right: 1px solid var(--edges);
     text-align: center;
-    padding: 8px 0;
+    padding: 8px 3px;
 }
 
 .highlight > table.highlighttable td.linenos .normal {
     color: var(--line-numbers-color);
+}
+
+.highlight > table.highlighttable td.code {
+    width: 100%;
 }
