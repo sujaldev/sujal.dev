@@ -72,14 +72,20 @@ class PygmentsRenderer(BaseRender):
                 if isinstance(lines, list):
                     args["highlight"] = lines
 
-        # Parse highlighted line numbers
-        if not args["relative_numbering"]:
-            # noinspection PyUnresolvedReferences
-            offset = token.line_number + self.frontmatter_linenos_offset
-            args["highlight"] = [
-                line - offset if isinstance(line, int) else (line[0] - offset, line[1] - offset)
-                for line in args["highlight"]
-            ]
+        hl_lines = []
+        # noinspection PyUnresolvedReferences
+        offset = 0 if args["relative_numbering"] else token.line_number + self.frontmatter_linenos_offset
+
+        for line in args["highlight"]:
+            if isinstance(line, tuple) or isinstance(line, list):
+                hl_lines.extend(list(range(
+                    line[0] - offset,
+                    line[1] - offset + 1
+                )))
+            elif isinstance(line, int):
+                hl_lines.append(line - offset)
+
+        args["highlight"] = hl_lines
 
         return args
 
@@ -99,6 +105,8 @@ class PygmentsRenderer(BaseRender):
 
         self.additional_stylesheets.append("pygments.css.jinja")
 
+        self.formatter.linenos = args["linenos"]
+        self.formatter.hl_lines.update(set(args["highlight"]))
         return highlight(code, lexer, self.formatter)
 
 
