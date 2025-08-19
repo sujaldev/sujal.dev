@@ -7,7 +7,7 @@ import ssg.build as build
 import ssg.constants as consts
 
 import minify
-from quart import Quart, Response, websocket, send_from_directory
+from quart import Quart, Response, request, send_from_directory, websocket
 from watchfiles import awatch
 from werkzeug.exceptions import NotFound
 
@@ -133,6 +133,15 @@ class Server:
                 self.builder.build_static_template(file_path),
                 mimetype=mimetype_map[Path(file_path).suffix]
             )
+
+    @route("/atom.xml")
+    @route("/rss.xml")
+    async def feeds(self):
+        rss_feed, atom_feed = self.builder.build_feeds(self.builder.load_posts(10))
+        return Response(
+            rss_feed if request.path.endswith("rss.xml") else atom_feed,
+            mimetype="application/xml"
+        )
 
     @route("/ws")
     async def ws_healthcheck(self):

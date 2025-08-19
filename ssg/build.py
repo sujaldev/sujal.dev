@@ -299,7 +299,7 @@ class Builder:
             html
         )
 
-    def build_rss(self, posts: PostList):
+    def build_feeds(self, posts: PostList) -> Tuple[str, str]:
         fqdn = self.env.globals["site"]["fqdn"]
 
         fg = FeedGenerator()
@@ -323,6 +323,8 @@ class Builder:
         fg.rss_file(BUILD_DIR / "rss.xml", pretty=True)
         fg.atom_file(BUILD_DIR / "atom.xml", pretty=True)
 
+        return fg.rss_str(pretty=True), fg.atom_str(pretty=True)
+
 
     def build(self):
         if BUILD_DIR.exists():
@@ -333,7 +335,7 @@ class Builder:
         self.dump_hash_cache()
 
         posts = self.load_posts()
-        self.build_rss(posts[:10])
+        self.build_feeds(posts[:10])
         self.build_home(posts[:5])
         self.build_blog_index(posts)
 
