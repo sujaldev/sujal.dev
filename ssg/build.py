@@ -13,6 +13,7 @@ from ssg.markdown import ExtendedRenderer
 
 import frontmatter
 import minify
+from feedgen.feed import FeedGenerator
 from jinja2 import ChoiceLoader
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
@@ -298,6 +299,31 @@ class Builder:
             html
         )
 
+    def build_rss(self, posts: PostList):
+        fqdn = self.env.globals["site"]["fqdn"]
+
+        fg = FeedGenerator()
+        fg.title(self.env.globals["rss"]["title"])
+        fg.id(f"https://{fqdn}")
+        fg.link(href=f"https://{fqdn}/blog")
+        fg.description(self.env.globals["rss"]["description"])
+        fg.author(
+            name=self.env.globals["author"]["name"],
+            email=self.env.globals["author"]["mail"],
+        )
+        fg.language(self.env.globals["site"]["language"])
+
+        for post in posts:
+            fe = fg.add_entry()
+            link = f"https://{fqdn}/post/{post['slug']}"
+            fe.id(link)
+            fe.title(post["title"])
+            fe.link(href=link)
+
+        fg.rss_file(BUILD_DIR / "rss.xml", pretty=True)
+        fg.atom_file(BUILD_DIR / "atom.xml", pretty=True)
+
+
     def build(self):
         if BUILD_DIR.exists():
             # This is necessary as deleted files will be preserved from previous builds otherwise.
@@ -307,6 +333,7 @@ class Builder:
         self.dump_hash_cache()
 
         posts = self.load_posts()
+        self.build_rss(posts[:10])
         self.build_home(posts[:5])
         self.build_blog_index(posts)
 

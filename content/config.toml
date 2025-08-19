@@ -16,3 +16,7 @@ url = "https://creativecommons.org/licenses/by-sa/4.0/"
 
 [pygments]
 style = "default"
+
+[rss]
+title = "sujal.dev's blog"
+description = "Updates from the sujal.dev blog."
