@@ -29,18 +29,30 @@ def inject_js_reloader(func):
 
 
 def route(*args, **kwargs):
+    # noinspection PyProtectedMember
     def decorator(func):
-        func._route_args = args
-        func._route_kwargs = kwargs
+        if not hasattr(func, "_route_args"):
+            func._route_args = []
+        if not hasattr(func, "_route_kwargs"):
+            func._route_kwargs = []
+
+        func._route_args.append(args)
+        func._route_kwargs.append(kwargs)
         return func
 
     return decorator
 
 
 def ws(*args, **kwargs):
+    # noinspection PyProtectedMember
     def decorator(func):
-        func._websocket_args = args
-        func._websocket_kwargs = kwargs
+        if not hasattr(func, "_websocket_args"):
+            func._websocket_args = []
+        if not hasattr(func, "_websocket_kwargs"):
+            func._websocket_kwargs = []
+
+        func._websocket_args.append(args)
+        func._websocket_kwargs.append(kwargs)
         return func
 
     return decorator
@@ -64,25 +76,25 @@ class Server:
         self.register_views()
 
     def register_views(self):
-        [
-            self.app.route(
-                *getattr(method, "_route_args"),
-                **getattr(method, "_route_kwargs")
-            )(method)
-            for attr in dir(self)
-            if inspect.ismethod(method := getattr(self, attr))
-            if "_route_args" in dir(method)
-        ]
+        for attr in dir(self):
+            method = getattr(self, attr)
 
-        [
-            self.app.websocket(
-                *getattr(method, "_websocket_args"),
-                **getattr(method, "_websocket_kwargs")
-            )(method)
-            for attr in dir(self)
-            if inspect.ismethod(method := getattr(self, attr))
-            if "_websocket_args" in dir(method)
-        ]
+            if not inspect.ismethod(method):
+                continue
+
+            method_attrs = dir(method)
+            if not ("_route_args" in method_attrs or "_websocket_args" in method_attrs):
+                continue
+
+            is_route = "_route_args" in method_attrs
+            registrar = self.app.route if is_route else self.app.websocket
+
+            # Having these as a list allows for multiple routes declared on the same view function.
+            args_list = getattr(method, "_route_args" if is_route else "_websocket_args")
+            kwargs_list = getattr(method, "_route_kwargs" if is_route else "_websocket_kwargs")
+
+            for args, kwargs in zip(args_list, kwargs_list):
+                registrar(*args, **kwargs)(method)
 
     async def reload_on_changes(self):
         async for changes in awatch(consts.CONTENT_DIR, consts.SRC_DIR):
