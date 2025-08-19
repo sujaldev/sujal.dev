@@ -1,6 +1,7 @@
 [site]
 fqdn = "sujal.dev"
 tagline = "Work in progress."
+language = "en"
 
 [author]
 name = "Sujal Singh"

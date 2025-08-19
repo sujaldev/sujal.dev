@@ -125,6 +125,10 @@ class Builder:
         with open(CONTENT_DIR / "config.toml", "rb") as file:
             cfg = tomllib.load(file)
 
+        # Default Values
+        cfg["site"]["language"] = cfg["site"].get("language", "en")
+        cfg["pygments"]["style"] = cfg["pygments"].get("style", "default")
+
         if cfg["license"]["start"] != str(current_year := date.today().year):
             cfg["license"]["start"] += f"-{current_year}"
 
