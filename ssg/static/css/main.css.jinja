@@ -202,6 +202,7 @@ nav > span > a {
 }
 
 main {
+    position: relative; /* This is required for asides to be positioned as absolute. */
     display: flex;
     margin-bottom: 2em;
 }
@@ -214,17 +215,6 @@ main > * {
 main > article {
     min-width: 750px;
     max-width: 750px;
-}
-
-@media all and (max-width: 1050px) {
-    main {
-        flex-wrap: wrap;
-    }
-
-    main > article {
-        min-width: initial;
-        max-width: 100%;
-    }
 }
 
 ul {
@@ -297,9 +287,45 @@ td, th {
     margin: 0.5em 0;
 }
 
+#content aside {
+    position: absolute;
+    left: 770px;
+    margin-top: -2em;
+    max-width: 260px;
+    opacity: 0.8;
+    border-top: 1px solid var(--edges);
+    font-size: 0.9em;
+}
+
+#content aside * {
+    max-width: 100%;
+}
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 .placeholder-text {
     color: gray;
     font-style: italic;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+@media all and (max-width: 1050px) {
+    main {
+        flex-wrap: wrap;
+    }
+
+    main > article {
+        min-width: initial;
+        max-width: 100%;
+    }
+
+    #content aside {
+        position: relative;
+        left: 0;
+        margin: 1em 0;
+        max-width: initial;
+        padding: 5px 10px;
+        border-bottom: 1px solid var(--edges);
+    }
 }
