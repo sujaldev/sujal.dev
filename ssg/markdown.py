@@ -1,8 +1,9 @@
 import ast
+import re
 
 from mistletoe import block_token
 from mistletoe.html_renderer import HtmlRenderer
-from mistletoe.block_token import Document, Paragraph
+from mistletoe.block_token import BlockToken, Document, Paragraph, tokenize
 from pygments.formatters.html import HtmlFormatter
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name, guess_lexer
@@ -10,9 +11,50 @@ from pygments.styles import get_style_by_name
 from pygments.util import ClassNotFound
 
 
+class CustomBlock(BlockToken):
+    """
+    This allows for custom blocks with the following syntax:
+
+    ::: block_type
+    content here rendered as normal markdown.
+    :::
+    """
+
+    pattern = re.compile(r"::: *((\S*)[^\n]*)")
+    _open_info = None
+
+    def __init__(self, match):
+        lines, (self.block_type, self.info_string) = match
+        super().__init__(lines, tokenize)
+
+    @classmethod
+    def start(cls, line):
+        match_obj = cls.pattern.match(line)
+        if not match_obj:
+            return False
+
+        info_string, block_type = match_obj.groups()
+        if not block_type:
+            return False
+
+        cls._open_info = block_type, info_string
+        return True
+
+    @classmethod
+    def read(cls, lines):
+        next(lines)
+        line_buffer = []
+        for line in lines:
+            if line.lstrip().startswith(":::"):
+                break
+            line_buffer.append(line)
+        return line_buffer, cls._open_info
+
+
 class BaseRender(HtmlRenderer):
     def __init__(self, *extras, **kwargs):
-        super().__init__(*extras, **kwargs)
+        # noinspection PyTypeChecker
+        super().__init__(CustomBlock, *extras, **kwargs)
 
         # This allows the parsing process to request additional css as it sees fit per document.
         self.additional_stylesheets = []
@@ -123,6 +165,12 @@ class SummaryRenderer(BaseRender):
         return ret
 
 
-class ExtendedRenderer(PygmentsRenderer, SummaryRenderer):
+class CustomBlocksRenderer(BaseRender):
+    def render_custom_block(self, token: CustomBlock):
+        if token.block_type == "aside":
+            return '<aside>{}</aside>'.format(self.render_inner(token))
+
+
+class ExtendedRenderer(PygmentsRenderer, SummaryRenderer, CustomBlocksRenderer):
     def render_markdown(self, markdown: str) -> str:
         return self.render(Document(markdown))
