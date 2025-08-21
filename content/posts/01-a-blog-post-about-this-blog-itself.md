@@ -1,7 +1,7 @@
 ---
 title: "A blog post about this blog itself."
 date: "5 Aug, 2025"
-last_modified: "18 Aug, 2025"
+last_modified: "21 Aug, 2025"
 ---
 
 ## Coming up with the design
@@ -91,10 +91,10 @@ import foo
 print("bar")
 ```
 
-And you can even highlight some lines with:
+And you can even highlight some lines with the `highlight` argument:
 
 ~~~markdown
-```python | linenos | highlight=[101, (109, 111)]
+```python | linenos | highlight=[112, (116, 117)]
 class Vector:
     def __init__(self, x: int, y: int):
         self.x = x
@@ -102,22 +102,12 @@ class Vector:
 
     def __add__(self, other: "Vector"):
         return Vector(self.x + other.x, self.y + other.y)
-
-    def __sub__(self, other: "Vector"):
-        return Vector(self.x - other.x, self.y - other.y)
-
-    def __mul__(self, scalar: int):
-        return Vector(self.x * scalar, self.y * scalar)
-
-    @property
-    def xy(self):
-        return self.x, self.y
 ```
 ~~~
 
 Output:
 
-```python | linenos | highlight=[101, (109, 111)]
+```python | linenos | highlight=[112, (116, 117)]
 class Vector:
     def __init__(self, x: int, y: int):
         self.x = x
@@ -125,22 +115,18 @@ class Vector:
 
     def __add__(self, other: "Vector"):
         return Vector(self.x + other.x, self.y + other.y)
-
-    def __sub__(self, other: "Vector"):
-        return Vector(self.x - other.x, self.y - other.y)
-
-    def __mul__(self, scalar: int):
-        return Vector(self.x * scalar, self.y * scalar)
-
-    @property
-    def xy(self):
-        return self.x, self.y
 ```
 
-Notice something peculiar about the numbers used in the highlight argument? Shouldn't `101` be `7` and the range
-`(109, 111)` be `(15, 17)`? It should, but when you're authoring your post, you probably don't want to count relative to
+Notice something peculiar about the numbers used in the highlight argument? Shouldn't `112` be `2` and the range
+`(116, 117)` be `(6, 7)`? It should, but when you're authoring your post, you probably don't want to count relative to
 where your code fence starts. A much more ergonomic solution is to use the absolute line numbering of your markdown
 file, displayed by whatever editor you're using. And you can also turn this feature off by passing `relative_numbering`.
+
+::: aside
+I've since realized that absolute numbering is a bit stupid. Making edits above the code fence may change the absolute
+numbering, which isn't the case with relative numbering, making it the better default. And most text editors can show
+relative numbering as well.
+:::
 
 I intend to work on asciidoc style `` "`smart quotes"` `` next.
 
