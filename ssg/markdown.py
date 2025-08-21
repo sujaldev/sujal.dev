@@ -51,7 +51,7 @@ class CustomBlock(BlockToken):
         return line_buffer, cls._open_info
 
 
-class BaseRender(HtmlRenderer):
+class BaseRenderer(HtmlRenderer):
     def __init__(self, *extras, **kwargs):
         # noinspection PyTypeChecker
         super().__init__(CustomBlock, *extras, **kwargs)
@@ -61,7 +61,7 @@ class BaseRender(HtmlRenderer):
         self.preview = ""
 
 
-class PygmentsRenderer(BaseRender):
+class PygmentsRenderer(BaseRenderer):
     def __init__(self, frontmatter_linenos_offset=0, code_style="sas", *extras, **kwargs):
         super().__init__(*extras, **kwargs)
 
@@ -152,7 +152,7 @@ class PygmentsRenderer(BaseRender):
         return highlight(code, lexer, self.formatter)
 
 
-class SummaryRenderer(BaseRender):
+class SummaryRenderer(BaseRenderer):
     def __init__(self, *extras, **kwargs):
         super().__init__(*extras, **kwargs)
         self.is_first_paragraph = True
@@ -165,7 +165,7 @@ class SummaryRenderer(BaseRender):
         return ret
 
 
-class CustomBlocksRenderer(BaseRender):
+class CustomBlocksRenderer(BaseRenderer):
     def render_custom_block(self, token: CustomBlock):
         if token.block_type == "aside":
             return '<aside>{}</aside>'.format(self.render_inner(token))
