@@ -48,7 +48,33 @@ files.
 
 ### Markdown++
 
-I've also added some additional syntax in my markdown posts. The following markdown:
+I've also added some additional syntax in my markdown posts.
+
+#### Custom blocks
+
+The following syntax can be used to add blocks of markdown with custom rendering:
+
+```markdown
+::: block_type | arg_1 | arg_2 | arg_n
+contents
+:::
+```
+
+Substituting `aside` in place of `block_type`, asides can be rendered as visible on the right, or below this paragraph
+if you're viewing on a smaller screen size.
+
+::: aside
+Hey there! I'm an aside. I support _all_ the **usual** `markdown` features inside.
+:::
+
+The layout for asides is a bit wrong for now. It does not work for asides that are too close to one another, in which
+case they'll overlap. Also, an aside that is too close to the bottom of the page might overflow to the footer. For now,
+I'll just rely on myself as the author of the post to not reach those edge cases, because the fix I have in mind right
+now will require javascript. Something I'm trying to avoid for layout at least.
+
+#### Code fences with arguments
+
+Line numbers can be enabled on code fences by passing the `linenos` argument to a code fence as below:
 
 ~~~markdown
 ```python | linenos
@@ -57,7 +83,7 @@ print("bar")
 ```
 ~~~
 
-will render as:
+which will render as:
 
 ```python | linenos
 import foo
