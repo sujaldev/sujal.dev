@@ -159,7 +159,7 @@ class SummaryRenderer(BaseRenderer):
 
     def render_paragraph(self, token: Paragraph) -> str:
         ret = super().render_paragraph(token)
-        if self.is_first_paragraph:
+        if self.is_first_paragraph and isinstance(token.parent, Document):
             self.is_first_paragraph = False
             self.preview = ret
         return ret
