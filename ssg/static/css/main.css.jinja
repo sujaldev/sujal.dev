@@ -291,14 +291,14 @@ td, th {
     position: absolute;
     left: 770px;
     margin-top: -2em;
-    max-width: 260px;
+    width: 260px;
     opacity: 0.8;
     border-top: 1px solid var(--edges);
     font-size: 0.9em;
 }
 
 #content aside * {
-    max-width: 100%;
+    max-width: 100%; /* Don't remove, this makes large images fit inside the aside by default. */
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -324,7 +324,7 @@ td, th {
         position: relative;
         left: 0;
         margin: 1em 0;
-        max-width: initial;
+        width: initial;
         padding: 5px 10px;
         border-bottom: 1px solid var(--edges);
     }
