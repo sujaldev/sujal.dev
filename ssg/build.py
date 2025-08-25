@@ -2,6 +2,7 @@ import csv
 import functools
 import hashlib
 import shutil
+import subprocess
 import tomllib
 from datetime import date
 from mimetypes import types_map as mimetype_map
@@ -266,6 +267,9 @@ class Builder:
             else:
                 shutil.copyfile(file, dst_path)
 
+        if shutil.which("svgo"):
+            subprocess.run(["svgo", "--multipass", "-r", str(BUILD_DIR)])
+
     @handle_output
     def build_home(self, recent_posts: PostList) -> Tuple[str | Path, str]:
         content = None
@@ -324,7 +328,6 @@ class Builder:
         fg.atom_file(BUILD_DIR / "atom.xml", pretty=True)
 
         return fg.rss_str(pretty=True), fg.atom_str(pretty=True)
-
 
     def build(self):
         if BUILD_DIR.exists():
