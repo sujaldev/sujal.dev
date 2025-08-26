@@ -88,13 +88,13 @@ class PygmentsRenderer(BaseRenderer):
 
         Where everything after the starting triple backticks is optional. Parameters are case-insensitive.
         The `highlight` argument must be of type `List[int | Tuple[int, int]]`, where the Tuple serves as a range.
-        The line numbers use absolute numbering from the original markdown file. This can be disabled by passing the
-        `relative_numbering` argument.
+        The line numbers use relative numbering by default (relative to the line where your code fence starts). This can
+        be disabled by passing the `absolute_numbering` argument.
         """
         args = {
             "linenos": False,
             "highlight": [],
-            "relative_numbering": False,
+            "absolute_numbering": False,
         }
 
         if not hasattr(token, "info_string"):
@@ -106,28 +106,29 @@ class PygmentsRenderer(BaseRenderer):
             if arg == "linenos":
                 args["linenos"] = True
 
-            elif arg == "relative_numbering":
-                args["relative_numbering"] = True
+            elif arg == "absolute_numbering":
+                args["absolute_numbering"] = True
 
             elif arg.startswith("highlight"):
                 lines = ast.literal_eval(arg.split("=")[1].strip())
                 if isinstance(lines, list):
                     args["highlight"] = lines
 
-        hl_lines = []
-        # noinspection PyUnresolvedReferences
-        offset = 0 if args["relative_numbering"] else token.line_number + self.frontmatter_linenos_offset
+        if args["absolute_numbering"]:
+            # noinspection PyUnresolvedReferences
+            offset = token.line_number + self.frontmatter_linenos_offset
 
-        for line in args["highlight"]:
-            if isinstance(line, tuple) or isinstance(line, list):
-                hl_lines.extend(list(range(
-                    line[0] - offset,
-                    line[1] - offset + 1
-                )))
-            elif isinstance(line, int):
-                hl_lines.append(line - offset)
+            hl_lines = []
+            for line in args["highlight"]:
+                if isinstance(line, tuple) or isinstance(line, list):
+                    hl_lines.extend(list(range(
+                        line[0] - offset,
+                        line[1] - offset + 1
+                    )))
+                elif isinstance(line, int):
+                    hl_lines.append(line - offset)
 
-        args["highlight"] = hl_lines
+            args["highlight"] = hl_lines
 
         return args
 

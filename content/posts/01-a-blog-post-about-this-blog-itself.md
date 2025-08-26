@@ -94,7 +94,7 @@ print("bar")
 And you can even highlight some lines with the `highlight` argument:
 
 ~~~markdown
-```python | linenos | highlight=[112, (116, 117)]
+```python | linenos | highlight=[2, (6, 7)]
 class Vector:
     def __init__(self, x: int, y: int):
         self.x = x
@@ -107,7 +107,7 @@ class Vector:
 
 Output:
 
-```python | linenos | highlight=[112, (116, 117)]
+```python | linenos | highlight=[112, (116, 117)] | absolute_numbering]
 class Vector:
     def __init__(self, x: int, y: int):
         self.x = x
@@ -117,15 +117,13 @@ class Vector:
         return Vector(self.x + other.x, self.y + other.y)
 ```
 
-Notice something peculiar about the numbers used in the highlight argument? Shouldn't `112` be `2` and the range
-`(116, 117)` be `(6, 7)`? It should, but when you're authoring your post, you probably don't want to count relative to
-where your code fence starts. A much more ergonomic solution is to use the absolute line numbering of your markdown
-file, displayed by whatever editor you're using. And you can also turn this feature off by passing `relative_numbering`.
+The highlight argument uses relative numbering by default (relative to the line where the code fence begins). It is
+possible to use absolute numbering as displayed in your text editor by passing `absolute_numbering`.
 
 ::: aside
-I've since realized that absolute numbering is a bit stupid. Making edits above the code fence may change the absolute
-numbering, which isn't the case with relative numbering, making it the better default. And most text editors can show
-relative numbering as well.
+Initially I had `absolute_numbering` as the default, but then I realized making edits above the code fence may change
+the absolute numbering. This isn't the case with relative numbering, making it the better default. And most text
+editors can show relative numbering as well.
 :::
 
 I intend to work on asciidoc style `` "`smart quotes"` `` next.
