@@ -172,6 +172,23 @@ class CustomBlocksRenderer(BaseRenderer):
             return '<aside>{}</aside>'.format(self.render_inner(token))
 
 
-class ExtendedRenderer(PygmentsRenderer, SummaryRenderer, CustomBlocksRenderer):
+class TOCRenderer(BaseRenderer):
+    MAX_DEPTH = 4
+
+    def __init__(self, *extras, **kwargs):
+        super().__init__(*extras, **kwargs)
+        self.toc = []
+
+    def render_heading(self, token: block_token.Heading) -> str:
+        ret = super().render_heading(token)
+        if token.level <= self.MAX_DEPTH:
+            self.toc.append({
+                "level": token.level,
+                "content": re.sub(r"^<.*>(.*)</.*>$", r"\g<1>", ret)
+            })
+        return ret
+
+
+class ExtendedRenderer(PygmentsRenderer, SummaryRenderer, CustomBlocksRenderer, TOCRenderer):
     def render_markdown(self, markdown: str) -> str:
         return self.render(Document(markdown))
