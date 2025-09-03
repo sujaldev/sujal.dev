@@ -145,12 +145,12 @@ header a:hover {
     min-width: 20px;
 }
 
-nav {
+header nav {
     display: flex;
     padding-left: 15px;
 }
 
-nav > span {
+header nav > span {
     position: relative;
     padding: 10px 5% 4px;
 }
@@ -161,7 +161,7 @@ nav > span {
     }
 }
 
-nav > span > a {
+header nav > span > a {
     font-weight: normal;
 }
 
@@ -272,6 +272,33 @@ td, th {
     padding: 8px 10px;
     border: 1px solid var(--edges);
 }
+
+#toc {
+    counter-reset: item;
+}
+
+#toc a {
+    text-decoration: none;
+    counter-increment: item;
+}
+
+#toc a::before {
+    content: counters(item, ".") " ";
+}
+
+#toc > details > div > a::before {
+    content: counter(item) " ";
+}
+
+#toc details {
+    padding-left: 1em;
+    counter-reset: item;
+}
+
+#toc > details {
+    padding: 0;
+}
+
 
 #content h1, h2, h3, h4, h5, h6 {
     margin-top: 0.75em;

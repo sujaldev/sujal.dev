@@ -172,23 +172,57 @@ class CustomBlocksRenderer(BaseRenderer):
             return '<aside>{}</aside>'.format(self.render_inner(token))
 
 
+class Node:
+    def __init__(self, content: str | None, level: int):
+        self.content = content
+        self.level = level
+
+        self.parent = None
+        self.children = []
+
+    def add_child(self, child: "Node"):
+        self.children.append(child)
+        child.parent = self
+
+    def __repr__(self):
+        val = self.content if self.content else "<Root>"
+        children = ", ".join([str(child) for child in self.children])
+        return val + ("->[" + children + "]" if children else "")
+
+
 class TOCRenderer(BaseRenderer):
     MAX_DEPTH = 4
 
     def __init__(self, *extras, **kwargs):
         super().__init__(*extras, **kwargs)
-        self.toc = []
+        self.toc = Node(None, 0)
+        self._prev_node = self.toc
 
     def render_heading(self, token: block_token.Heading) -> str:
         ret = super().render_heading(token)
-        if token.level <= self.MAX_DEPTH:
-            self.toc.append({
-                "level": token.level,
-                "content": re.sub(r"^<.*>(.*)</.*>$", r"\g<1>", ret)
-            })
+
+        if token.level > self.MAX_DEPTH:
+            return ret
+
+        curr_node = Node(
+            re.sub(r"^<.*>(.*)</.*>$", r"\g<1>", ret),
+            token.level
+        )
+
+        if curr_node.level < self._prev_node.level:
+            while self._prev_node.level >= curr_node.level:
+                self._prev_node = self._prev_node.parent
+        elif curr_node.level == self._prev_node.level:
+            self._prev_node = self._prev_node.parent
+
+        self._prev_node.add_child(curr_node)
+        self._prev_node = curr_node
+
         return ret
 
 
 class ExtendedRenderer(PygmentsRenderer, SummaryRenderer, CustomBlocksRenderer, TOCRenderer):
     def render_markdown(self, markdown: str) -> str:
-        return self.render(Document(markdown))
+        ret = self.render(Document(markdown))
+        print(self.toc)
+        return ret

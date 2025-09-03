@@ -212,6 +212,7 @@ class Builder:
             code_style=self.env.globals["pygments"]["style"]
         )
         post["html"] = renderer.render_markdown(post.content)
+        post["toc"] = renderer.toc
         post["preview"] = renderer.preview
         post["additional_stylesheets"] = renderer.additional_stylesheets
 
@@ -295,6 +296,7 @@ class Builder:
         html = self.env.get_template("post.jinja").render(
             post=post,
             content=post["html"],
+            toc=post["toc"],
             additional_stylesheets=post["additional_stylesheets"]
         )
 

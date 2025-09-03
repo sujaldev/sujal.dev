@@ -1,4 +1,19 @@
 {% extends "two-column.jinja" %}
+
+{% macro renderToC(node) %}
+    {% if not node.children %}
+        <div><a href="#">{{ node.content }}</a></div>
+    {% endif %}
+    {% if node.children %}
+        <details open>
+            <summary><a href="#">{{ node.content }}</a></summary>
+            {% for child in node.children %}
+                {{ renderToC(child) }}
+            {% endfor %}
+        </details>
+    {% endif %}
+{% endmacro %}
+
 {% block title %}{{ post.title }}{% endblock %}
 {% block additional_stylesheets %}
     {% for stylesheet in additional_stylesheets %}
@@ -11,5 +26,13 @@
     <p class="post-date">
         Published on {{ post.date }}{% if post.last_modified %} &centerdot; Updated {{ post.last_modified }}{% endif %}
     </p>
+    <nav aria-label="Table of Contents" id="toc">
+        <details open>
+            <summary>Table of Contents</summary>
+            {% for node in toc.children %}
+                {{ renderToC(node) }}
+            {% endfor %}
+        </details>
+    </nav>
     {{ content | safe }}
 {% endblock %}
