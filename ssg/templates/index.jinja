@@ -10,21 +10,17 @@
     {% endif %}
 {% endblock %}
 {% block right %}
-    {% if recent_posts %}
-        <table width="100%" style="margin-top: 2em">
-            <thead>
-            <tr>
-                <th>Recent Posts</th>
-            </tr>
-            </thead>
-            <tbody>
+    <div id="recent-posts">
+        <p>Recent Posts</p>
+        {% if recent_posts %}
             {% for post in recent_posts %}
-                <tr><td><a href="{{ post.url }}">{{ post.title }}</a></td></tr>
+                <div>
+                    <p><a href="{{ post.url }}">{{ post.title }}</a></p>
+                    <p>{{ "Published on " + post.date if post.date else "Not yet published..." }}</p>
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <h2>Recent Posts</h2>
-        <p class="placeholder-text">There are no posts yet.</p>
-    {% endif %}
+        {% else %}
+            <p class="placeholder-text">There are no posts yet.</p>
+        {% endif %}
+    </div>
 {% endblock %}
