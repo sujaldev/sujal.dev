@@ -114,21 +114,20 @@ class PygmentsRenderer(BaseRenderer):
                 if isinstance(lines, list):
                     args["highlight"] = lines
 
-        if args["absolute_numbering"]:
-            # noinspection PyUnresolvedReferences
-            offset = token.line_number + self.frontmatter_linenos_offset
+        # noinspection PyUnresolvedReferences
+        offset = token.line_number + self.frontmatter_linenos_offset if args["absolute_numbering"] else 0
 
-            hl_lines = []
-            for line in args["highlight"]:
-                if isinstance(line, tuple) or isinstance(line, list):
-                    hl_lines.extend(list(range(
-                        line[0] - offset,
-                        line[1] - offset + 1
-                    )))
-                elif isinstance(line, int):
-                    hl_lines.append(line - offset)
+        hl_lines = []
+        for line in args["highlight"]:
+            if isinstance(line, tuple) or isinstance(line, list):
+                hl_lines.extend(list(range(
+                    line[0] - offset,
+                    line[1] - offset + 1
+                )))
+            elif isinstance(line, int):
+                hl_lines.append(line - offset)
 
-            args["highlight"] = hl_lines
+        args["highlight"] = hl_lines
 
         return args
 

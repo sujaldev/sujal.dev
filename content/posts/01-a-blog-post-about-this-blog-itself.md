@@ -107,7 +107,7 @@ class Vector:
 
 Output:
 
-```python | linenos | highlight=[112, (116, 117)] | absolute_numbering]
+```python | linenos | highlight=[2, (6, 7)]
 class Vector:
     def __init__(self, x: int, y: int):
         self.x = x
