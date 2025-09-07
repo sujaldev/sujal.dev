@@ -209,7 +209,8 @@ class Builder:
 
         renderer = ExtendedRenderer(
             frontmatter_linenos_offset=post["frontmatter_lineno_offset"],
-            code_style=self.env.globals["pygments"]["style"]
+            code_style=self.env.globals["pygments"]["style"],
+            section_numbering=post.get("section_numbering", False),
         )
         post["html"] = renderer.render_markdown(post.content)
         post["preview"] = renderer.preview

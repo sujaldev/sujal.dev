@@ -175,18 +175,52 @@ class CustomBlocksRenderer(BaseRenderer):
 class TOCRenderer(BaseRenderer):
     MAX_DEPTH = 4
 
-    def __init__(self, *extras, **kwargs):
+    def __init__(self, section_numbering=False, *extras, **kwargs):
         super().__init__(*extras, **kwargs)
+        self.section_numbering = section_numbering
+        self.counter_stack = []
+        self.last_level = None
         self.toc = []
+
+    def update_counters(self, curr_level):
+        if self.last_level is None:
+            # The top-level heading isn't necessarily h1 (blog posts use h2 as the top-most heading).
+            self.last_level = curr_level - 1
+
+        if self.last_level < curr_level:
+            self.counter_stack.extend([1] * (curr_level - self.last_level))
+        elif self.last_level == curr_level:
+            self.counter_stack[-1] += 1
+        else:
+            self.counter_stack = self.counter_stack[:-(self.last_level - curr_level)]
+            self.counter_stack[-1] += 1
+
+        self.last_level = curr_level
 
     def render_heading(self, token: block_token.Heading) -> str:
         ret = super().render_heading(token)
-        if token.level <= self.MAX_DEPTH:
-            self.toc.append({
-                "level": token.level,
-                "content": re.sub(r"^<.*>(.*)</.*>$", r"\g<1>", ret)
-            })
-        return ret
+        if token.level > self.MAX_DEPTH:
+            return ret
+
+        match = re.match(r"(^<.*>)(.*)(</.*>$)", ret)
+        open_tag, content, close_tag = match.group(1), match.group(2), match.group(3)
+
+        if self.section_numbering:
+            self.update_counters(token.level)
+            section_number = ".".join([str(c) for c in self.counter_stack])
+            if section_number.isdigit():
+                # Adds a trailing dot for top-level headings.
+                # Example: "1 Heading" becomes "1. Heading", but "1.1 Sub Heading" remains as is.
+                section_number += "."
+
+            content = f"<span class=section-numbers>{section_number}</span>" + content
+
+        self.toc.append({
+            "level": token.level,
+            "content": content
+        })
+
+        return open_tag + content + close_tag
 
 
 class ExtendedRenderer(PygmentsRenderer, SummaryRenderer, CustomBlocksRenderer, TOCRenderer):
