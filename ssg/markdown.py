@@ -171,6 +171,21 @@ class CustomBlocksRenderer(BaseRenderer):
             return '<aside>{}</aside>'.format(self.render_inner(token))
 
 
+class HeadingNode:
+    def __init__(self, content: str = ""):
+        self.content = content
+        self.children = []
+        self.parent = None
+
+    def add_child(self, child: "HeadingNode"):
+        self.children.append(child)
+        child.parent = self
+
+    def add_sibling(self, child: "HeadingNode"):
+        self.parent.children.append(child)
+        child.parent = self.parent
+
+
 class TOCRenderer(BaseRenderer):
     MAX_DEPTH = 4
 
@@ -179,22 +194,58 @@ class TOCRenderer(BaseRenderer):
         self.section_numbering = section_numbering
         self.counter_stack = []
         self.last_level = None
-        self.toc = []
+        self.toc = HeadingNode()
+        self.last_parent = self.toc
 
-    def update_counters(self, curr_level):
+    @property
+    def current_section_number(self) -> str:
+        section_number = ".".join([str(c) for c in self.counter_stack])
+        if section_number.isdigit():
+            # Adds a trailing dot for top-level headings.
+            # Example: "1 Heading" becomes "1. Heading", but "1.1 Sub Heading" remains as is.
+            section_number += "."
+        return section_number
+
+    def update_tree_and_counters(self, content: str, curr_level: int):
         if self.last_level is None:
             # The top-level heading isn't necessarily h1 (blog posts use h2 as the top-most heading).
             self.last_level = curr_level - 1
 
+        level_diff = abs(curr_level - self.last_level)
+        curr_node = HeadingNode(content)
         if self.last_level < curr_level:
-            self.counter_stack.extend([1] * (curr_level - self.last_level))
+            self.counter_stack.extend([1] * level_diff)
+
+            # Phantom parents for when you skip more one or more heading levels.
+            # Not sure what's the "correct" behaviour to implement here, but my reasoning with phantom parents is that,
+            # if you see empty nodes in the table of contents, it'll serve as a soft warning to "correct" the mistake.
+            for _ in range(1, level_diff):
+                phantom_parent = HeadingNode()
+                self.last_parent.add_child(phantom_parent)
+                self.last_parent = phantom_parent
+
+            self.last_parent.add_child(curr_node)
+
         elif self.last_level == curr_level:
             self.counter_stack[-1] += 1
+
+            self.last_parent.add_sibling(curr_node)
+
         else:
-            self.counter_stack = self.counter_stack[:-(self.last_level - curr_level)]
+            # FIXME: This will break for elements with level greater than the determined top level.
+            # Example: if the top-most items are of heading level 2, then a heading level 1 later in the document will
+            # break this block.
+
+            self.counter_stack = self.counter_stack[:-level_diff]
             self.counter_stack[-1] += 1
 
+            for _ in range(level_diff):
+                self.last_parent = self.last_parent.parent
+
+            self.last_parent.add_sibling(curr_node)
+
         self.last_level = curr_level
+        self.last_parent = curr_node
 
     def render_heading(self, token: block_token.Heading) -> str:
         ret = super().render_heading(token)
@@ -204,20 +255,9 @@ class TOCRenderer(BaseRenderer):
         match = re.match(r"(^<.*>)(.*)(</.*>$)", ret)
         open_tag, content, close_tag = match.group(1), match.group(2), match.group(3)
 
+        self.update_tree_and_counters(content, token.level)
         if self.section_numbering:
-            self.update_counters(token.level)
-            section_number = ".".join([str(c) for c in self.counter_stack])
-            if section_number.isdigit():
-                # Adds a trailing dot for top-level headings.
-                # Example: "1 Heading" becomes "1. Heading", but "1.1 Sub Heading" remains as is.
-                section_number += "."
-
-            content = f"<span class=section-numbers>{section_number}</span>" + content
-
-        self.toc.append({
-            "level": token.level,
-            "content": content
-        })
+            content = f"<span class=section-numbers>{self.current_section_number} </span>" + content
 
         return open_tag + content + close_tag
 
