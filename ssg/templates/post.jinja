@@ -1,9 +1,43 @@
 {% extends "two-column.jinja" %}
+{% macro build_toc(start_node) %}
+    <li {{-' class=collapsible' if start_node.children else "" -}}>
+        <div>
+            <div></div>
+            <a>{{ start_node.content | safe }}</a>
+        </div>
+        {% if start_node.children %}
+            <ul>
+                {% for child in start_node.children %}
+                    {{ build_toc(child) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
 {% block title %}{{ post.title }}{% endblock %}
 {% block additional_stylesheets %}
     {% for stylesheet in additional_stylesheets %}
         <link rel="stylesheet" href="{{ static_url("css/" + stylesheet) }}">
     {% endfor %}
+{% endblock %}
+{% block left_sidebar %}
+    <nav id="sidebar-toc">
+        <p class="regular-title"><strong>Table of Contents</strong></p>
+        <ul>
+            {% for child in post.toc.children %}
+                {{ build_toc(child) }}
+            {% endfor %}
+        </ul>
+    </nav>
+    <script>
+        document.querySelectorAll("#sidebar-toc li.collapsible > div > div").forEach((elem) => {
+            let gp = elem.parentElement.parentElement;
+            let cls = "collapsed";
+            elem.onclick = () => {
+                gp.classList.contains(cls) ? gp.classList.remove(cls) : gp.classList.add(cls);
+            }
+        })
+    </script>
 {% endblock %}
 {% set selected_tab = "blog" %}
 {% block left %}

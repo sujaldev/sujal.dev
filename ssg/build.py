@@ -215,6 +215,7 @@ class Builder:
         post["html"] = renderer.render_markdown(post.content)
         post["preview"] = renderer.preview
         post["additional_stylesheets"] = renderer.additional_stylesheets
+        post["toc"] = renderer.toc
 
         return post.to_dict()
 
