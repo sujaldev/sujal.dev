@@ -2,6 +2,8 @@
 {#{% include "font-faces.css.jinja" %}#}
 
 :root {
+    --content-width: 1050px;
+    --sidebar-width: calc((100vw - var(--content-width)) / 2);
     --background: #f4f4f4;
     --edges: #ccc;
     --light-text: #555;
@@ -31,12 +33,11 @@
 }
 
 body {
-    max-width: 1050px;
-    margin: 0 auto;
     font-family: "Libertinus Sans", "Helvetica", sans-serif;
     font-size: 18px;
     line-height: 1.4;
     background: var(--background);
+    display: flex;
 }
 
 h1, h2, h3 {
@@ -84,6 +85,18 @@ code {
     top: 0;
 }
 
+#left-sidebar, #right-sidebar {
+    position: relative;
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    min-height: 100vh;
+    order: 0;
+}
+
+#right-sidebar {
+    order: 2;
+}
+
 #root {
     min-height: 100vh;
 
@@ -93,6 +106,11 @@ code {
 
     display: flex;
     flex-direction: column;
+
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    order: 1;
 }
 
 header {
@@ -336,6 +354,16 @@ td, th {
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
+
+@media all and (max-width: 1580px) {
+    #left-sidebar {
+        display: none;
+    }
+
+    #right-sidebar {
+        display: none;
+    }
+}
 
 @media all and (max-width: 1050px) {
     main {
