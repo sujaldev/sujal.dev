@@ -23,8 +23,8 @@
 
 </head>
 <body>
+<a id="skip" href="#content">Skip to main content</a>
 <div id="root">
-    <a id="skip" href="#content">Skip to main content</a>
     <header>
         <div id="title">
             <a href="https://{{ site.fqdn }}/"><b>{{ site.fqdn }}</b></a>
@@ -66,5 +66,13 @@
         </p>
     </footer>
 </div>
+<aside id="left-sidebar">
+    {% block left_sidebar %}
+    {% endblock %}
+</aside>
+<aside id="right-sidebar">
+    {% block right_sidebar %}
+    {% endblock %}
+</aside>
 </body>
 </html>
