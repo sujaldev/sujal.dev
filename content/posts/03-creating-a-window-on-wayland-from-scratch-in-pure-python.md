@@ -3,8 +3,8 @@ title: "Creating a Window on Wayland from Scratch in Pure Python."
 draft: true
 ---
 
-Everyone seems to be talking about Wayland nowadays. Some people praise it like it cures all cancer, while others are
-convinced it's the work of the devil. I had little context to form an opinion, and figuring it out seemed like a fun
+Everyone seems to be talking about Wayland nowadays. Some people praise it like it will cure all cancer, while others
+are convinced it's the work of the devil. I had little context to form an opinion, and figuring it out seemed like a fun
 thing to do. So let's write a Wayland client using nothing but Python's standard library.
 
 ## What does Wayland do?
@@ -22,9 +22,9 @@ one another. But how do you talk to a Wayland compositor?
 
 ## Making a Connection to the Wayland Compositor
 
-To talk to a Wayland compositor, a client can use a Unix domain socket. These are local sockets that allow processes on
-the same machine to talk to one another efficiently (they have another trick up their sleeve you'll see later on).
-Let's start writing our first lines of code. We can use the socket library to create a Unix domain socket:
+A client can use a Unix domain stream socket to communicate with a Wayland compositor. These are local sockets that
+allow processes on the same host to talk to one another efficiently (they have another trick up their sleeve you'll see
+later on). Let's start writing our first lines of code. We can use the socket module to create a Unix domain socket:
 
 ```python | linenos
 import socket
@@ -36,8 +36,8 @@ def setup_socket():
     return sock
 ```
 
-This gives us a Unix domain socket, but we haven't yet made a connection to the Wayland compositor. To find the path
-required to connect to the Unix socket, we can do the following:
+This creates the socket, but we haven't yet made a connection to the Wayland compositor. To find the path required to
+connect to the compositor, we can do the following:
 
 ```python | linenos | highlight=[1, (8, 12)]
 import os
@@ -47,18 +47,19 @@ import socket
 def setup_socket():
     sock = socket.socket(family=socket.AF_UNIX, type=socket.SOCK_STREAM, proto=0)
 
-    name = os.getenv(
-        "XDG_RUNTIME_DIR", default=f"/run/user/{os.getuid()}"
-    )
-    name += "/" + os.getenv("WAYLAND_DISPLAY", default="wayland-0")
+    name = os.getenv("WAYLAND_DISPLAY", default="wayland-0")
+    if not name.startswith("/"):
+        xdg_runtime_dir = os.getenv("XDG_RUNTIME_DIR", default=f"/run/user/{os.getuid()}")
+        name = f"{xdg_runtime_dir}/{name}"
     sock.connect(name)
 
     return sock
 ```
 
-First, we check if the `XDG_RUNTIME_DIR` environment variable is set. If not, we'll assume a default value of
-"/run/user/\<user-id>". Next, we append the value of `WAYLAND_DISPLAY`, with a default value of "wayland-0". We have the
-path we need, so we call `connect()` on the socket we created earlier.
+First, we check if the `WAYLAND_DISPLAY` environment variable is set. If not, we'll assume a default value of
+"wayland-0". Next, if the `WAYLAND_DISPLAY` variable is not an absolute path, we prepend the `XDG_RUNTIME_DIR`
+environment variable to this value, with a default value set to "/run/user/\<user-id>". We have the path we need, so we
+call `connect()` on the socket we created earlier.
 
 We are now ready to talk to the compositor. We just need to figure out what to say.
 
