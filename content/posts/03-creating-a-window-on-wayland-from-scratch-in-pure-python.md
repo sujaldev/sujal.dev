@@ -71,3 +71,8 @@ Wayland is defined using XML files that you can parse and even read like prose.
 ::: aside
 I hadn't seen a protocol defined in this manner before, and I must say it's a neat trick.
 :::
+
+Wayland is an object-oriented protocol, everything we'll do will be associated to an object, which is made abundantly
+clear by the protocol message format:
+
+![Wire Format](/static/images/wayland-wire-format.svg "Wire Format")
