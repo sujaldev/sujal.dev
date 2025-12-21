@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="600"
+   height="300"
+   viewBox="0 0 158.74999 79.375007"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="wayland-wire-format.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.7975"
+     inkscape:cx="102.19436"
+     inkscape:cy="121.00313"
+     inkscape:window-width="1920"
+     inkscape:window-height="1022"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1" />
+  <g
+     id="bit-markers"
+     inkscape:label="bit-markers">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#252525;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       x="5.1001582"
+       y="14.232067"
+       id="0"
+       inkscape:label="0"><tspan
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#252525;fill-opacity:1;stroke:none;stroke-width:0.529167"
+         x="5.1001582"
+         y="14.232067">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#252525;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       x="63.859669"
+       y="14.232067"
+       id="16"
+       inkscape:label="16"><tspan
+         id="tspan1-5"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#252525;fill-opacity:1;stroke:none;stroke-width:0.529167"
+         x="63.859669"
+         y="14.232067">16</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#252525;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       x="122.8"
+       y="14.232067"
+       id="32"
+       inkscape:label="32"><tspan
+         id="tspan1-5-7"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#252525;fill-opacity:1;stroke:none;stroke-width:0.529167"
+         x="122.8"
+         y="14.232067">32</tspan></text>
+  </g>
+  <g
+     id="object-id"
+     inkscape:label="object-id">
+    <rect
+       style="fill:#f3e2ca;fill-opacity:1;stroke:#4a3413;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="obj-id-box"
+       width="118.53333"
+       height="12.7"
+       x="6.879168"
+       y="17.200302"
+       inkscape:label="obj-id-box" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.9389px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       x="76.31543"
+       y="24.871843"
+       id="obj-id-text"
+       inkscape:label="obj-id-text"><tspan
+         id="tspan26"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke-width:0.529167"
+         x="66.145836"
+         y="24.871843">Object ID</tspan></text>
+  </g>
+  <g
+     id="size"
+     inkscape:label="size">
+    <rect
+       style="fill:#f3e2ca;fill-opacity:1;stroke:#4a3413;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="size-box"
+       width="59.266666"
+       height="12.7"
+       x="6.879168"
+       y="29.900301"
+       inkscape:label="size-box" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.9389px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       x="60.065556"
+       y="37.617661"
+       id="size-text"
+       inkscape:label="size-text"><tspan
+         id="tspan26-7"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke-width:0.529167"
+         x="36.519737"
+         y="37.617661">Message Size (bytes)</tspan></text>
+  </g>
+  <g
+     id="opcode"
+     inkscape:label="opcode">
+    <rect
+       style="fill:#f3e2ca;fill-opacity:1;stroke:#4a3413;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="opcode-box"
+       width="59.266659"
+       height="12.7"
+       x="66.145836"
+       y="29.900301"
+       inkscape:label="opcode-box" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.9389px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       x="121.44307"
+       y="37.627308"
+       id="opcode-text"
+       inkscape:label="opcode-text"><tspan
+         id="tspan26-7-3"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke-width:0.529167"
+         x="95.70079"
+         y="37.627308">Request/Event Opcode</tspan></text>
+  </g>
+  <g
+     id="payload"
+     inkscape:label="payload">
+    <rect
+       style="fill:#d7f2c9;fill-opacity:1;stroke:#4a3413;stroke-width:0.529168;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="payload-box"
+       width="118.53333"
+       height="25.929165"
+       x="6.8791709"
+       y="42.6003"
+       inkscape:label="payload-box" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.9389px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#372e1a;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       x="66.062637"
+       y="50.476036"
+       id="payload-text"
+       inkscape:label="payload-text"><tspan
+         id="tspan26-1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke-width:0.529167"
+         x="66.062637"
+         y="50.476036">Payload</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke-width:0.529167"
+         x="66.062637"
+         y="56.649662"
+         id="tspan27">⋮</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;text-anchor:middle;fill:#372e1a;fill-opacity:1;stroke-width:0.529167"
+         x="66.062637"
+         y="63.238934"
+         id="tspan28">(Size - 8) Bytes</tspan></text>
+  </g>
+  <g
+     id="header"
+     inkscape:label="header">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.9389px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#252525;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       x="139.74785"
+       y="31.800274"
+       id="header-text"
+       inkscape:label="header-text"><tspan
+         id="tspan26-6"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#252525;fill-opacity:1;stroke-width:0.529167"
+         x="139.74785"
+         y="31.800274">Header</tspan></text>
+    <path
+       style="fill:none;fill-opacity:1;stroke:#252525;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 128.45522,17.33259 c 12.22903,0 -2.32484,10.583332 9.90419,12.7 -12.22903,2.116664 2.32484,12.7 -9.90419,12.700001"
+       id="curly-brace"
+       inkscape:label="curly-brace" />
+  </g>
+</svg>

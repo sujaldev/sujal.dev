@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="800"
+   height="500"
+   viewBox="0 0 211.66666 132.29167"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="wayland.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.19625"
+     inkscape:cx="400"
+     inkscape:cy="250.36573"
+     inkscape:window-width="1920"
+     inkscape:window-height="1022"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="kernel" />
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ColoredDot"
+       refX="0"
+       refY="0"
+       orient="auto"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.45)"
+         style="fill:context-fill;fill-rule:evenodd;stroke:context-stroke;stroke-width:2"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="path20" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Triangle-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135-7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Triangle-2-4"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135-7-8" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ColoredDot-7"
+       refX="0"
+       refY="0"
+       orient="auto"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.45)"
+         style="fill:context-fill;fill-rule:evenodd;stroke:context-stroke;stroke-width:2"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="path20-1" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Triangle-2-1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135-7-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ColoredDot-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.45)"
+         style="fill:context-fill;fill-rule:evenodd;stroke:context-stroke;stroke-width:2"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="path20-15" />
+    </marker>
+  </defs>
+  <g
+     id="kernel"
+     inkscape:label="kernel">
+    <rect
+       style="fill:#644700;fill-opacity:1;stroke:#4b3700;stroke-width:0.529167;stroke-dasharray:none;stroke-opacity:1"
+       id="kernel-bg"
+       width="79.375"
+       height="21.166666"
+       x="66.145836"
+       y="98.696358"
+       inkscape:label="kernel-bg" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       x="95.108894"
+       y="111.7068"
+       id="text1-6"
+       inkscape:label="kernel-text"><tspan
+         id="tspan1-2"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         x="95.108894"
+         y="111.7068">Kernel</tspan></text>
+  </g>
+  <g
+     id="compositor"
+     transform="translate(9.1568349,32.571148)"
+     inkscape:label="compositor">
+    <rect
+       style="fill:#ffbc00;fill-opacity:1;stroke:#d59d00;stroke-width:0.529167;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="compositor-bg"
+       width="79.375"
+       height="21.166666"
+       x="56.988998"
+       y="32.147602"
+       ry="0"
+       inkscape:label="compositor-bg" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffbc00;fill-opacity:1;stroke-width:0.264583"
+       x="62.495834"
+       y="44.357243"
+       id="compositor-text"
+       inkscape:label="compositor-text"><tspan
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         x="62.495834"
+         y="44.357243">Wayland Compositor</tspan></text>
+  </g>
+  <g
+     id="g69"
+     inkscape:label="window-1">
+    <rect
+       style="fill:#0094fe;fill-opacity:1;stroke:#0072c8;stroke-width:0.369818;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5-2-5"
+       width="39.31768"
+       height="26.088514"
+       x="33.627529"
+       y="17.666151"
+       inkscape:label="w1-box" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       x="37.301991"
+       y="33.13752"
+       id="text1-6-6-4"
+       inkscape:label="w1-text"><tspan
+         id="tspan1-2-1-7"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         x="37.301991"
+         y="33.13752">Window 1</tspan></text>
+  </g>
+  <g
+     id="g70"
+     inkscape:label="window-2">
+    <rect
+       style="fill:#0094fe;fill-opacity:1;stroke:#0072c8;stroke-width:0.369818;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5-2"
+       width="39.31768"
+       height="26.088514"
+       x="86.174492"
+       y="17.666151"
+       inkscape:label="w2-box" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       x="89.450317"
+       y="33.13752"
+       id="text1-6-6"
+       inkscape:label="w2-text"><tspan
+         id="tspan1-2-1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         x="89.450317"
+         y="33.13752">Window 2</tspan></text>
+  </g>
+  <g
+     id="g70-4"
+     transform="translate(52.546859)"
+     inkscape:label="window-3">
+    <rect
+       style="fill:#0094fe;fill-opacity:1;stroke:#0072c8;stroke-width:0.369818;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5-2-7"
+       width="39.31768"
+       height="26.088514"
+       x="86.174492"
+       y="17.666151"
+       inkscape:label="w3-box" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       x="89.432678"
+       y="33.133995"
+       id="text1-6-6-44"
+       inkscape:label="w3-text"><tspan
+         id="tspan1-2-1-3"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         x="89.432678"
+         y="33.133995">Window 3</tspan></text>
+  </g>
+  <g
+     id="arrorws"
+     inkscape:label="arrows">
+    <path
+       style="fill:#56fe00;fill-opacity:1;stroke:#333333;stroke-width:0.529167;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Triangle-2);marker-end:url(#ColoredDot)"
+       d="m 103.84906,88.029111 v 10.45786"
+       id="arrow-1"
+       inkscape:label="arrow-1" />
+    <path
+       style="fill:#56fe00;fill-opacity:1;stroke:#333333;stroke-width:0.529167;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#ColoredDot);marker-end:url(#Triangle-2)"
+       d="M 107.81783,85.918593 V 96.619291"
+       id="arrow-2"
+       inkscape:label="arrow-2" />
+    <path
+       style="fill:#56fe00;fill-opacity:1;stroke:#333333;stroke-width:0.529167;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Triangle-2-1);marker-end:url(#ColoredDot-6)"
+       d="M 103.84906,45.661203 V 64.840395"
+       id="arrow-3"
+       inkscape:label="arrow-3" />
+    <path
+       style="fill:#56fe00;fill-opacity:1;stroke:#333333;stroke-width:0.529167;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#ColoredDot-6);marker-end:url(#Triangle-2-1)"
+       d="M 107.81783,43.98015 V 62.512965"
+       id="arrow-4"
+       inkscape:label="arrow-4" />
+    <path
+       style="fill:#56fe00;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Triangle-2);marker-end:url(#ColoredDot)"
+       d="M 54.691077,45.16642 74.144588,64.71875"
+       id="arrow-5"
+       inkscape:label="arrow-5" />
+    <path
+       style="fill:#56fe00;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#ColoredDot);marker-end:url(#Triangle-2)"
+       d="M 57.931395,43.754665 77.302851,63.224523"
+       id="arrow-6"
+       inkscape:label="arrow-6" />
+    <path
+       style="fill:#56fe00;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Triangle-2-4);marker-end:url(#ColoredDot-7)"
+       d="M 157.03696,45.16642 137.58344,64.71875"
+       id="arrow-7"
+       inkscape:label="arrow-7" />
+    <path
+       style="fill:#56fe00;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#ColoredDot-7);marker-end:url(#Triangle-2-4)"
+       d="M 153.79664,43.754665 134.42518,63.224523"
+       id="arrow-8"
+       inkscape:label="arrow-8" />
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

@@ -24,7 +24,7 @@ _compositing_ all the things visible on the screen (the panels, multiple windows
 single image that you can display on a monitor. This is the key role a Wayland _compositor_ fulfills on the desktop
 among other important things (like handling input).
 
-![Wayland Architecture](/static/images/wayland-f69fe497.svg "Wayland Architecture")
+![Wayland Architecture](/static/images/wayland-6c705f19.svg "Wayland Architecture")
 
 However, Wayland itself is not a compositor; it's the protocol that a conforming compositor and a client use to talk to
 one another. But how do you talk to a Wayland compositor?
@@ -113,7 +113,7 @@ Our conversation with the server will be about creating objects, invoking reques
 a particular object, and eventually destroying that object. So we need a way to serialize this object talk into a byte
 stream we can send over the socket we created earlier. Here's what that looks like:
 
-![Wire Format](/static/images/wayland-wire-format-8ff3e179.svg "Wire Format")
+![Wire Format](/static/images/wayland-wire-format-8cadff8c.svg "Wire Format")
 
 The above depicts the structure of a _message_ in the wayland protocol. All fields in the message are aligned to 32-bit
 words which are represented in the host's [byte order](https://en.wikipedia.org/wiki/Endianness). The first field in the
