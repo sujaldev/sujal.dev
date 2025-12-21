@@ -173,8 +173,9 @@ class Header:
 
 The struct module helps convert our python types into a byte stream. If you're not sure what the "IHH" format means,
 refer to the [documentation](https://docs.python.org/3/library/struct.html#byte-order-size-and-alignment) on the struct
-module. We've had to separate handling for each byte order because we're storing `size` and `opcode` separately to make
-`Header` class more convenient to work with, even though they are represented as a single 32-bit word on the wire.
+module. We've had to separate the handling for each byte order because we're storing `size` and `opcode` separately,
+which makes the `Header` class more convenient to work with, even though they are represented as a single 32-bit word on
+the wire.
 
 Next we'll add a method to instantiate the `Header` class from bytes received on the wire:
 
