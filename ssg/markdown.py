@@ -148,7 +148,7 @@ class PygmentsRenderer(BaseRenderer):
         self.additional_stylesheets.append("pygments.css.jinja")
 
         self.formatter.linenos = args["linenos"]
-        self.formatter.hl_lines.update(set(args["highlight"]))
+        self.formatter.hl_lines = set(args["highlight"])
         return highlight(code, lexer, self.formatter)
 
 
