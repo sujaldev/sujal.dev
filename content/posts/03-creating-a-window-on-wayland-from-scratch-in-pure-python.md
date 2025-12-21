@@ -7,9 +7,14 @@ date: "21 Dec, 2025"
 <b style="color: red">This post is still an unfinished draft.</b>
 </p>
 
-Everyone seems to be talking about Wayland nowadays. Some people praise it like it will cure all cancer, while others
-are convinced it's the work of the devil. I had little context to form an opinion, and figuring it out seemed like a fun
-thing to do. So let's write a Wayland client using nothing but Python's standard library.
+I wanted to see what kind of wizardry graphics toolkits like Qt or GTK perform when they create a window on a Wayland
+desktop. It takes surprisingly little code to achieve the bare minimum goal of creating a window and drawing a static
+image to it. In this article, I will walk through everything I learned about summoning a window on Wayland, using
+nothing but Python's standard library.
+
+There exists a library called `libwayland` that abstracts away many of the lower-level details of the Wayland
+protocol. But we're doing this to learn, so we'll skip using that to get a better feel for how things work under the
+hood.
 
 ## What does Wayland do?
 
