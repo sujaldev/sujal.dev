@@ -12,9 +12,14 @@ desktop. It takes surprisingly little code to achieve the bare minimum goal of c
 image to it. In this article, I will walk through everything I learned about summoning a window on Wayland, using
 nothing but Python's standard library.
 
-There exists a library called `libwayland` that abstracts away many of the lower-level details of the Wayland
-protocol. But we're doing this to learn, so we'll skip using that to get a better feel for how things work under the
-hood.
+::: aside
+If you intend to do any _real_ work, you'll be much better off starting with
+[libwayland](https://gitlab.freedesktop.org/wayland/wayland). It abstracts away many of the lower-level protocol details
+that we'll be implementing from scratch here.
+:::
+
+The final code we'll end up writing by the end of this article is also available in its entirety
+[here](https://github.com/sujaldev/sujal.dev/tree/main/content/posts/waygui/waygui.py).
 
 ## What does Wayland do?
 
