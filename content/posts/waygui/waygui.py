@@ -13,10 +13,8 @@ class Header:
     size: int = 0
 
     def serialize(self):
-        if sys.byteorder == "little":
-            return struct.pack("<IHH", self.obj_id, self.opcode, self.size)
-        else:
-            return struct.pack(">IHH", self.obj_id, self.size, self.opcode)
+        size_and_opcode = (self.size << 16) | self.opcode
+        return struct.pack("=II", self.obj_id, size_and_opcode)
 
     @staticmethod
     def frombytes(data: BytesIO) -> "Header | None":
@@ -25,10 +23,9 @@ class Header:
         if len(data) != 8:
             return None
 
-        if sys.byteorder == "little":
-            obj_id, opcode, size = struct.unpack("<IHH", data)
-        else:
-            obj_id, size, opcode = struct.unpack(">IHH", data)
+        obj_id, opcode_and_size = struct.unpack("=II", data)
+        opcode = opcode_and_size & 0xFFFF
+        size = opcode_and_size >> 16
 
         return Header(obj_id, opcode, size)
 

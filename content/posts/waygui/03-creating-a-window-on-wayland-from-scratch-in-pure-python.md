@@ -157,7 +157,7 @@ class Header:
 
 We should also add a way to serialize this header into bytes we can send on the wire:
 
-```python | linenos | highlight=[3, 4, (14, 18)]
+```python | linenos | highlight=[3, 4, (14, 16)]
 import os
 import socket
 import struct
@@ -172,24 +172,29 @@ class Header:
     size: int = 0
 
     def serialize(self):
-        if sys.byteorder == "little":
-            return struct.pack("<IHH", self.obj_id, self.opcode, self.size)
-        else:
-            return struct.pack(">IHH", self.obj_id, self.size, self.opcode)
+        size_and_opcode = (self.size << 16) | self.opcode
+        return struct.pack("=II", self.obj_id, size_and_opcode)
 
 
 ...
 ```
 
-The struct module helps convert our python types into a byte stream. If you're not sure what the "IHH" format means,
-refer to the [documentation](https://docs.python.org/3/library/struct.html#byte-order-size-and-alignment) on the struct
-module. We've had to separate the handling for each byte order because we're storing `size` and `opcode` separately,
-which makes the `Header` class more convenient to work with, even though they are represented as a single 32-bit word on
-the wire.
+We're first combining the `size` and `opcode` fields into a single 32-bit integer as described by the wire format. If
+you were to treat them as two distinct 16-bit words, you'd have to flip the order of `size` and `opcode` for
+little-endian hosts. Then, we use `struct.pack` to convert our Python integer objects into bytes we can send over the
+wire. The first argument to `struct.pack` is the format string, which exactly matches the header format we discussed
+earlier: "=" declares that we want the resulting bytes to use the host's byte order and the "II" defines two 32-bit
+unsigned integers.
+
+::: aside
+Refer to the
+[documentation](https://docs.python.org/3/library/struct.html#byte-order-size-and-alignment) on the struct
+module for a complete reference of the format string.
+:::
 
 Next we'll add a method to instantiate the `Header` class from bytes received on the wire:
 
-```python | linenos | highlight=[6, (13, 25)]
+```python | linenos | highlight=[6, (13, 24)]
 import os
 import socket
 import struct
@@ -209,10 +214,9 @@ class Header:
         if len(data) != 8:
             return None
 
-        if sys.byteorder == "little":
-            obj_id, opcode, size = struct.unpack("<IHH", data)
-        else:
-            obj_id, size, opcode = struct.unpack(">IHH", data)
+        obj_id, opcode_and_size = struct.unpack("=II", data)
+        opcode = opcode_and_size & 0xFFFF
+        size = opcode_and_size >> 16
 
         return Header(obj_id, opcode, size)
 
@@ -220,10 +224,12 @@ class Header:
 ...
 ```
 
-We are reading 8 bytes (the size of a header) from the received data and parsing it into each field by passing the
-expected byte stream format to the struct module. Again, we require separate handling for each byte order to split the
-size and opcode fields. Next, we should store this `Header` in a new `Message` class that stores both the header and the
-payload:
+We are reading 8 bytes (the size of a header) from the received data and interpreting each 32-bit word (4 bytes) as an
+unsigned integer. The first is the object ID, and the second packs both the size and the opcode, which we have to split.
+We can extract the opcode by using a bit-mask of `0xFFFF`, which extracts the lower 16-bits. Then the size field can be
+extracted by bit shifting the entire 32-bit integer to the right by 16-bits.
+
+Next, we should store this `Header` in a new `Message` class that stores both the header and the payload:
 
 ```python | linenos
 ...
