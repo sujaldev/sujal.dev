@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.13"
 
 [[package]]
@@ -163,6 +163,12 @@ woff = [
     { name = "brotlicffi", marker = "platform_python_implementation != 'CPython'" },
     { name = "zopfli" },
 ]
+
+[[package]]
+name = "gitignore-parser"
+version = "0.1.13"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e5/51/e391a1a4238f18d0abb47be479b07af265ad4519022cf51b7da47ef82487/gitignore_parser-0.1.13.tar.gz", hash = "sha256:c7e10c8190accb8ae57fb3711889e73a9c0dbc04d4222b91ace8a4bf64d2f746", size = 5603, upload-time = "2025-08-25T06:33:22.704Z" }
 
 [[package]]
 name = "h11"
@@ -423,6 +429,7 @@ source = { editable = "." }
 dependencies = [
     { name = "feedgen" },
     { name = "fonttools", extra = ["woff"] },
+    { name = "gitignore-parser" },
     { name = "jinja2" },
     { name = "mistletoe" },
     { name = "pygments" },
@@ -436,6 +443,7 @@ dependencies = [
 requires-dist = [
     { name = "feedgen", specifier = ">=1.0.0" },
     { name = "fonttools", extras = ["woff"], specifier = ">=4.58.5" },
+    { name = "gitignore-parser", specifier = ">=0.1.13" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "mistletoe", specifier = ">=1.4.0" },
     { name = "pygments", specifier = ">=2.19.2" },
