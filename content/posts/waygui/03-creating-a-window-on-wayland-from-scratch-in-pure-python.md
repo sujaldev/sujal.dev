@@ -23,9 +23,9 @@ The final code we'll end up writing by the end of this article is also available
 
 ## What does Wayland do?
 
-I was confused about what role Wayland plays in the graphics stack. As an end user, all I ever had to do was use a
-graphics toolkit and a window would appear. But what I hadn't considered was _other_ windows. Something must be
-_compositing_ all the things visible on the screen (the panels, multiple windows, the desktop wallpaper, etc.) into a
+I was confused about what role Wayland plays in the graphics stack. As an end user, all I've ever had to do is use a
+graphics toolkit and a window appears. But what I hadn't considered was _other_ windows. Something must be _compositing_
+all the things visible on the screen (the panels, multiple windows, the desktop wallpaper, the cursor, etc.) into a
 single image that you can display on a monitor. This is the key role a Wayland _compositor_ fulfills on the desktop
 among other important things (like handling input).
 
@@ -34,11 +34,11 @@ among other important things (like handling input).
 However, Wayland itself is not a compositor; it's the protocol that a conforming compositor and a client use to talk to
 one another. But how do you talk to a Wayland compositor?
 
-## Making a Connection to the Wayland Compositor
+## Making a Connection to the Wayland Server
 
-A client can use a Unix domain stream socket to communicate with a Wayland compositor. These are local sockets that
-allow processes on the same host to talk to one another efficiently (they have another trick up their sleeve you'll see
-later on). Let's start writing our first lines of code. We can use the socket module to create a Unix domain socket:
+A client can use a Unix domain stream socket to communicate with a Wayland server. These are local sockets that
+allow processes on the same host to talk to one another efficiently (they have another trick up their sleeve that we'll
+use later on). Let's start writing our first lines of code. We can use the socket module to create a Unix domain socket:
 
 ```python | linenos
 import socket
@@ -53,7 +53,7 @@ def setup_socket():
 This creates the socket, but we haven't yet made a connection to the Wayland compositor. To find the path required to
 connect to the compositor, we can do the following:
 
-```python | linenos | highlight=[1, 2, (8, 13)]
+```python | linenos | highlight=[1, (8, 13)]
 import os
 import socket
 
@@ -89,8 +89,8 @@ be found inside `/usr/share/wayland` if you have the necessary package installed
 I hadn't seen a protocol defined in this manner before, and I must say it's a neat trick.
 :::
 
-The interface for each object defines requests a client can invoke on the object, and events that the server can emit
-for that object. Events need not be emitted in response to a request, for example if the user tries to resize your
+The interface for each object defines _requests_ a client can invoke on the object, and _events_ that the server can
+emit for that object. Events need not be emitted in response to a request, for example if the user tries to resize your
 window the server will spontaneously emit an event to let you know. Each request and event can also define arguments,
 each with an associated type that we'll come back to later. This is what the corresponding XML looks like:
 
@@ -157,11 +157,10 @@ class Header:
 
 We should also add a way to serialize this header into bytes we can send on the wire:
 
-```python | linenos | highlight=[3, 4, (14, 16)]
+```python | linenos | highlight=[(3, 4), (13, 15)]
 import os
 import socket
 import struct
-import sys
 from dataclasses import dataclass
 
 
@@ -194,11 +193,10 @@ module for a complete reference of the format string.
 
 Next we'll add a method to instantiate the `Header` class from bytes received on the wire:
 
-```python | linenos | highlight=[6, (13, 24)]
+```python | linenos | highlight=[5, (13, 24)]
 import os
 import socket
 import struct
-import sys
 from dataclasses import dataclass
 from io import BytesIO
 
@@ -232,9 +230,6 @@ extracted by bit shifting the entire 32-bit integer to the right by 16-bits.
 Next, we should store this `Header` in a new `Message` class that stores both the header and the payload:
 
 ```python | linenos
-...
-
-
 @dataclass
 class Message:
     header: Header
@@ -243,10 +238,209 @@ class Message:
     def serialize(self):
         self.header.size = 8 + len(self.payload)
         return self.header.serialize() + self.payload
+```
+
+The payload consists of arguments for the particular request or event referenced in the header. Arguments are also
+aligned to 32-bits, padding is added wherever required.
+
+#### Primitives
+
+As we saw earlier in the XML specification:
+
+```xml
+
+<arg name="some_arg" type="some_primitive"/>
+```
+
+arguments are defined with a type attribute associated with them. The wayland protocol defines the following types:
+
+* **int:** A 32-bit signed integer
+
+* **uint:** A 32-bit unsigned integer
+
+* **fixed:** Signed 24.8 decimal number. It is a signed decimal type which offers a sign bit, 23 bits of integer
+  precision and 8 bits of decimal precision.
+
+* **string:** Starts with an unsigned 32-bit length (including null terminator), followed by the UTF-8 encoded string
+  contents, including terminating null byte, then padding to a 32-bit boundary. A null value is represented with a
+  length of 0. Interior null bytes are not permitted. \
+  ![Wayland String](/static/images/wayland-string-e41fcf5c.svg)
+
+* **object:** 32-bit unsigned integer. A null value is represented with an ID of 0.
+
+* **new_id:** Same as `object`, used to indicate creation of new objects. If an arg tag having the attribute
+  `type="new_id"` does not specify an interface attribute as well in the XML, then this new_id value is preceded by a
+  `string` specifying the interface name to be used for the creation of the new object and an `uint` specifying the
+  version.
+
+* **array:** Starts with 32-bit array size in bytes, followed by the array contents verbatim, and finally padding to a
+  32-bit boundary. We will not encounter the usage of this type on the client side in this article.
+
+* **fd:** A file descriptor. This is **not sent** in the usual message we'd send on the socket, rather it uses a special
+  transport mechanism provided by unix domain sockets called anciliary data.
+
+::: aside
+File descriptors are local to a process, for example, `5` might refer to a resource A in one process and B in another.
+Which is why we require special transport for them.
+:::
+
+We can now start implementing these types in Python. First, let's create a base class all of our types will
+inherit from so we can specify two methods all types should implement. These are: `frombytes` to instantiate the type
+from bytes received on the wire, and `serialize` to convert the Python type to bytes we can send over the wire.
+
+```python | linenos | highlight=[(8,14)]
+import os
+import socket
+import struct
+from dataclasses import dataclass
+from io import BytesIO
+
+
+class WLPrimitive:
+    @staticmethod
+    def frombytes(data: BytesIO) -> "WLPrimitive":
+        raise NotImplementedError
+
+    def serialize(self) -> bytes:
+        raise NotImplementedError
 
 
 ...
 ```
 
-The payload consists of arguments for the particular request or event referenced in the header. Arguments are also
-aligned to 32-bits, padding is added wherever required. We will
+Next, we create a class for `uint`:
+
+```python | linenos
+@dataclass
+class UInt32(WLPrimitive):
+    value: int
+
+    @staticmethod
+    def frombytes(data: BytesIO) -> "UInt32":
+        return UInt32(struct.unpack("=I", data.read(4))[0])
+
+    def serialize(self) -> bytes:
+        return struct.pack("=I", self.value)
+```
+
+As a reminder, `=` denotes the host's byte order and `I` denotes an unsigned 32-bit integer. Implementing `int` is the
+same, but we'll switch the capital `I` for a small `i` instead to denote a signed 32-bit integer:
+
+```python | linenos
+@dataclass
+class Int32(WLPrimitive):
+    value: int
+
+    @staticmethod
+    def frombytes(data: BytesIO) -> "Int32":
+        return Int32(struct.unpack("=i", data.read(4))[0])
+
+    def serialize(self) -> bytes:
+        return struct.pack("=i", self.value)
+```
+
+Both `object` and `new_id` can be implemented as an alias to the `UInt32` class:
+
+```python | linenos
+class ObjID(UInt32):
+    pass
+
+
+class NewID(UInt32):
+    pass
+```
+
+To implement the `string` type, we'll need a way to calculate how much padding we should append to the end. Let's create
+a function to do just that:
+
+```python | linenos
+def padding(length: int) -> int:
+    return (4 - (length % 4)) % 4
+```
+
+`length` is the length of the string including the null terminator. `4 - (length % 4)` tells us how many additional
+bytes we require to make the string length divisible by 4 bytes (32-bits). The additional modulo at the end handles the
+edge cases where `length % 4` evaluates to `0`. In that case, `4 - (length % 4)` evaluates to `4 - 0 = 4`, but if the
+length is already divisible by 4, we do not require padding, so we take the modulo again to collapse this `4` back to
+`0`. With that, we can implement the `string` type:
+
+```python | linenos
+@dataclass
+class String(WLPrimitive):
+    value: str
+
+    @staticmethod
+    def frombytes(data: BytesIO) -> "String":
+        length = UInt32.frombytes(data).value
+        value = data.read(length - 1)
+        data.read(1 + padding(length))
+        return String(value.decode("utf8"))
+```
+
+We'll first read a `uint` from the received byte stream, which tells us the length of the string. We then read
+`length - 1` bytes to get the value of the string (without the null terminator). Then we discard the remaining bytes
+containing the null terminator and padding (if any). To serialize the Python string to bytes:
+
+```python | linenos | highlight=[(12, 19)]
+@dataclass
+class String(WLPrimitive):
+    value: str
+
+    @staticmethod
+    def frombytes(data: BytesIO) -> "String":
+        length = UInt32.frombytes(data).value
+        value = data.read(length - 1)
+        data.read(1 + padding(length))
+        return String(value.decode("utf8"))
+
+    def serialize(self) -> bytes:
+        value = bytes(self.value, "utf8")
+        value += b"\0"  # Null Terminator
+
+        size = len(value)
+        value += b"\0" * padding(size)
+
+        return UInt32(size).serialize() + value
+```
+
+We first convert the Python string to utf8 encoded bytes using the built-in `bytes()` function. Then we append a null
+terminator. Calculate the total length of the string (including null terminator). Add padding if required. Finally,
+prepend the length of the string in bytes as an `uint`.
+
+Next, we'll implement the `array` type:
+
+```python
+@dataclass
+class Array(WLPrimitive):
+    value: bytes
+
+    @staticmethod
+    def frombytes(data: BytesIO) -> "WLPrimitive":
+        size = UInt32.frombytes(data).value
+        value = data.read(size)
+        data.read(padding(size))
+        return Array(value)
+
+    def serialize(self) -> bytes:
+        size = len(self.value)
+        data = UInt32(size).serialize() + self.value
+        data += b"\0" * padding(size)
+        return data
+```
+
+`array` is parsed similarly to the `string` type: read a `uint` as the length, read `length` amount of bytes and discard
+any padding. To serialize to bytes: serialize the length as an `uint`, append the data, then any padding if required.
+
+The `fd` type does not serialize to any bytes in the byte stream, and I didn't encounter any usage for receiving the
+`fd` type so we'll skip that. This becomes rather easy to implement:
+
+```python | linenos
+class Fd(UInt32):
+    value = 0  # the value here will not be used so any arbitrary value works
+
+    def serialize(self) -> bytes:
+        return b""
+```
+
+Finally, we're only left with the `fixed` type, but we will not encounter its usage in this article so we'll skip
+implementing it.

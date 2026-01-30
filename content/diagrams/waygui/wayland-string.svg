@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="426"
+   height="150"
+   viewBox="0 0 112.7125 39.687498"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   sodipodi:docname="wayland-string.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="2.0000001"
+     inkscape:cx="198.99999"
+     inkscape:cy="104.25"
+     inkscape:window-width="1920"
+     inkscape:window-height="1022"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="string diagram"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g19"
+       inkscape:label="string"
+       transform="translate(-3.755287,12.474443)">
+      <g
+         id="g9"
+         inkscape:label="H">
+        <rect
+           style="fill:#d7f2c9;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="obj-id-box"
+           width="12"
+           height="12"
+           x="5.5312557"
+           y="4.5833335"
+           inkscape:label="box" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+           x="11.531256"
+           y="12.176126"
+           id="text1"
+           inkscape:label="H"><tspan
+             sodipodi:role="line"
+             id="tspan1"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+             x="11.531256"
+             y="12.176126">H</tspan></text>
+      </g>
+      <g
+         id="g10"
+         inkscape:label="E">
+        <rect
+           style="fill:#d7f2c9;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="obj-id-box-2"
+           width="12"
+           height="12"
+           x="17.531256"
+           y="4.5833335"
+           inkscape:label="box" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+           x="23.437418"
+           y="12.176126"
+           id="text1-9"
+           inkscape:label="E"><tspan
+             sodipodi:role="line"
+             id="tspan1-0"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+             x="23.437418"
+             y="12.176126">E</tspan></text>
+      </g>
+      <g
+         id="g11"
+         inkscape:label="L">
+        <rect
+           style="fill:#d7f2c9;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="obj-id-box-2-6"
+           width="12"
+           height="12"
+           x="29.531252"
+           y="4.5833335"
+           inkscape:label="box" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+           x="35.375683"
+           y="12.176126"
+           id="text1-1"
+           inkscape:label="L"><tspan
+             sodipodi:role="line"
+             id="tspan1-1"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+             x="35.375683"
+             y="12.176126">L</tspan></text>
+      </g>
+      <g
+         id="g12"
+         inkscape:label="L">
+        <rect
+           style="fill:#d7f2c9;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="obj-id-box-2-7"
+           width="12"
+           height="12"
+           x="41.531254"
+           y="4.5833335"
+           inkscape:label="box" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+           x="47.375683"
+           y="12.176126"
+           id="text1-1-6"
+           inkscape:label="L"><tspan
+             sodipodi:role="line"
+             id="tspan1-1-7"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+             x="47.375683"
+             y="12.176126">L</tspan></text>
+      </g>
+      <g
+         id="g13"
+         inkscape:label="O">
+        <rect
+           style="fill:#d7f2c9;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="obj-id-box-2-3"
+           width="12"
+           height="12"
+           x="53.531254"
+           y="4.5833335"
+           inkscape:label="box" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+           x="59.531254"
+           y="12.183536"
+           id="text1-1-3"
+           inkscape:label="O"><tspan
+             sodipodi:role="line"
+             id="tspan1-1-9"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+             x="59.531254"
+             y="12.183536">O</tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         x="35.451881"
+         y="22.310383"
+         id="text20"
+         inkscape:label="label"><tspan
+           sodipodi:role="line"
+           id="tspan20"
+           style="fill:#000000;fill-opacity:1;stroke-width:0.264583"
+           x="35.451881"
+           y="22.310383">UTF-8 Encoded String</tspan></text>
+    </g>
+    <g
+       id="g14"
+       inkscape:label="null-terminator"
+       style="display:inline"
+       transform="translate(-3.9687499,8.9324641)">
+      <rect
+         style="fill:#cccccc;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         id="obj-id-box-2-2"
+         width="12"
+         height="12"
+         x="65.744705"
+         y="8.1253099"
+         inkscape:label="box" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+         x="71.826202"
+         y="15.730447"
+         id="text1-1-9"
+         inkscape:label="\0"><tspan
+           sodipodi:role="line"
+           id="tspan1-1-3"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+           x="71.826202"
+           y="15.730447">\0</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         x="71.753525"
+         y="25.852476"
+         id="text20-0"
+         inkscape:label="label"><tspan
+           sodipodi:role="line"
+           id="tspan20-2"
+           style="fill:#000000;fill-opacity:1;stroke-width:0.264583"
+           x="71.753525"
+           y="25.852476">Null</tspan><tspan
+           sodipodi:role="line"
+           style="fill:#000000;fill-opacity:1;stroke-width:0.264583"
+           x="71.753525"
+           y="30.262188"
+           id="tspan21">Terminator</tspan></text>
+    </g>
+    <g
+       id="g18"
+       inkscape:label="padding"
+       transform="translate(-3.755287,12.474443)">
+      <g
+         id="g15"
+         inkscape:label="?">
+        <rect
+           style="fill:#c9ccf2;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="obj-id-box-2-61"
+           width="12"
+           height="12"
+           x="77.531242"
+           y="4.5833335"
+           inkscape:label="box" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+           x="83.513969"
+           y="12.183536"
+           id="text1-1-9-5"
+           inkscape:label="?"><tspan
+             sodipodi:role="line"
+             id="tspan1-1-3-0"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+             x="83.513969"
+             y="12.183536">?</tspan></text>
+      </g>
+      <g
+         id="g16"
+         inkscape:label="...">
+        <rect
+           style="fill:#c9ccf2;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="obj-id-box-2-61-61"
+           width="12"
+           height="12"
+           x="89.531242"
+           y="4.5833335"
+           inkscape:label="box" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+           x="95.531242"
+           y="10.808052"
+           id="text1-1-9-5-8"
+           inkscape:label="..."><tspan
+             sodipodi:role="line"
+             id="tspan1-1-3-0-1"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+             x="95.531242"
+             y="10.808052">...</tspan></text>
+      </g>
+      <g
+         id="g17"
+         inkscape:label="?">
+        <rect
+           style="fill:#c9ccf2;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="obj-id-box-2-61-61-4"
+           width="12"
+           height="12"
+           x="101.53124"
+           y="4.5833335"
+           inkscape:label="box" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke"
+           x="107.51395"
+           y="12.183536"
+           id="text1-1-9-5-3"
+           inkscape:label="?"><tspan
+             sodipodi:role="line"
+             id="tspan1-1-3-0-17"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke:none;stroke-width:0.529167"
+             x="107.51395"
+             y="12.183536">?</tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         x="95.443047"
+         y="22.310383"
+         id="text20-1"
+         inkscape:label="label"><tspan
+           sodipodi:role="line"
+           id="tspan20-0"
+           style="fill:#000000;fill-opacity:1;stroke-width:0.264583"
+           x="95.443047"
+           y="22.310383">Padding</tspan></text>
+    </g>
+    <g
+       id="g20"
+       inkscape:label="length"
+       transform="translate(0,-0.07170223)">
+      <rect
+         style="display:inline;fill:#f3e2ca;fill-opacity:1;stroke:#000000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         id="obj-id-box-2-2-3"
+         width="107.99998"
+         height="12"
+         x="1.7759689"
+         y="5.1294775"
+         inkscape:label="box" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke:#252525;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+         x="55.691292"
+         y="11.958502"
+         id="text10"
+         inkscape:label="label"><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';stroke-width:0;stroke-dasharray:none"
+           x="55.691292"
+           y="11.958502"
+           id="tspan12">Length of string in bytes (including null terminator)</tspan></text>
+    </g>
+    <g
+       id="g21"
+       inkscape:label="index">
+      <text
+         xml:space="preserve"
+         style="display:inline;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#444444;fill-opacity:1;stroke:#252525;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+         x="5.480135"
+         y="-5.4622736"
+         id="text13"
+         inkscape:label="0"
+         transform="translate(-3.9687499,8.9324641)"><tspan
+           sodipodi:role="line"
+           id="tspan13"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#444444;fill-opacity:1;stroke-width:0"
+           x="5.480135"
+           y="-5.4622736">0</tspan></text>
+      <text
+         xml:space="preserve"
+         style="display:inline;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#444444;fill-opacity:1;stroke:#252525;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke"
+         x="114.00927"
+         y="-5.4622736"
+         id="text13-1"
+         inkscape:label="32"
+         transform="translate(-3.9687499,8.9324641)"><tspan
+           sodipodi:role="line"
+           id="tspan13-2"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans Bold';fill:#444444;fill-opacity:1;stroke-width:0"
+           x="114.00927"
+           y="-5.4622736">32</tspan></text>
+    </g>
+  </g>
+</svg>
