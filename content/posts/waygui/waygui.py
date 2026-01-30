@@ -5,9 +5,9 @@ from dataclasses import dataclass
 from io import BytesIO
 
 
-class WLPrimitive:
+class WlPrimitive:
     @staticmethod
-    def frombytes(data: BytesIO) -> "WLPrimitive":
+    def frombytes(data: BytesIO) -> "WlPrimitive":
         raise NotImplementedError
 
     def serialize(self) -> bytes:
@@ -15,7 +15,7 @@ class WLPrimitive:
 
 
 @dataclass
-class UInt32(WLPrimitive):
+class UInt32(WlPrimitive):
     value: int
 
     @staticmethod
@@ -27,7 +27,7 @@ class UInt32(WLPrimitive):
 
 
 @dataclass
-class Int32(WLPrimitive):
+class Int32(WlPrimitive):
     value: int
 
     @staticmethod
@@ -51,7 +51,7 @@ def padding(length: int) -> int:
 
 
 @dataclass
-class String(WLPrimitive):
+class String(WlPrimitive):
     value: str
 
     @staticmethod
@@ -72,11 +72,11 @@ class String(WLPrimitive):
 
 
 @dataclass
-class Array(WLPrimitive):
+class Array(WlPrimitive):
     value: bytes
 
     @staticmethod
-    def frombytes(data: BytesIO) -> "WLPrimitive":
+    def frombytes(data: BytesIO) -> "WlPrimitive":
         size = UInt32.frombytes(data).value
         value = data.read(size)
         data.read(padding(size))
@@ -89,7 +89,10 @@ class Array(WLPrimitive):
         return data
 
 
+@dataclass
 class Fd(UInt32):
+    value: int = 0
+
     def serialize(self) -> bytes:
         # The file descriptor is sent via ancillary data,
         # it does not serialize to actual bytes in the wire format.
@@ -98,7 +101,7 @@ class Fd(UInt32):
 
 @dataclass
 class Header:
-    obj_id: int
+    obj_id: ObjID
     opcode: int
     size: int = 0
 

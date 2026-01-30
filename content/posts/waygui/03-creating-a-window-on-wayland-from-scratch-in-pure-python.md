@@ -254,6 +254,11 @@ As we saw earlier in the XML specification:
 
 arguments are defined with a type attribute associated with them. The wayland protocol defines the following types:
 
+::: aside
+Much of this section is copied verbatim from the
+[official documentation](https://wayland.freedesktop.org/docs/html/ch04.html#sect-Protocol-Wire-Format).
+:::
+
 * **int:** A 32-bit signed integer
 
 * **uint:** A 32-bit unsigned integer
@@ -296,9 +301,9 @@ from dataclasses import dataclass
 from io import BytesIO
 
 
-class WLPrimitive:
+class WlPrimitive:
     @staticmethod
-    def frombytes(data: BytesIO) -> "WLPrimitive":
+    def frombytes(data: BytesIO) -> "WlPrimitive":
         raise NotImplementedError
 
     def serialize(self) -> bytes:
@@ -312,7 +317,7 @@ Next, we create a class for `uint`:
 
 ```python | linenos
 @dataclass
-class UInt32(WLPrimitive):
+class UInt32(WlPrimitive):
     value: int
 
     @staticmethod
@@ -328,7 +333,7 @@ same, but we'll switch the capital `I` for a small `i` instead to denote a signe
 
 ```python | linenos
 @dataclass
-class Int32(WLPrimitive):
+class Int32(WlPrimitive):
     value: int
 
     @staticmethod
@@ -366,7 +371,7 @@ length is already divisible by 4, we do not require padding, so we take the modu
 
 ```python | linenos
 @dataclass
-class String(WLPrimitive):
+class String(WlPrimitive):
     value: str
 
     @staticmethod
@@ -383,7 +388,7 @@ containing the null terminator and padding (if any). To serialize the Python str
 
 ```python | linenos | highlight=[(12, 19)]
 @dataclass
-class String(WLPrimitive):
+class String(WlPrimitive):
     value: str
 
     @staticmethod
@@ -409,13 +414,13 @@ prepend the length of the string in bytes as an `uint`.
 
 Next, we'll implement the `array` type:
 
-```python
+```python | linenos
 @dataclass
-class Array(WLPrimitive):
+class Array(WlPrimitive):
     value: bytes
 
     @staticmethod
-    def frombytes(data: BytesIO) -> "WLPrimitive":
+    def frombytes(data: BytesIO) -> "WlPrimitive":
         size = UInt32.frombytes(data).value
         value = data.read(size)
         data.read(padding(size))
@@ -435,12 +440,44 @@ The `fd` type does not serialize to any bytes in the byte stream, and I didn't e
 `fd` type so we'll skip that. This becomes rather easy to implement:
 
 ```python | linenos
+@dataclass
 class Fd(UInt32):
-    value = 0  # the value here will not be used so any arbitrary value works
+    value: int = 0  # the value here will not be used so any arbitrary value works
 
     def serialize(self) -> bytes:
         return b""
 ```
 
 Finally, we're only left with the `fixed` type, but we will not encounter its usage in this article so we'll skip
-implementing it.
+implementing it altogether.
+
+Now that we have these types defined, we should update the type annotations on the `Message` and `Header` classes to
+use these types:
+
+```python | linenos | highlight=[6, 13, 20]
+import os
+import socket
+import struct
+from dataclasses import dataclass
+from io import BytesIO
+from typing import List
+
+...
+
+
+@dataclass
+class Header:
+    obj_id: ObjID
+    ...
+
+
+@dataclass
+class Message:
+    header: Header
+    payload: List[WlPrimitive]
+
+    ...
+
+
+...
+```
